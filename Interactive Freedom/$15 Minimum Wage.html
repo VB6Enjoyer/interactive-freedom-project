@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Wash Economics Explorer</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1, h2 {
+            color: #0056b3;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .status-display, .automation-details, .outcome, .key-takeaway {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #eef;
+        }
+
+        .status-display p, .automation-details p {
+            margin: 8px 0;
+        }
+
+        .status-display p strong, .automation-details p strong {
+            display: inline-block;
+            width: 200px; /* Align labels */
+        }
+
+        .controls, .decision-point {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 20px;
+            margin: 5px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-left: 4px solid #f0ad4e;
+            background-color: #fcf8e3;
+            color: #8a6d3b;
+            border-radius: 4px;
+        }
+
+        .outcome {
+            border-color: #d9534f;
+            background-color: #f2dede;
+            color: #a94442;
+            font-weight: bold;
+            text-align: center;
+        }
+
+         .outcome.success {
+            border-color: #5cb85c;
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+
+        .key-takeaway {
+            border-color: #5bc0de;
+            background-color: #d9edf7;
+            color: #31708f;
+            font-style: italic;
+        }
+
+        #automation-details, #decision-point, #outcome, #key-takeaway {
+            display: none; /* Initially hidden */
+        }
+
+        #final-status-indicator {
+            display: block;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Car Wash Economics Explorer</h1>
+        <p>Explore how changing labor costs impact a simple car wash business.</p>
+
+        <div class="status-display" id="status-display">
+            <h2>Current Business Status: <span id="business-model"></span></h2>
+            <p><strong>Number of Employees:</strong> <span id="num-employees"></span></p>
+            <p><strong>Hourly Wage per Employee:</strong> $<span id="hourly-wage"></span></p>
+            <p><strong>Total Hourly Labor Cost:</strong> $<span id="total-labor-cost"></span></p>
+            <p><strong>Other Hourly Operating Costs:</strong> $<span id="other-operating-costs"></span></p>
+            <p><strong>Total Hourly Costs:</strong> $<span id="total-hourly-costs"></span></p>
+            <p><strong>Hourly Revenue:</strong> $<span id="hourly-revenue"></span></p>
+            <p><strong>Hourly Profit/Loss:</strong> $<span id="hourly-profit-loss"></span></p>
+        </div>
+
+        <div class="messages" id="messages">
+            <!-- Messages will appear here -->
+        </div>
+
+        <div class="controls" id="controls">
+            <button id="btn-wage-15">Government Increases Minimum Wage to $15/hour</button>
+            <button id="btn-wage-20" style="display: none;">Increased Benefits/Unionization Drives Labor Cost to $20/hour</button>
+            <button id="btn-explore-automation" style="display: none;">Explore Automation Option</button>
+        </div>
+
+        <div class="automation-details" id="automation-details">
+             <h2>Potential Automated Model Metrics:</h2>
+            <p><strong>Business Model:</strong> Automated Car Wash</p>
+            <p><strong>Number of Employees Required:</strong> 2</p>
+            <p><strong>Hourly Wage per Employee:</strong> $<span id="automation-wage"></span></p>
+            <p><strong>Total Hourly Labor Cost (Automated):</strong> $<span id="automation-labor-cost"></span></p>
+            <p><strong>Hourly Automation Operating Cost:</strong> $<span id="automation-operating-cost"></span></p>
+            <p><strong>Other Hourly Operating Costs:</strong> $<span id="automation-other-costs"></span></p>
+            <p><strong>Total Hourly Costs (Automated):</strong> $<span id="automation-total-costs"></span></p>
+            <p><strong>Hourly Revenue (Automated):</strong> $<span id="automation-revenue"></span></p>
+            <p><strong>Hourly Profit/Loss (Automated):</strong> $<span id="automation-profit-loss"></span></p>
+            <p id="automation-note" style="font-weight: bold; margin-top: 15px;">Note: Switching requires a large upfront investment in machinery (not shown in hourly costs).</p>
+        </div>
+
+        <div class="decision-point" id="decision-point">
+            <h2>Decision Time:</h2>
+            <p>The business is currently losing money operating manually. What do you do?</p>
+            <button id="btn-continue-manual">Continue with Manual (Unsustainable)</button>
+            <button id="btn-switch-automated">Switch to Automated (Requires Investment)</button>
+            <button id="btn-close-business">Close Business</button>
+        </div>
+
+         <div class="outcome" id="outcome">
+            <!-- Outcome message appears here -->
+             <span id="final-status-indicator"></span>
+        </div>
+
+         <div class="key-takeaway" id="key-takeaway">
+            <!-- Key takeaway message appears here -->
+        </div>
+
+    </div>
+
+    <script>
+        // Initial State Parameters
+        let businessModel = 'Manual Hand Wash';
+        let numEmployees = 10;
+        let hourlyWage = 10;
+        const otherOperatingCosts = 250; // Fixed
+        const hourlyRevenueManual = 400; // Fixed for manual model
+        const hourlyRevenueAutomated = 500; // Fixed for automated model (higher throughput)
+
+        // Automation Parameters
+        const numEmployeesAutomated = 2;
+        const automationOperatingCost = 150;
+
+        // Get UI Elements
+        const businessModelEl = document.getElementById('business-model');
+        const numEmployeesEl = document.getElementById('num-employees');
+        const hourlyWageEl = document.getElementById('hourly-wage');
+        const totalLaborCostEl = document.getElementById('total-labor-cost');
+        const otherOperatingCostsEl = document.getElementById('other-operating-costs');
+        const totalHourlyCostsEl = document.getElementById('total-hourly-costs');
+        const hourlyRevenueEl = document.getElementById('hourly-revenue');
+        const hourlyProfitLossEl = document.getElementById('hourly-profit-loss');
+
+        const messagesEl = document.getElementById('messages');
+        const controlsEl = document.getElementById('controls');
+        const btnWage15 = document.getElementById('btn-wage-15');
+        const btnWage20 = document.getElementById('btn-wage-20');
+        const btnExploreAutomation = document.getElementById('btn-explore-automation');
+
+        const automationDetailsEl = document.getElementById('automation-details');
+        const automationWageEl = document.getElementById('automation-wage');
+        const automationLaborCostEl = document.getElementById('automation-labor-cost');
+        const automationOperatingCostEl = document.getElementById('automation-operating-cost');
+        const automationOtherCostsEl = document.getElementById('automation-other-costs');
+        const automationTotalCostsEl = document.getElementById('automation-total-costs');
+        const automationRevenueEl = document.getElementById('automation-revenue');
+        const automationProfitLossEl = document.getElementById('automation-profit-loss');
+
+        const decisionPointEl = document.getElementById('decision-point');
+        const btnContinueManual = document.getElementById('btn-continue-manual');
+        const btnSwitchAutomated = document.getElementById('btn-switch-automated');
+        const btnCloseBusiness = document.getElementById('btn-close-business');
+
+        const outcomeEl = document.getElementById('outcome');
+        const finalStatusIndicatorEl = document.getElementById('final-status-indicator');
+        const keyTakeawayEl = document.getElementById('key-takeaway');
+
+        // Function to update the status display
+        function updateStatus() {
+            const currentRevenue = (businessModel === 'Manual Hand Wash') ? hourlyRevenueManual : hourlyRevenueAutomated;
+            const currentNumEmployees = (businessModel === 'Manual Hand Wash') ? numEmployees : numEmployeesAutomated;
+            const currentAutomationCost = (businessModel === 'Automated Car Wash') ? automationOperatingCost : 0;
+
+            const totalLaborCost = currentNumEmployees * hourlyWage;
+            const totalHourlyCosts = totalLaborCost + otherOperatingCosts + currentAutomationCost;
+            const hourlyProfitLoss = currentRevenue - totalHourlyCosts;
+
+            businessModelEl.textContent = businessModel;
+            numEmployeesEl.textContent = currentNumEmployees;
+            hourlyWageEl.textContent = hourlyWage.toFixed(2);
+            totalLaborCostEl.textContent = totalLaborCost.toFixed(2);
+            otherOperatingCostsEl.textContent = otherOperatingCosts.toFixed(2);
+            totalHourlyCostsEl.textContent = totalHourlyCosts.toFixed(2);
+            hourlyRevenueEl.textContent = currentRevenue.toFixed(2);
+            hourlyProfitLossEl.textContent = hourlyProfitLoss.toFixed(2);
+
+            // Style profit/loss
+            if (hourlyProfitLoss > 0) {
+                hourlyProfitLossEl.style.color = 'green';
+            } else if (hourlyProfitLoss < 0) {
+                hourlyProfitLossEl.style.color = 'red';
+            } else {
+                hourlyProfitLossEl.style.color = '#333';
+            }
+        }
+
+        // Function to display messages
+        function displayMessage(text) {
+            messagesEl.innerHTML = `<div class="message">${text}</div>`;
+        }
+
+         // Function to display automation details
+        function displayAutomationDetails() {
+            const potentialLaborCost = numEmployeesAutomated * hourlyWage;
+            const potentialTotalCosts = potentialLaborCost + otherOperatingCosts + automationOperatingCost;
+            const potentialProfitLoss = hourlyRevenueAutomated - potentialTotalCosts;
+
+            automationWageEl.textContent = hourlyWage.toFixed(2); // Use current wage for automated employees
+            automationLaborCostEl.textContent = potentialLaborCost.toFixed(2);
+            automationOperatingCostEl.textContent = automationOperatingCost.toFixed(2);
+            automationOtherCostsEl.textContent = otherOperatingCosts.toFixed(2);
+            automationTotalCostsEl.textContent = potentialTotalCosts.toFixed(2);
+            automationRevenueEl.textContent = hourlyRevenueAutomated.toFixed(2);
+            automationProfitLossEl.textContent = potentialProfitLoss.toFixed(2);
+
+            // Style profit/loss for automation details
+             if (potentialProfitLoss > 0) {
+                automationProfitLossEl.style.color = 'green';
+            } else if (potentialProfitLoss < 0) {
+                automationProfitLossEl.style.color = 'red';
+            } else {
+                automationProfitLossEl.style.color = '#333';
+            }
+
+            automationDetailsEl.style.display = 'block';
+        }
+
+        // Function to display final outcome
+        function displayOutcome(message, finalStatus, isSuccess = false) {
+            outcomeEl.innerHTML = message + `<span id="final-status-indicator">${finalStatus}</span>`;
+            outcomeEl.style.display = 'block';
+             if (isSuccess) {
+                 outcomeEl.classList.add('success');
+             } else {
+                 outcomeEl.classList.remove('success');
+             }
+        }
+
+        // Function to display key takeaway
+        function displayKeyTakeaway(message) {
+            keyTakeawayEl.textContent = message;
+            keyTakeawayEl.style.display = 'block';
+        }
+
+        // Event Listeners
+        btnWage15.addEventListener('click', () => {
+            hourlyWage = 15;
+            updateStatus();
+            displayMessage('Profitability has decreased significantly due to higher labor costs.');
+            btnWage15.style.display = 'none';
+            btnWage20.style.display = 'inline-block';
+        });
+
+        btnWage20.addEventListener('click', () => {
+            hourlyWage = 20;
+            updateStatus();
+            displayMessage('The business is now operating at a loss. Difficult decisions may be needed.');
+            btnWage20.style.display = 'none';
+            btnExploreAutomation.style.display = 'inline-block';
+        });
+
+        btnExploreAutomation.addEventListener('click', () => {
+            controlsEl.style.display = 'none'; // Hide exploration button
+            displayAutomationDetails();
+            decisionPointEl.style.display = 'block';
+        });
+
+        btnContinueManual.addEventListener('click', () => {
+            // Business is losing money at this point, continuing manually leads to closure
+            decisionPointEl.style.display = 'none';
+            displayOutcome('Operating manually at a loss is unsustainable.', 'Business Closed');
+            displayKeyTakeaway('Raising labor costs can make manual labor too expensive for some businesses, incentivizing automation or leading to closures. While aiming to improve wages, such policies can unintentionally reduce the total number of jobs available, particularly for low-skilled workers.');
+             // Optionally update status to reflect closure, though the outcome message is primary
+             businessModelEl.textContent = 'Closed';
+             numEmployeesEl.textContent = 0;
+             hourlyWageEl.textContent = '-';
+             totalLaborCostEl.textContent = '-';
+             totalHourlyCostsEl.textContent = '-';
+             hourlyRevenueEl.textContent = '-';
+             hourlyProfitLossEl.textContent = '-';
+             hourlyProfitLossEl.style.color = '';
+        });
+
+        btnSwitchAutomated.addEventListener('click', () => {
+            // Switch to automated model
+            businessModel = 'Automated Car Wash';
+            numEmployees = numEmployeesAutomated; // Update employee count for the new model
+            // hourlyWage remains at $20
+            decisionPointEl.style.display = 'none';
+            updateStatus(); // Update status with automated model numbers
+            displayOutcome(`Sparkle Clean invests in automation. The business is now profitable ($${hourlyProfitLossEl.textContent}/hour). However, only ${numEmployees} employees are needed. ${10 - numEmployees} jobs were lost.`, 'Automated Operations', true);
+            displayKeyTakeaway('Raising labor costs can make manual labor too expensive for some businesses, incentivizing automation or leading to closures. While aiming to improve wages, such policies can unintentionally reduce the total number of jobs available, particularly for low-skilled workers.');
+            automationDetailsEl.style.display = 'none'; // Hide automation details once decision is made
+
+        });
+
+        btnCloseBusiness.addEventListener('click', () => {
+            // Close the business
+            decisionPointEl.style.display = 'none';
+            displayOutcome('The owner decides to close Sparkle Clean.', 'Business Closed');
+            displayKeyTakeaway('Raising labor costs can make manual labor too expensive for some businesses, incentivizing automation or leading to closures. While aiming to improve wages, such policies can unintentionally reduce the total number of jobs available, particularly for low-skilled workers.');
+             // Optionally update status to reflect closure
+             businessModelEl.textContent = 'Closed';
+             numEmployeesEl.textContent = 0;
+             hourlyWageEl.textContent = '-';
+             totalLaborCostEl.textContent = '-';
+             totalHourlyCostsEl.textContent = '-';
+             hourlyRevenueEl.textContent = '-';
+             hourlyProfitLossEl.textContent = '-';
+             hourlyProfitLossEl.style.color = '';
+        });
+
+
+        // Initial display
+        updateStatus();
+
+    </script>
+
+</body>
+</html>

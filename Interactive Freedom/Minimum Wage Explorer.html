@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimum Wage Explorer</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #0056b3;
+        }
+
+        .control-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .control-section label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .control-section input[type="range"] {
+            width: 80%;
+            max-width: 400px;
+            margin-bottom: 10px;
+        }
+
+        #min-wage-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .explanation {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #d1ecf1;
+            border-radius: 5px;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        .worker-profiles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .worker-profile {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            flex: 1 1 280px; /* Flex-grow, flex-shrink, basis */
+            max-width: 350px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .worker-profile h3 {
+            margin-top: 0;
+            color: #007bff;
+            border-bottom: 1px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .worker-profile p {
+            margin-bottom: 10px;
+        }
+
+        .worker-profile p strong {
+            display: inline-block;
+            min-width: 150px; /* Align labels */
+        }
+
+        .actual-wage.forced {
+            color: #dc3545; /* Red color */
+            font-weight: bold;
+        }
+
+        .cost-effectiveness {
+            font-weight: bold;
+            color: #28a745; /* Green color */
+        }
+
+        .reflection {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #fff3cd;
+            border-radius: 5px;
+            border: 1px solid #ffeeba;
+            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            .worker-profile {
+                flex-basis: 100%; /* Stack on small screens */
+                max-width: none;
+            }
+
+            .control-section input[type="range"] {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Minimum Wage Explorer</h1>
+
+        <div class="explanation">
+            <p>Businesses make hiring decisions based on the cost of labor and the value (productivity) that workers provide. When a minimum wage is set by law, it creates a floor below which hourly wages cannot fall.</p>
+            <p>The **Actual Hourly Wage** for a worker is the higher of their Hypothetical Market Wage and the Minimum Wage.</p>
+            <p>**Cost-Effectiveness** is a simplified measure showing the value a worker brings to the business per dollar spent on their wage (Productivity Value / Actual Hourly Wage). A higher number indicates greater cost-effectiveness.</p>
+        </div>
+
+        <div class="control-section">
+            <label for="minWageSlider">Set Minimum Hourly Wage:</label>
+            <input type="range" id="minWageSlider" min="5.00" max="25.00" value="7.25" step="0.01">
+            <div>Current Minimum Wage: $<span id="min-wage-display">7.25</span></div>
+        </div>
+
+        <div class="worker-profiles" id="workerProfilesContainer">
+            <!-- Worker profiles will be populated here by JavaScript -->
+        </div>
+
+        <div class="reflection">
+            <p>Observe how changing the Minimum Wage affects the Actual Wage and Cost-Effectiveness of workers at different experience levels. Consider how this might influence a business's decisions about whom to hire, especially for entry-level positions.</p>
+        </div>
+    </div>
+
+    <script>
+        const workers = [
+            {
+                name: "Entry-Level Worker",
+                marketWage: 8.00,
+                productivity: 10.00
+            },
+            {
+                name: "Mid-Level Worker",
+                marketWage: 12.00,
+                productivity: 15.00
+            },
+            {
+                name: "Experienced Worker",
+                marketWage: 18.00,
+                productivity: 22.50
+            }
+        ];
+
+        const minWageSlider = document.getElementById('minWageSlider');
+        const minWageDisplay = document.getElementById('min-wage-display');
+        const workerProfilesContainer = document.getElementById('workerProfilesContainer');
+
+        // Function to create the initial worker profile HTML
+        function createWorkerProfileHTML(worker) {
+            return `
+                <div class="worker-profile" data-market-wage="${worker.marketWage}" data-productivity="${worker.productivity}">
+                    <h3>${worker.name}</h3>
+                    <p><strong>Hypothetical Market Wage:</strong> $${worker.marketWage.toFixed(2)}/hr</p>
+                    <p><strong>Hypothetical Productivity Value:</strong> $${worker.productivity.toFixed(2)}/hr</p>
+                    <p><strong>Actual Wage:</strong> $<span class="actual-wage"></span>/hr</p>
+                    <p><strong>Cost-Effectiveness:</strong> <span class="cost-effectiveness"></span></p>
+                </div>
+            `;
+        }
+
+        // Function to update the values for a single worker profile element
+        function updateWorkerProfile(profileElement, currentMinWage) {
+            const marketWage = parseFloat(profileElement.dataset.marketWage);
+            const productivity = parseFloat(profileElement.dataset.productivity);
+
+            const actualWage = Math.max(marketWage, currentMinWage);
+            const costEffectiveness = productivity / actualWage;
+
+            const actualWageSpan = profileElement.querySelector('.actual-wage');
+            const costEffectivenessSpan = profileElement.querySelector('.cost-effectiveness');
+
+            actualWageSpan.textContent = actualWage.toFixed(2);
+            costEffectivenessSpan.textContent = costEffectiveness.toFixed(3); // Show a few more digits for effectiveness
+
+            // Apply/remove forced wage styling
+            if (currentMinWage > marketWage) {
+                actualWageSpan.classList.add('forced');
+            } else {
+                actualWageSpan.classList.remove('forced');
+            }
+        }
+
+        // Function to update all worker profiles
+        function updateAllWorkerProfiles() {
+            const currentMinWage = parseFloat(minWageSlider.value);
+            minWageDisplay.textContent = currentMinWage.toFixed(2);
+
+            const profileElements = workerProfilesContainer.querySelectorAll('.worker-profile');
+            profileElements.forEach(profileElement => {
+                updateWorkerProfile(profileElement, currentMinWage);
+            });
+        }
+
+        // --- Initialization ---
+        // Populate the worker profiles initially
+        workers.forEach(worker => {
+            workerProfilesContainer.innerHTML += createWorkerProfileHTML(worker);
+        });
+
+        // Perform initial calculation and display
+        updateAllWorkerProfiles();
+
+        // --- Event Listener ---
+        minWageSlider.addEventListener('input', updateAllWorkerProfiles);
+
+    </script>
+
+</body>
+</html>

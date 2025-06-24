@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culture, Institutions, and Prosperity</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        #app-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 100%;
+            display: grid;
+            grid-template-areas:
+                "title title"
+                "visual metrics"
+                "choices choices"
+                "feedback feedback"
+                "reset reset";
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        h1 {
+            grid-area: title;
+            text-align: center;
+            color: #333;
+            margin-top: 0;
+        }
+
+        #visual-area {
+            grid-area: visual;
+            height: 200px;
+            border-radius: 8px;
+            background-size: cover;
+            background-position: center;
+            transition: background-color 0.5s ease, background-image 0.5s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        #visual-area.stagnant {
+            background-color: #a0a0a0; /* Grey */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23a0a0a0"/><circle cx="50" cy="50" r="30" fill="%23808080"/><path d="M30 60 L70 60 L70 70 L30 70 Z" fill="%23606060"/></svg>'); /* Simple grey blob/building */
+        }
+
+        #visual-area.developing {
+            background-color: #88b04b; /* Olive Green */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%2388b04b"/><circle cx="50" cy="50" r="35" fill="%23a0c060"/><path d="M20 50 L80 50 L80 65 L20 65 Z M30 65 L30 80 L40 80 L40 65 Z M60 65 L60 80 L70 80 L70 65 Z" fill="%23608040"/></svg>'); /* A few simple green shapes */
+        }
+
+        #visual-area.thriving {
+            background-color: #4CAF50; /* Green */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%234CAF50"/><circle cx="50" cy="50" r="40" fill="%2366BB6A"/><path d="M10 40 L90 40 L90 60 L10 60 Z M20 60 L20 80 L30 80 L30 60 Z M40 60 L40 80 L50 80 L50 60 Z M60 60 L60 80 L70 80 L70 60 Z M80 60 L80 80 L90 80 L90 60 Z" fill="%23388E3C"/></svg>'); /* More vibrant green shapes */
+        }
+
+
+        #metrics-area {
+            grid-area: metrics;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .metric {
+            margin-bottom: 8px;
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .metric strong {
+            color: #333;
+        }
+
+        #choices-area {
+            grid-area: choices;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .choice-pair {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: #fff;
+        }
+
+        .choice-pair h3 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 1em;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .choice-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap; /* Wrap options on smaller screens */
+        }
+
+
+        .choice-button {
+            flex-grow: 1; /* Allow buttons to grow */
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            background-color: #e9e9e9;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            min-width: 120px; /* Ensure minimum width */
+        }
+
+        .choice-button:hover {
+            background-color: #dcdcdc;
+            border-color: #b0b0b0;
+        }
+
+        #feedback-area {
+            grid-area: feedback;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            min-height: 60px;
+            background-color: #fffacd; /* Light yellow */
+            color: #333;
+        }
+
+        #reset-button {
+            grid-area: reset;
+            padding: 12px 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.2s ease;
+            margin-top: 10px;
+        }
+
+        #reset-button:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 700px) {
+            #app-container {
+                grid-template-areas:
+                    "title"
+                    "visual"
+                    "metrics"
+                    "choices"
+                    "feedback"
+                    "reset";
+                grid-template-columns: 1fr;
+            }
+
+            .choice-options {
+                 flex-direction: column; /* Stack options vertically on small screens */
+            }
+
+            .choice-button {
+                flex-grow: 0; /* Don't force growth when stacked */
+                width: 100%; /* Make buttons full width */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <h1>Culture, Institutions, and Prosperity</h1>
+
+        <div id="visual-area" class="developing">
+            <span id="state-text">State: Developing</span>
+        </div>
+
+        <div id="metrics-area">
+            <h2>Outcome Metrics</h2>
+            <div id="metric-prosperity" class="metric"><strong>Prosperity:</strong> 50%</div>
+            <div id="metric-innovation" class="metric"><strong>Innovation:</strong> 50%</div>
+            <div id="metric-socialCapital" class="metric"><strong>Social Capital:</strong> 50%</div>
+            <div id="metric-inequality" class="metric"><strong>Inequality:</strong> 50%</div>
+        </div>
+
+        <div id="choices-area">
+            <h2>Influence the Path</h2>
+
+            <div class="choice-pair">
+                <h3>Work Ethic</h3>
+                <div class="choice-options">
+                    <div class="choice-button" data-choice-type="workEthic" data-option="productive">Value hard work and craftsmanship</div>
+                    <div class="choice-button" data-choice-type="workEthic" data-option="extractive">View manual labor as menial</div>
+                </div>
+            </div>
+
+            <div class="choice-pair">
+                 <h3>Governance & Opportunity</h3>
+                 <div class="choice-options">
+                    <div class="choice-button" data-choice-type="governance" data-option="inclusive">Foster local associations & decentralized initiative</div>
+                    <div class="choice-button" data-choice-type="governance" data-option="extractive">Maintain centralized control & patronage</div>
+                 </div>
+            </div>
+
+            <div class="choice-pair">
+                <h3>Access to Capital & Trust</h3>
+                <div class="choice-options">
+                   <div class="choice-button" data-choice-type="capital" data-option="inclusive">Establish community credit & mutual support</div>
+                   <div class="choice-button" data-choice-type="capital" data-option="extractive">Success depends on connections & favors</div>
+                </div>
+           </div>
+
+        </div>
+
+        <div id="feedback-area">
+            Choose an option above to see how it influences the society's path.
+        </div>
+
+        <button id="reset-button">Reset Simulation</button>
+
+    </div>
+
+    <script>
+        const initialMetrics = {
+            prosperity: 50,
+            innovation: 50,
+            socialCapital: 50,
+            inequality: 50 // Lower is better for inequality in this context
+        };
+
+        let currentMetrics = { ...initialMetrics };
+
+        const metricsDisplay = {
+            prosperity: document.getElementById('metric-prosperity'),
+            innovation: document.getElementById('metric-innovation'),
+            socialCapital: document.getElementById('metric-socialCapital'),
+            inequality: document.getElementById('metric-inequality')
+        };
+
+        const visualArea = document.getElementById('visual-area');
+        const stateText = document.getElementById('state-text');
+        const feedbackArea = document.getElementById('feedback-area');
+        const resetButton = document.getElementById('reset-button');
+        const choiceButtons = document.querySelectorAll('.choice-button');
+
+        // Define effects and feedback for each choice
+        const choicesData = {
+            workEthic: {
+                productive: {
+                    effect: { prosperity: 10, innovation: 8, socialCapital: 5, inequality: -7 },
+                    feedback: 'Valuing hard work fosters broad skills and increases productivity, benefiting many.'
+                },
+                extractive: {
+                    effect: { prosperity: -10, innovation: -5, socialCapital: -5, inequality: 7 },
+                    feedback: 'Viewing manual labor as menial limits skill development and concentrates opportunity, increasing inequality.'
+                }
+            },
+            governance: {
+                inclusive: {
+                    effect: { prosperity: 8, innovation: 10, socialCapital: 7, inequality: -8 },
+                    feedback: 'Decentralized initiative empowers people, encourages innovation, and builds social trust.'
+                },
+                extractive: {
+                    effect: { prosperity: -8, innovation: -7, socialCapital: -7, inequality: 8 },
+                    feedback: 'Centralized control and patronage stifle innovation and lead to concentrated power and inequality.'
+                }
+            },
+            capital: {
+                inclusive: {
+                    effect: { prosperity: 7, innovation: 7, socialCapital: 10, inequality: -9 },
+                    feedback: 'Community credit and mutual support build trust and provide broad access to resources, boosting social capital and reducing inequality.'
+                },
+                extractive: {
+                    effect: { prosperity: -7, innovation: -5, socialCapital: -8, inequality: 9 },
+                    feedback: 'Success based on connections limits access to resources and favors a few, eroding trust and increasing inequality.'
+                }
+            }
+        };
+
+        // Function to update the UI based on current metrics
+        function updateUI() {
+            // Update metric text
+            for (const metric in currentMetrics) {
+                const value = currentMetrics[metric];
+                let displayValue = Math.round(value);
+                 // For inequality, maybe invert the display slightly? Or just show the number.
+                 // Let's just show the number 0-100 for simplicity.
+                 metricsDisplay[metric].innerHTML = `<strong>${metric.charAt(0).toUpperCase() + metric.slice(1).replace(/([A-Z])/g, ' $1')}:</strong> ${displayValue}%`;
+            }
+
+            // Update visual representation based on Prosperity
+            visualArea.classList.remove('stagnant', 'developing', 'thriving');
+            let state = 'Developing';
+            if (currentMetrics.prosperity < 35) {
+                visualArea.classList.add('stagnant');
+                state = 'Stagnant';
+            } else if (currentMetrics.prosperity > 65) {
+                visualArea.classList.add('thriving');
+                state = 'Thriving';
+            } else {
+                visualArea.classList.add('developing');
+                state = 'Developing';
+            }
+            stateText.textContent = `State: ${state}`;
+
+            // Optional: Update feedback with a general state summary if no specific choice feedback is present
+            if (feedbackArea.textContent === 'Choose an option above to see how it influences the society\'s path.' || feedbackArea.dataset.lastChoice === 'true') {
+                 feedbackArea.innerHTML = `Current State Summary: The society is in a <strong>${state}</strong> state.`;
+                 feedbackArea.dataset.lastChoice = 'false'; // Clear flag
+            }
+        }
+
+        // Function to handle a choice click
+        function handleChoice(choiceType, option) {
+            const choiceInfo = choicesData[choiceType][option];
+            const effect = choiceInfo.effect;
+            const feedback = choiceInfo.feedback;
+
+            // Apply effects, clamping values between 0 and 100
+            for (const metric in effect) {
+                currentMetrics[metric] += effect[metric];
+                currentMetrics[metric] = Math.max(0, Math.min(100, currentMetrics[metric]));
+            }
+
+            // Update feedback area
+            feedbackArea.textContent = feedback;
+            feedbackArea.dataset.lastChoice = 'true'; // Set flag to indicate last action was a choice
+
+            // Update the UI
+            updateUI();
+        }
+
+        // Function to reset the simulation
+        function resetSimulation() {
+            currentMetrics = { ...initialMetrics };
+            feedbackArea.textContent = 'Simulation reset. Choose an option above to start influencing the society\'s path.';
+            feedbackArea.dataset.lastChoice = 'false';
+            updateUI();
+        }
+
+        // Add event listeners
+        choiceButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const choiceType = button.dataset.choiceType;
+                const option = button.dataset.option;
+                handleChoice(choiceType, option);
+            });
+        });
+
+        resetButton.addEventListener('click', resetSimulation);
+
+        // Initialize the UI on page load
+        document.addEventListener('DOMContentLoaded', updateUI);
+
+    </script>
+
+</body>
+</html>
