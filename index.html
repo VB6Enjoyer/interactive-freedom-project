@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Interactive Freedom Project</title>
+    <title>🗽 The Interactive Freedom Project 🗽</title>
     <style>
         * {
             margin: 0;
@@ -38,6 +39,18 @@
             font-weight: 300;
             text-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
             letter-spacing: -1px;
+        }
+
+        .anarcho-text {
+            background: linear-gradient(135deg, black 50%, gold 50%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            /* Optional aesthetic enhancements */
+            font-size: 1.28em;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
         }
 
         .header .tagline {
@@ -178,7 +191,7 @@
             text-align: center;
             color: rgba(255, 255, 255, 0.8);
             margin-top: 60px;
-            padding: 30px 0;
+            padding-top: 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
 
@@ -193,21 +206,30 @@
             margin: 0 auto;
         }
 
+        .footer .contact {
+            padding-top: 30px;
+            margin-bottom: 0;
+        }
+
+        .email {
+            color: #ffc83d;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2.5em;
             }
-            
+
             .header .tagline {
                 font-size: 1.1em;
             }
-            
+
             .simulators-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
-            
+
             .simulator-card {
                 padding: 25px;
             }
@@ -217,11 +239,11 @@
             .container {
                 padding: 15px;
             }
-            
+
             .header {
                 padding: 30px 0;
             }
-            
+
             .header h1 {
                 font-size: 2em;
             }
@@ -247,20 +269,22 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <header class="header">
-            <h1>The Interactive Freedom Project</h1>
-            <div class="tagline">Exploring Economics Through Interactive Simulations</div>
+            <h1><span class="anarcho-text">The Interactive Freedom Project</span> 🗽</h1>
+            <div class="tagline">Exploring Economics, Ethics and Law Through Interactive Simulations</div>
             <p class="description">
-                A collection of interactive educational tools designed to illustrate Austrian economics principles, 
+                A collection of interactive educational tools designed to illustrate Austrian economics principles,
                 free market dynamics, and libertarian philosophy through engaging visualizations and simulations.
             </p>
-            
+
             <div class="prototype-notice">
                 <span class="icon">🚧</span>
                 <h3>Prototype Version</h3>
-                <p>This project is currently in development. Features and content may change as we continue to refine and expand the educational experience.</p>
+                <p>This project is currently an early prototype and in active development. Bugs and imperfections are
+                    expected.</p>
             </div>
         </header>
 
@@ -271,7 +295,7 @@
                     <h2 class="card-title">Authority & Support</h2>
                     <p class="card-subtitle">A Visual Metaphor on Authority</p>
                     <p class="card-description">
-                        Explore how authority structures depend on popular support and how that support can shift, 
+                        Explore how authority structures depend on popular support and how that support can shift,
                         illustrated through an interactive metaphor of power dynamics.
                     </p>
                     <a href="pages/authority.html" class="card-link">Explore Authority Dynamics</a>
@@ -282,7 +306,7 @@
                     <h2 class="card-title">Culture, Institutions & Prosperity</h2>
                     <p class="card-subtitle">A Civilization Simulator</p>
                     <p class="card-description">
-                        Discover how cultural values and institutional frameworks shape economic prosperity 
+                        Discover how cultural values and institutional frameworks shape economic prosperity
                         through an interactive civilization development simulation.
                     </p>
                     <a href="pages/civilization-simulator.html" class="card-link">Build Civilizations</a>
@@ -293,7 +317,7 @@
                     <h2 class="card-title">Housing Crisis Simulator</h2>
                     <p class="card-subtitle">Zoning, Market Forces and Urban Planning</p>
                     <p class="card-description">
-                        Examine how zoning laws, market forces, and urban planning decisions impact 
+                        Examine how zoning laws, market forces, and urban planning decisions impact
                         housing affordability and availability in modern cities.
                     </p>
                     <a href="pages/housing.html" class="card-link">Analyze Housing Markets</a>
@@ -304,8 +328,9 @@
                     <h2 class="card-title">Against Intellectual Property</h2>
                     <p class="card-subtitle">A Stephan Kinsella Analysis</p>
                     <p class="card-description">
-                        Investigate how patent monopolies distort markets and stifle innovation through 
-                        the lens of Stephan Kinsella's Austrian libertarian analysis.
+                        Investigate how patent monopolies distort markets and stifle innovation through
+                        the lens of Stephan Kinsella's austrolibertarian analysis, inspired on his book, <em>Against
+                            Intellectual Property</em>.
                     </p>
                     <a href="pages/intellectual-property.html" class="card-link">Question IP Rights</a>
                 </article>
@@ -315,7 +340,7 @@
                     <h2 class="card-title">Austrian Interest Rate Theory</h2>
                     <p class="card-subtitle">Time Preference & Capital Structure</p>
                     <p class="card-description">
-                        Understand how individual time preferences shape interest rates, capital allocation, 
+                        Understand how individual time preferences shape interest rates, capital allocation,
                         and the structure of production in a free market economy.
                     </p>
                     <a href="pages/interest-rate.html" class="card-link">Explore Interest Theory</a>
@@ -324,9 +349,9 @@
                 <article class="simulator-card">
                     <span class="card-icon">💰</span>
                     <h2 class="card-title">Minimum Wage Economics</h2>
-                    <p class="card-subtitle">Comprehensive Economic Explorer</p>
+                    <p class="card-subtitle">A Comprehensive Economic Explorer</p>
                     <p class="card-description">
-                        Analyze the complex effects of minimum wage policies on employment, business operations, 
+                        Analyze the complex effects of minimum wage policies on employment, business operations,
                         and worker welfare through multiple interactive scenarios.
                     </p>
                     <a href="pages/minimum-wage.html" class="card-link">Study Wage Effects</a>
@@ -337,7 +362,7 @@
                     <h2 class="card-title">The Regulatory Trap</h2>
                     <p class="card-subtitle">How Big Business Captures Government</p>
                     <p class="card-description">
-                        Discover how regulations, intended to protect consumers, often serve to entrench 
+                        Discover how regulations, intended to protect consumers, often serve to entrench
                         established players and create barriers for innovative competitors.
                     </p>
                     <a href="pages/regulatory-trap.html" class="card-link">Uncover Regulatory Capture</a>
@@ -348,7 +373,7 @@
                     <h2 class="card-title">Research Funding Models</h2>
                     <p class="card-subtitle">Government Research vs Private Research</p>
                     <p class="card-description">
-                        Compare how government and private research approaches lead to different innovation 
+                        Compare how government and private research approaches lead to different innovation
                         outcomes and resource allocation patterns.
                     </p>
                     <a href="pages/research.html" class="card-link">Compare Research Models</a>
@@ -359,21 +384,26 @@
         <footer class="footer">
             <p><strong>The Interactive Freedom Project</strong></p>
             <p class="philosophy">
-                "The curious task of economics is to demonstrate to men how little they really know about what they imagine they can design." — F.A. Hayek
+                "The curious task of economics is to demonstrate to men how little they really know about what they
+                imagine they can design." — F.A. Hayek
+            </p>
+            <p class="contact">
+                Found a bug? Got any ideas? Want to insult me? <a class="email" href="mailto:71mwhifd8@mozmail.com">Send
+                    me an e-mail</a>!
             </p>
         </footer>
     </div>
 
     <script>
         // Add subtle animations and interactions
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Animate cards on scroll
             const observerOptions = {
                 threshold: 0.1,
                 rootMargin: '0px 0px -50px 0px'
             };
 
-            const observer = new IntersectionObserver(function(entries) {
+            const observer = new IntersectionObserver(function (entries) {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.style.opacity = '1';
@@ -394,7 +424,7 @@
             // Add keyboard navigation improvements
             cards.forEach(card => {
                 const link = card.querySelector('.card-link');
-                card.addEventListener('keydown', function(e) {
+                card.addEventListener('keydown', function (e) {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         link.click();
@@ -404,7 +434,7 @@
             });
 
             // Add subtle parallax effect to header
-            window.addEventListener('scroll', function() {
+            window.addEventListener('scroll', function () {
                 const scrolled = window.pageYOffset;
                 const header = document.querySelector('.header');
                 const rate = scrolled * -0.5;
@@ -413,4 +443,5 @@
         });
     </script>
 </body>
+
 </html>
