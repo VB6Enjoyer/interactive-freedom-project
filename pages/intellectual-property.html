@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Against Intellectual Property: A Kinsellian Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c1810 0%, #8b4513 50%, #daa520 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            font-weight: 300;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .header .subtitle {
+            font-size: 1.4em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.8;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .kinsella-quote {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #daa520;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 930px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            color: white;
+            font-style: italic;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .quote-attribution {
+            text-align: right;
+            margin-top: 10px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .simulation-area {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .controls-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            height: fit-content;
+        }
+
+        .section-title {
+            color: #8b4513;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #daa520;
+            padding-bottom: 10px;
+        }
+
+        .markets-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .market {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .market::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #daa520, #8b4513);
+        }
+
+        .market.free-market::before {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+        }
+
+        .market.patent-market::before {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+
+        .market-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .ideas-ecosystem {
+            height: 300px;
+            border: 2px dashed #bdc3c7;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8), rgba(240, 240, 240, 0.9));
+        }
+
+        .idea-node {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .idea-node:hover {
+            transform: scale(1.3);
+            z-index: 10;
+        }
+
+        .idea-free {
+            background: radial-gradient(circle, #2ecc71, #27ae60);
+            animation: pulse-free 2s ease-in-out infinite;
+        }
+
+        .idea-patented {
+            background: radial-gradient(circle, #e74c3c, #c0392b);
+            border: 2px solid #8b0000;
+            animation: pulse-patent 3s ease-in-out infinite;
+        }
+
+        .idea-blocked {
+            background: radial-gradient(circle, #95a5a6, #7f8c8d);
+            opacity: 0.6;
+            animation: none;
+        }
+
+        @keyframes pulse-free {
+
+            0%,
+            100% {
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(46, 204, 113, 0.7);
+            }
+
+            50% {
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 8px rgba(46, 204, 113, 0);
+            }
+        }
+
+        @keyframes pulse-patent {
+
+            0%,
+            100% {
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(231, 76, 60, 0.7);
+            }
+
+            50% {
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 10px rgba(231, 76, 60, 0);
+            }
+        }
+
+        .connection-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #3498db, transparent);
+            transform-origin: left center;
+            opacity: 0.6;
+            animation: flow 1s ease-in-out;
+        }
+
+        @keyframes flow {
+            0% {
+                width: 0;
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+
+            100% {
+                width: 100%;
+                opacity: 0;
+            }
+        }
+
+        .market-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-value {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .innovation-metrics {
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
+            border-radius: 15px;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .metric-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .metric-comparison {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .metric-bar {
+            width: 40px;
+            height: 8px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .free-bar {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+        }
+
+        .patent-bar {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+
+        .slider-container {
+            margin-bottom: 20px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .slider-value {
+            background: linear-gradient(135deg, #8b4513, #daa520);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.9em;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, #2ecc71, #f39c12, #e74c3c);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #8b4513;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            border-color: #daa520;
+        }
+
+        .control-button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #8b4513, #daa520);
+            color: white;
+            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+        }
+
+        .control-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        .control-button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .control-button.danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        }
+
+        .control-button.danger:hover:not(:disabled) {
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .economic-analysis {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            margin-top: 20px;
+        }
+
+        .analysis-section {
+            margin-bottom: 25px;
+        }
+
+        .analysis-section h3 {
+            color: #8b4513;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            border-left: 4px solid #daa520;
+            padding-left: 15px;
+        }
+
+        .analysis-section p {
+            color: #34495e;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(218, 165, 32, 0.1), rgba(139, 69, 19, 0.05));
+            border: 1px solid rgba(218, 165, 32, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .highlight-box h4 {
+            color: #8b4513;
+            margin-bottom: 10px;
+        }
+
+        .property-rights-demo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .property-example {
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .physical-property {
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(39, 174, 96, 0.05));
+            border: 2px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .intellectual-property {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.05));
+            border: 2px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .innovation-timeline {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(52, 152, 219, 0.05);
+            border-radius: 15px;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.2em;
+        }
+
+        .timeline-free {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+        }
+
+        .timeline-patent {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .markets-container {
+                grid-template-columns: 1fr;
+            }
+
+            .market-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .property-rights-demo {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="header">
+            <h1>Against Intellectual Property</h1>
+            <div class="subtitle">A Stephan Kinsella Analysis</div>
+            <p>Exploring how patent monopolies distort markets, stifle innovation, and violate genuine property rights
+                through interactive economic modeling.</p>
+        </div>
+
+        <div class="kinsella-quote">
+            "Ideas are not naturally scarce. However, by recognizing a right in an ideal object, one creates scarcity
+            where none
+            existed before... property rights in patents and copyrights make possible the creation of a scarcity of the
+            products
+            appropriated which could not otherwise be maintained."
+            <div class="quote-attribution">— Stephan Kinsella, "Against Intellectual Property", citing Arnold Plant,
+                "The
+                Economic Theory Concerning Patents for Inventions"</div>
+        </div>
+
+        <div class="main-content">
+            <div class="simulation-area">
+                <h3 class="section-title">Innovation Ecosystem Simulation</h3>
+
+                <div class="markets-container">
+                    <div class="market free-market">
+                        <div class="market-title">🆓 Free Market Innovation</div>
+                        <div class="ideas-ecosystem" id="freeMarketEcosystem">
+                            <!-- Ideas will spawn here -->
+                        </div>
+                        <div class="market-stats">
+                            <div class="stat-card">
+                                <div class="stat-value" id="freeIdeasCount">0</div>
+                                <div class="stat-label">Ideas</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="freeInnovationRate">0</div>
+                                <div class="stat-label">Rate/sec</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="freeCollaborations">0</div>
+                                <div class="stat-label">Builds</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="market patent-market">
+                        <div class="market-title">🔒 Patent-Restricted Market</div>
+                        <div class="ideas-ecosystem" id="patentMarketEcosystem">
+                            <!-- Ideas will spawn here -->
+                        </div>
+                        <div class="market-stats">
+                            <div class="stat-card">
+                                <div class="stat-value" id="patentIdeasCount">0</div>
+                                <div class="stat-label">Ideas</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="patentInnovationRate">0</div>
+                                <div class="stat-label">Rate/sec</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="patentBlocked">0</div>
+                                <div class="stat-label">Blocked</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="innovation-metrics">
+                    <h4 style="margin-bottom: 15px; color: #2c3e50; text-align: center;">Comparative Innovation Metrics
+                    </h4>
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <span class="metric-name">Innovation Speed</span>
+                            <div class="metric-comparison">
+                                <div class="metric-bar free-bar" id="speedFreeBar"></div>
+                                <div class="metric-bar patent-bar" id="speedPatentBar"></div>
+                            </div>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-name">Knowledge Sharing</span>
+                            <div class="metric-comparison">
+                                <div class="metric-bar free-bar" id="sharingFreeBar"></div>
+                                <div class="metric-bar patent-bar" id="sharingPatentBar"></div>
+                            </div>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-name">Market Entry</span>
+                            <div class="metric-comparison">
+                                <div class="metric-bar free-bar" id="entryFreeBar"></div>
+                                <div class="metric-bar patent-bar" id="entryPatentBar"></div>
+                            </div>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-name">Resource Efficiency</span>
+                            <div class="metric-comparison">
+                                <div class="metric-bar free-bar" id="efficiencyFreeBar"></div>
+                                <div class="metric-bar patent-bar" id="efficiencyPatentBar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <h3 class="section-title">Simulation Controls</h3>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Patent Strength</span>
+                        <span class="slider-value" id="patentStrengthValue">Medium</span>
+                    </div>
+                    <input type="range" class="slider" id="patentStrengthSlider" min="0" max="100" value="50">
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Innovation Complexity</span>
+                        <span class="slider-value" id="complexityValue">Medium</span>
+                    </div>
+                    <input type="range" class="slider" id="complexitySlider" min="1" max="10" value="5">
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Market Competition</span>
+                        <span class="slider-value" id="competitionValue">High</span>
+                    </div>
+                    <input type="range" class="slider" id="competitionSlider" min="1" max="10" value="8">
+                </div>
+
+                <button class="control-button" id="startSimulation">Start Innovation Simulation</button>
+                <button class="control-button" id="pauseSimulation" disabled>Pause Simulation</button>
+                <button class="control-button danger" id="resetSimulation">Reset Markets</button>
+
+                <div class="innovation-timeline" id="innovationTimeline">
+                    <h4 style="margin-bottom: 15px; color: #2c3e50;">Recent Innovations</h4>
+                    <!-- Timeline items will be added here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="economic-analysis">
+            <h3 class="section-title">Kinsellian Property Rights Analysis</h3>
+
+            <div class="analysis-section">
+                <h3>🏠 True vs. False Property Rights</h3>
+                <p>
+                    Stephan Kinsella's fundamental insight is that genuine property rights apply only to scarce,
+                    rivalrous resources. When I use my land, you cannot simultaneously use that same land. When I
+                    consume an apple, that apple is no longer available for your consumption. This scarcity necessitates
+                    property rights to avoid conflict.
+                </p>
+
+                <div class="property-rights-demo">
+                    <div class="property-example physical-property">
+                        <h4>🏭 Physical Property</h4>
+                        <p><strong>Scarce & Rivalrous</strong></p>
+                        <p>My factory, your factory<br />Cannot occupy the same space</p>
+                        <p>✅ Legitimate property right</p>
+                    </div>
+                    <div class="property-example intellectual-property">
+                        <h4>💡 "Intellectual Property"</h4>
+                        <p><strong>Non-scarce & Non-rivalrous</strong></p>
+                        <p>My idea, your idea<br />Both can be used simultaneously</p>
+                        <p>❌ Artificial monopoly privilege</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>⚖️ The Patent Paradox</h3>
+                <p>
+                    Patents don't protect property—they violate it. As Kinsella explains, a patent gives its holder the
+                    right to prevent others from using their own legitimately-owned physical property (factories,
+                    computers, books, raw materials) in certain ways. This is not property protection but property
+                    restriction.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>Kinsella's Core Argument:</h4>
+                    <p>"Let us recall that IP rights give to pattern-creators partial rights of control—ownership—over
+                        the tangible property of
+                        everyone else. The pattern-creator has partial ownership of others' property, by virtue of his
+                        IP right, because he can
+                        prohibit them from performing certain actions with their own property."</p>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>📈 Innovation Without Monopoly</h3>
+                <p>
+                    Free markets provide natural incentives for innovation without artificial monopolies: first-mover
+                    advantage, trade secrets, superior execution, brand reputation, and continuous improvement. Patents
+                    actually hinder innovation by creating legal minefields, licensing costs, and barriers to building
+                    upon existing knowledge.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>Market-Based Innovation Incentives:</h4>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>First-mover advantage in new markets</li>
+                        <li>Trade secrets and know-how</li>
+                        <li>Superior execution and customer service</li>
+                        <li>Brand reputation and trust</li>
+                        <li>Continuous innovation and improvement</li>
+                        <li>Network effects and ecosystem lock-in</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🚫 The Deadweight Loss of IP</h3>
+                <p>
+                    Patents create artificial scarcity where none exists naturally. They divert resources from
+                    productive innovation to rent-seeking activities: patent trolling, defensive patent portfolios,
+                    licensing negotiations, and litigation. This represents pure deadweight loss to society.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class KinsellaIPSimulator {
+            constructor() {
+                this.isRunning = false;
+                this.patentStrength = 50;
+                this.innovationComplexity = 5;
+                this.marketCompetition = 8;
+                this.simulationStartTime = null;
+
+                this.freeMarket = {
+                    ideas: [],
+                    innovationRate: 0,
+                    collaborations: 0,
+                    totalInnovations: 0
+                };
+
+                this.patentMarket = {
+                    ideas: [],
+                    innovationRate: 0,
+                    blockedInnovations: 0,
+                    totalInnovations: 0
+                };
+
+                this.innovationCounter = 0;
+                this.timelineEvents = [];
+
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.updateUI();
+                this.startMetricsTracking();
+            }
+
+            bindEvents() {
+                // Sliders
+                document.getElementById('patentStrengthSlider').addEventListener('input', (e) => {
+                    this.patentStrength = parseInt(e.target.value);
+                    this.updateSliderDisplays();
+                });
+
+                document.getElementById('complexitySlider').addEventListener('input', (e) => {
+                    this.innovationComplexity = parseInt(e.target.value);
+                    this.updateSliderDisplays();
+                });
+
+                document.getElementById('competitionSlider').addEventListener('input', (e) => {
+                    this.marketCompetition = parseInt(e.target.value);
+                    this.updateSliderDisplays();
+                });
+
+                // Control buttons
+                document.getElementById('startSimulation').addEventListener('click', () => this.startSimulation());
+                document.getElementById('pauseSimulation').addEventListener('click', () => this.pauseSimulation());
+                document.getElementById('resetSimulation').addEventListener('click', () => this.resetSimulation());
+
+                this.updateSliderDisplays();
+            }
+
+            updateSliderDisplays() {
+                // Patent strength
+                let strengthLabel = 'Medium';
+                if (this.patentStrength < 30) strengthLabel = 'Weak';
+                else if (this.patentStrength > 70) strengthLabel = 'Strong';
+                document.getElementById('patentStrengthValue').textContent = strengthLabel;
+
+                // Complexity
+                let complexityLabel = 'Medium';
+                if (this.innovationComplexity < 4) complexityLabel = 'Simple';
+                else if (this.innovationComplexity > 7) complexityLabel = 'Complex';
+                document.getElementById('complexityValue').textContent = complexityLabel;
+
+                // Competition
+                let competitionLabel = 'Medium';
+                if (this.marketCompetition < 4) competitionLabel = 'Low';
+                else if (this.marketCompetition > 7) competitionLabel = 'High';
+                document.getElementById('competitionValue').textContent = competitionLabel;
+            }
+
+            startSimulation() {
+                if (this.isRunning) return;
+
+                this.isRunning = true;
+                this.simulationStartTime = Date.now();
+
+                document.getElementById('startSimulation').disabled = true;
+                document.getElementById('pauseSimulation').disabled = false;
+
+                // Start with initial ideas
+                this.seedInitialIdeas();
+
+                // Start simulation loops
+                this.simulationInterval = setInterval(() => this.runSimulationStep(), 500);
+                this.visualUpdateInterval = setInterval(() => this.updateVisualizations(), 100);
+            }
+
+            pauseSimulation() {
+                this.isRunning = false;
+                document.getElementById('startSimulation').disabled = false;
+                document.getElementById('pauseSimulation').disabled = true;
+
+                clearInterval(this.simulationInterval);
+                clearInterval(this.visualUpdateInterval);
+            }
+
+            resetSimulation() {
+                this.pauseSimulation();
+
+                // Clear markets
+                this.freeMarket = { ideas: [], innovationRate: 0, collaborations: 0, totalInnovations: 0 };
+                this.patentMarket = { ideas: [], innovationRate: 0, blockedInnovations: 0, totalInnovations: 0 };
+
+                // Clear visualizations
+                document.getElementById('freeMarketEcosystem').innerHTML = '';
+                document.getElementById('patentMarketEcosystem').innerHTML = '';
+                document.getElementById('innovationTimeline').innerHTML = '<h4 style="margin-bottom: 15px; color: #2c3e50;">Recent Innovations</h4>';
+
+                this.innovationCounter = 0;
+                this.timelineEvents = [];
+                this.updateUI();
+            }
+
+            seedInitialIdeas() {
+                // Add initial ideas to both markets
+                for (let i = 0; i < 3; i++) {
+                    this.createIdea('free');
+                    this.createIdea('patent', Math.random() > 0.5); // 50% chance of being patented
+                }
+            }
+
+            runSimulationStep() {
+                if (!this.isRunning) return;
+
+                // Calculate innovation probabilities
+                const freeInnovationProb = this.calculateFreeInnovationProbability();
+                const patentInnovationProb = this.calculatePatentInnovationProbability();
+
+                // Generate innovations in free market
+                this.freeMarket.ideas.forEach(idea => {
+                    if (Math.random() < freeInnovationProb) {
+                        this.createIdea('free');
+                        this.freeMarket.collaborations++;
+                        this.addTimelineEvent('free', 'Collaborative innovation built on existing idea');
+                    }
+                });
+
+                // Generate innovations in patent market (with restrictions)
+                this.patentMarket.ideas.forEach(idea => {
+                    if (idea.isPatented && Math.random() < patentInnovationProb * 0.25) {
+                        // Very low chance of innovation on patented ideas
+                        this.patentMarket.blockedInnovations++;
+                        this.addTimelineEvent('patent', 'Innovation blocked by patent restrictions');
+                    } else if (!idea.isPatented && Math.random() < patentInnovationProb) {
+                        this.createIdea('patent', Math.random() > 0.3); // 70% chance new idea gets patented
+                        this.addTimelineEvent('patent', 'New innovation (may be patented)');
+                    }
+                });
+
+                // Spontaneous innovations
+                if (Math.random() < 0.3) {
+                    this.createIdea('free');
+                    this.freeMarket.totalInnovations++;
+                }
+
+                if (Math.random() < 0.2) {
+                    this.createIdea('patent', Math.random() > 0.4);
+                    this.patentMarket.totalInnovations++;
+                }
+
+                this.updateUI();
+            }
+
+            calculateFreeInnovationProbability() {
+                // Higher competition and complexity increase innovation in free markets
+                const competitionFactor = this.marketCompetition / 10;
+                const complexityFactor = this.innovationComplexity / 10;
+                return 0.1 + (competitionFactor * 0.2) + (complexityFactor * 0.1);
+            }
+
+            calculatePatentInnovationProbability() {
+                // Patents reduce innovation probability, especially with high patent strength
+                const patentPenalty = (this.patentStrength / 100) * 0.7;
+                const baseProbability = this.calculateFreeInnovationProbability();
+                return Math.max(0.02, baseProbability - patentPenalty);
+            }
+
+            createIdea(marketType, isPatented = false) {
+                const idea = {
+                    id: `idea-${this.innovationCounter++}`,
+                    isPatented: isPatented,
+                    x: Math.random() * 260 + 20, // Keep within container bounds
+                    y: Math.random() * 260 + 20,
+                    createdAt: Date.now()
+                };
+
+                if (marketType === 'free') {
+                    this.freeMarket.ideas.push(idea);
+                    this.renderIdea(idea, 'freeMarketEcosystem');
+                } else {
+                    this.patentMarket.ideas.push(idea);
+                    this.renderIdea(idea, 'patentMarketEcosystem');
+                }
+
+                // Limit ideas to prevent performance issues
+                if (this.freeMarket.ideas.length > 50) {
+                    this.freeMarket.ideas = this.freeMarket.ideas.slice(-40);
+                }
+                if (this.patentMarket.ideas.length > 50) {
+                    this.patentMarket.ideas = this.patentMarket.ideas.slice(-40);
+                }
+            }
+
+            renderIdea(idea, containerId) {
+                const container = document.getElementById(containerId);
+                const ideaElement = document.createElement('div');
+                ideaElement.className = `idea-node ${idea.isPatented ? 'idea-patented' : 'idea-free'}`;
+                ideaElement.style.left = `${idea.x}px`;
+                ideaElement.style.top = `${idea.y}px`;
+                ideaElement.textContent = idea.isPatented ? '©' : '💡';
+                ideaElement.title = idea.isPatented ? 'Patented Innovation - Restricted Use' : 'Free Innovation - Open for Building';
+
+                container.appendChild(ideaElement);
+
+                // Remove old ideas to keep visualization clean
+                const existingIdeas = container.querySelectorAll('.idea-node');
+                if (existingIdeas.length > 40) {
+                    existingIdeas[0].remove();
+                }
+            }
+
+            addTimelineEvent(type, description) {
+                const event = {
+                    type: type,
+                    description: description,
+                    timestamp: new Date().toLocaleTimeString()
+                };
+
+                this.timelineEvents.unshift(event);
+                this.timelineEvents = this.timelineEvents.slice(0, 5); // Keep only recent events
+
+                this.updateTimeline();
+            }
+
+            updateTimeline() {
+                const timeline = document.getElementById('innovationTimeline');
+                const eventsHTML = this.timelineEvents.map(event => `
+                    <div class="timeline-item">
+                        <div class="timeline-icon timeline-${event.type}">
+                            ${event.type === 'free' ? '🆓' : '🔒'}
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; color: #2c3e50;">${event.description}</div>
+                            <div style="font-size: 0.8em; color: #7f8c8d;">${event.timestamp}</div>
+                        </div>
+                    </div>
+                `).join('');
+
+                timeline.innerHTML = `
+                    <h4 style="margin-bottom: 15px; color: #2c3e50;">Recent Innovations</h4>
+                    ${eventsHTML}
+                `;
+            }
+
+            updateUI() {
+                // Update counters
+                document.getElementById('freeIdeasCount').textContent = this.freeMarket.ideas.length;
+                document.getElementById('patentIdeasCount').textContent = this.patentMarket.ideas.length;
+                document.getElementById('freeCollaborations').textContent = this.freeMarket.collaborations;
+                document.getElementById('patentBlocked').textContent = this.patentMarket.blockedInnovations;
+            }
+
+            updateVisualizations() {
+                if (!this.isRunning) return;
+
+                const elapsedSeconds = (Date.now() - this.simulationStartTime) / 1000;
+
+                // Update innovation rates
+                const freeRate = elapsedSeconds > 0 ?
+                    (this.freeMarket.collaborations / elapsedSeconds) : 0;
+
+                const patentRate = elapsedSeconds > 0 ?
+                    (this.patentMarket.totalInnovations / elapsedSeconds) : 0;
+
+                document.getElementById('freeInnovationRate').textContent = freeRate.toFixed(2);
+                document.getElementById('patentInnovationRate').textContent = patentRate.toFixed(2);
+
+                // Update comparison bars
+                this.updateComparisonBars();
+            }
+
+            updateComparisonBars() {
+                const freeAdvantage = Math.max(1, this.freeMarket.ideas.length / Math.max(1, this.patentMarket.ideas.length));
+                const patentRatio = 1 / freeAdvantage;
+
+                // Update bar widths based on relative performance
+                document.getElementById('speedFreeBar').style.width = `${Math.min(40, freeAdvantage * 20)}px`;
+                document.getElementById('speedPatentBar').style.width = `${Math.min(40, patentRatio * 40)}px`;
+
+                document.getElementById('sharingFreeBar').style.width = '40px'; // Always full for free market
+                document.getElementById('sharingPatentBar').style.width = `${Math.max(5, 40 - this.patentStrength * 0.35)}px`;
+
+                document.getElementById('entryFreeBar').style.width = `${35 + this.marketCompetition * 0.5}px`;
+                document.getElementById('entryPatentBar').style.width = `${Math.max(10, 40 - this.patentStrength * 0.3)}px`;
+
+                document.getElementById('efficiencyFreeBar').style.width = '40px';
+                document.getElementById('efficiencyPatentBar').style.width = `${Math.max(8, 40 - this.patentStrength * 0.32)}px`;
+            }
+
+            startMetricsTracking() {
+                setInterval(() => {
+                    if (this.isRunning) {
+                        this.updateVisualizations();
+                    }
+                }, 1000);
+            }
+        }
+
+        // Initialize the simulator when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new KinsellaIPSimulator();
+        });
+    </script>
+</body>
+
+</html>

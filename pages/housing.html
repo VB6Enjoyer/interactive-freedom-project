@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housing Crisis Simulator: Zoning, Supply & Market Dynamics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .simulation-area {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .city-view {
+            background: linear-gradient(to bottom, #87CEEB 0%, #87CEEB 30%, #90EE90 30%, #228B22 100%);
+            border-radius: 15px;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: inset 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .city-skyline {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: flex-end;
+            gap: 5px;
+            transition: all 0.6s ease;
+        }
+
+        .building {
+            background: linear-gradient(to top, #34495e, #2c3e50);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .building::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 20%;
+            right: 20%;
+            bottom: 20%;
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 8px,
+                    rgba(255, 255, 255, 0.1) 8px,
+                    rgba(255, 255, 255, 0.1) 12px);
+        }
+
+        .building.single-family {
+            width: 25px;
+            height: 40px;
+            background: linear-gradient(to top, #8B4513, #A0522D);
+        }
+
+        .building.townhouse {
+            width: 20px;
+            height: 60px;
+            background: linear-gradient(to top, #CD853F, #DEB887);
+        }
+
+        .building.apartment {
+            width: 30px;
+            height: 80px;
+            background: linear-gradient(to top, #2980b9, #3498db);
+        }
+
+        .building.high-rise {
+            width: 35px;
+            height: 120px;
+            background: linear-gradient(to top, #27ae60, #2ecc71);
+        }
+
+        .city-stats {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+        }
+
+        .price-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1em;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .price-low {
+            background: rgba(46, 204, 113, 0.9);
+            color: white;
+        }
+
+        .price-medium {
+            background: rgba(241, 196, 15, 0.9);
+            color: white;
+        }
+
+        .price-high {
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+        }
+
+        .price-crisis {
+            background: rgba(192, 57, 43, 0.9);
+            color: white;
+            animation: pulse 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.05);
+            }
+        }
+
+        .controls-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .controls-panel h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            text-align: center;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+
+        .policy-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(52, 152, 219, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid #3498db;
+        }
+
+        .policy-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .policy-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .policy-option:hover {
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .policy-option input[type="checkbox"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .policy-option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .slider-control {
+            margin-bottom: 20px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .slider-value {
+            background: #3498db;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.9em;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #ecf0f1;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            background: #2980b9;
+            transform: scale(1.1);
+        }
+
+        .metrics-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .metric-value {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .metric-change {
+            font-size: 0.8em;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .metric-change.positive {
+            background: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+
+        .metric-change.negative {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        .analysis-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            margin-top: 20px;
+        }
+
+        .analysis-panel h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .analysis-text {
+            color: #34495e;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .impact-indicators {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .impact-tag {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .impact-positive {
+            background: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+
+        .impact-negative {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        .impact-neutral {
+            background: rgba(149, 165, 166, 0.2);
+            color: #7f8c8d;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .control-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        }
+
+        .control-button.danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .control-button.danger:hover {
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .metrics-dashboard {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .city-view {
+                height: 200px;
+            }
+
+            .building {
+                transform: scale(0.8);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .metrics-dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="header">
+            <h1>Housing Crisis Simulator</h1>
+            <p>Explore how zoning policies, market forces, and urban planning decisions impact housing affordability and
+                availability in your city.</p>
+        </div>
+
+        <div class="metrics-dashboard">
+            <div class="metric-card">
+                <div class="metric-value" id="housingSupply">0</div>
+                <div class="metric-label">Housing Units</div>
+                <div class="metric-change" id="supplyChange">No Change</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="housingDemand">1000</div>
+                <div class="metric-label">Housing Demand</div>
+                <div class="metric-change" id="demandChange">Stable</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="averagePrice">$0</div>
+                <div class="metric-label">Average Price</div>
+                <div class="metric-change" id="priceChange">No Change</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="affordabilityIndex">0%</div>
+                <div class="metric-label">Affordability</div>
+                <div class="metric-change" id="affordabilityChange">No Change</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="simulation-area">
+                <div class="city-view" id="cityView">
+                    <div class="city-stats" id="cityStats">
+                        Population: <span id="population">50,000</span><br>
+                        Density: <span id="density">Low</span>
+                    </div>
+                    <div class="price-indicator" id="priceIndicator">Affordable</div>
+                    <div class="city-skyline" id="citySkyline">
+                        <!-- Buildings will be generated here -->
+                    </div>
+                </div>
+
+                <div class="analysis-panel">
+                    <h3>Market Analysis</h3>
+                    <div class="analysis-text" id="analysisText">
+                        Welcome to the Housing Crisis Simulator. Adjust the zoning policies and economic factors to see
+                        how they impact housing supply, demand, and affordability in your city.
+                    </div>
+                    <div class="impact-indicators" id="impactIndicators">
+                        <!-- Impact tags will be generated here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <h2>🏛️ Policy Controls</h2>
+
+                <div class="policy-section">
+                    <h3>🏠 Zoning Regulations</h3>
+                    <div class="policy-option">
+                        <input type="checkbox" id="allowSingleFamily" checked>
+                        <label for="allowSingleFamily">Single-Family Homes (Low Density)</label>
+                    </div>
+                    <div class="policy-option">
+                        <input type="checkbox" id="allowTownhouses">
+                        <label for="allowTownhouses">Townhouses & Duplexes (Medium Density)</label>
+                    </div>
+                    <div class="policy-option">
+                        <input type="checkbox" id="allowApartments">
+                        <label for="allowApartments">Apartment Buildings (High Density)</label>
+                    </div>
+                    <div class="policy-option">
+                        <input type="checkbox" id="allowHighRise">
+                        <label for="allowHighRise">High-Rise Buildings (Very High Density)</label>
+                    </div>
+                </div>
+
+                <div class="policy-section">
+                    <h3>📊 Economic Factors</h3>
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Population Growth</span>
+                            <span class="slider-value" id="populationGrowthValue">2%</span>
+                        </div>
+                        <input type="range" class="slider" id="populationGrowth" min="0" max="5" value="2" step="0.1">
+                    </div>
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Income Level</span>
+                            <span class="slider-value" id="incomeLevelValue">$50k</span>
+                        </div>
+                        <input type="range" class="slider" id="incomeLevel" min="30" max="100" value="50" step="5">
+                    </div>
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Construction Costs</span>
+                            <span class="slider-value" id="constructionCostsValue">Medium</span>
+                        </div>
+                        <input type="range" class="slider" id="constructionCosts" min="1" max="3" value="2" step="1">
+                    </div>
+                </div>
+
+                <div class="policy-section">
+                    <h3>🏗️ Development Policies</h3>
+                    <div class="policy-option">
+                        <input type="checkbox" id="inclusionaryZoning">
+                        <label for="inclusionaryZoning">Inclusionary Zoning (Require affordable units)</label>
+                    </div>
+                    <div class="policy-option">
+                        <input type="checkbox" id="developmentFees">
+                        <label for="developmentFees">High Development Impact Fees</label>
+                    </div>
+                    <div class="policy-option">
+                        <input type="checkbox" id="fastTrackPermits">
+                        <label for="fastTrackPermits">Fast-Track Permitting Process</label>
+                    </div>
+                    <div class="policy-option">
+                        <input type="checkbox" id="heightRestrictions">
+                        <label for="heightRestrictions">Strict Height Restrictions</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="control-button" id="resetSimulation">Reset to Default</button>
+            <button class="control-button" id="randomScenario">Random Scenario</button>
+            <button class="control-button danger" id="housingCrisis">Simulate Crisis</button>
+        </div>
+    </div>
+
+    <script>
+        class HousingSimulator {
+            constructor() {
+                this.basePopulation = 50000;
+                this.baseDemand = 1000;
+                this.baseIncome = 50000;
+
+                this.housingTypes = {
+                    singleFamily: { density: 4, cost: 1.0, appeal: 1.2 },
+                    townhouse: { density: 8, cost: 0.8, appeal: 1.0 },
+                    apartment: { density: 20, cost: 0.6, appeal: 0.8 },
+                    highRise: { density: 50, cost: 0.4, appeal: 0.6 }
+                };
+
+                this.previousMetrics = {
+                    supply: 0,
+                    demand: 1000,
+                    price: 0,
+                    affordability: 0
+                };
+
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.updateSimulation();
+            }
+
+            bindEvents() {
+                // Zoning checkboxes
+                document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.addEventListener('change', () => this.updateSimulation());
+                });
+
+                // Sliders
+                document.querySelectorAll('input[type="range"]').forEach(slider => {
+                    slider.addEventListener('input', () => {
+                        this.updateSliderDisplay(slider);
+                        this.updateSimulation();
+                    });
+                });
+
+                // Control buttons
+                document.getElementById('resetSimulation').addEventListener('click', () => this.resetToDefault());
+                document.getElementById('randomScenario').addEventListener('click', () => this.generateRandomScenario());
+                document.getElementById('housingCrisis').addEventListener('click', () => this.simulateCrisis());
+
+                // Initialize slider displays
+                document.querySelectorAll('input[type="range"]').forEach(slider => {
+                    this.updateSliderDisplay(slider);
+                });
+            }
+
+            updateSliderDisplay(slider) {
+                const valueElement = document.getElementById(slider.id + 'Value');
+                if (!valueElement) return;
+
+                switch (slider.id) {
+                    case 'populationGrowth':
+                        valueElement.textContent = `${slider.value}%`;
+                        break;
+                    case 'incomeLevel':
+                        valueElement.textContent = `$${slider.value}k`;
+                        break;
+                    case 'constructionCosts':
+                        const costs = ['Low', 'Medium', 'High'];
+                        valueElement.textContent = costs[slider.value - 1];
+                        break;
+                }
+            }
+
+            calculateMetrics() {
+                const zoning = {
+                    singleFamily: document.getElementById('allowSingleFamily').checked,
+                    townhouses: document.getElementById('allowTownhouses').checked,
+                    apartments: document.getElementById('allowApartments').checked,
+                    highRise: document.getElementById('allowHighRise').checked
+                };
+
+                const policies = {
+                    inclusionary: document.getElementById('inclusionaryZoning').checked,
+                    developmentFees: document.getElementById('developmentFees').checked,
+                    fastTrack: document.getElementById('fastTrackPermits').checked,
+                    heightRestrictions: document.getElementById('heightRestrictions').checked
+                };
+
+                const economics = {
+                    populationGrowth: parseFloat(document.getElementById('populationGrowth').value),
+                    incomeLevel: parseInt(document.getElementById('incomeLevel').value),
+                    constructionCosts: parseInt(document.getElementById('constructionCosts').value)
+                };
+
+                // Calculate housing supply
+                let maxSupply = 0;
+                let averageCost = 0;
+                let totalUnits = 0;
+
+                if (zoning.singleFamily) {
+                    const units = this.housingTypes.singleFamily.density * 10;
+                    maxSupply += units;
+                    averageCost += units * this.housingTypes.singleFamily.cost;
+                    totalUnits += units;
+                }
+                if (zoning.townhouses) {
+                    const units = this.housingTypes.townhouse.density * 10;
+                    maxSupply += units;
+                    averageCost += units * this.housingTypes.townhouse.cost;
+                    totalUnits += units;
+                }
+                if (zoning.apartments) {
+                    const units = this.housingTypes.apartment.density * 10;
+                    maxSupply += units;
+                    averageCost += units * this.housingTypes.apartment.cost;
+                    totalUnits += units;
+                }
+                if (zoning.highRise && !policies.heightRestrictions) {
+                    const units = this.housingTypes.highRise.density * 10;
+                    maxSupply += units;
+                    averageCost += units * this.housingTypes.highRise.cost;
+                    totalUnits += units;
+                }
+
+                // Apply policy modifiers
+                if (policies.developmentFees) maxSupply *= 0.8;
+                if (policies.fastTrack) maxSupply *= 1.2;
+                if (policies.inclusionary) maxSupply *= 0.9;
+
+                // Calculate demand
+                const populationMultiplier = 1 + (economics.populationGrowth / 100);
+                const currentPopulation = this.basePopulation * populationMultiplier;
+                const demand = Math.round((currentPopulation / 50) * (1 + economics.incomeLevel / 100));
+
+                // Calculate price
+                const supplyDemandRatio = maxSupply / demand;
+                const baseCost = totalUnits > 0 ? averageCost / totalUnits : 1;
+                const constructionMultiplier = economics.constructionCosts * 0.5 + 0.5;
+
+                let priceMultiplier = 1;
+                if (supplyDemandRatio < 0.5) priceMultiplier = 3;
+                else if (supplyDemandRatio < 0.8) priceMultiplier = 2;
+                else if (supplyDemandRatio < 1.2) priceMultiplier = 1;
+                else priceMultiplier = 0.7;
+
+                const averagePrice = Math.round(300000 * baseCost * constructionMultiplier * priceMultiplier);
+
+                // Calculate affordability
+                const affordablePrice = economics.incomeLevel * 1000 * 3; // 3x annual income
+                const affordability = Math.min(100, Math.round((affordablePrice / averagePrice) * 100));
+
+                return {
+                    supply: Math.round(maxSupply),
+                    demand: demand,
+                    price: averagePrice,
+                    affordability: affordability,
+                    population: Math.round(currentPopulation),
+                    supplyDemandRatio: supplyDemandRatio,
+                    zoning: zoning,
+                    policies: policies
+                };
+            }
+
+            updateSimulation() {
+                const metrics = this.calculateMetrics();
+
+                // Update metric displays
+                document.getElementById('housingSupply').textContent = metrics.supply.toLocaleString();
+                document.getElementById('housingDemand').textContent = metrics.demand.toLocaleString();
+                document.getElementById('averagePrice').textContent = `$${(metrics.price / 1000).toFixed(0)}k`;
+                document.getElementById('affordabilityIndex').textContent = `${metrics.affordability}%`;
+                document.getElementById('population').textContent = metrics.population.toLocaleString();
+
+                // Update change indicators
+                this.updateChangeIndicators(metrics);
+
+                // Update city visualization
+                this.updateCityVisualization(metrics);
+
+                // Update analysis
+                this.updateAnalysis(metrics);
+
+                // Store previous metrics
+                this.previousMetrics = {
+                    supply: metrics.supply,
+                    demand: metrics.demand,
+                    price: metrics.price,
+                    affordability: metrics.affordability
+                };
+            }
+
+            updateChangeIndicators(metrics) {
+                const changes = {
+                    supply: metrics.supply - this.previousMetrics.supply,
+                    demand: metrics.demand - this.previousMetrics.demand,
+                    price: metrics.price - this.previousMetrics.price,
+                    affordability: metrics.affordability - this.previousMetrics.affordability
+                };
+
+                this.updateChangeElement('supplyChange', changes.supply, 'units');
+                this.updateChangeElement('demandChange', changes.demand, 'units');
+                this.updateChangeElement('priceChange', changes.price, '$', 1000);
+                this.updateChangeElement('affordabilityChange', changes.affordability, '%');
+            }
+
+            updateChangeElement(elementId, change, unit, divisor = 1) {
+                const element = document.getElementById(elementId);
+                if (Math.abs(change) < 1) {
+                    element.textContent = 'No Change';
+                    element.className = 'metric-change';
+                } else {
+                    const displayChange = divisor > 1 ? Math.round(change / divisor) : change;
+                    const sign = change > 0 ? '+' : '';
+                    element.textContent = `${sign}${displayChange}${unit}`;
+                    element.className = `metric-change ${change > 0 ? 'positive' : 'negative'}`;
+                }
+            }
+
+            updateCityVisualization(metrics) {
+                const skyline = document.getElementById('citySkyline');
+                skyline.innerHTML = '';
+
+                // Determine density level
+                let density = 'Low';
+                if (metrics.supply > 800) density = 'High';
+                else if (metrics.supply > 400) density = 'Medium';
+
+                document.getElementById('density').textContent = density;
+
+                // Update price indicator
+                const priceIndicator = document.getElementById('priceIndicator');
+                if (metrics.affordability < 30) {
+                    priceIndicator.textContent = 'Housing Crisis';
+                    priceIndicator.className = 'price-indicator price-crisis';
+                } else if (metrics.affordability < 50) {
+                    priceIndicator.textContent = 'Expensive';
+                    priceIndicator.className = 'price-indicator price-high';
+                } else if (metrics.affordability < 70) {
+                    priceIndicator.textContent = 'Moderate';
+                    priceIndicator.className = 'price-indicator price-medium';
+                } else {
+                    priceIndicator.textContent = 'Affordable';
+                    priceIndicator.className = 'price-indicator price-low';
+                }
+
+                // Generate buildings based on zoning
+                const buildingCount = Math.min(20, Math.max(5, Math.floor(metrics.supply / 50)));
+
+                for (let i = 0; i < buildingCount; i++) {
+                    const building = document.createElement('div');
+                    building.className = 'building';
+
+                    // Determine building type based on zoning
+                    if (metrics.zoning.highRise && Math.random() > 0.7) {
+                        building.classList.add('high-rise');
+                    } else if (metrics.zoning.apartments && Math.random() > 0.5) {
+                        building.classList.add('apartment');
+                    } else if (metrics.zoning.townhouses && Math.random() > 0.3) {
+                        building.classList.add('townhouse');
+                    } else if (metrics.zoning.singleFamily) {
+                        building.classList.add('single-family');
+                    }
+
+                    skyline.appendChild(building);
+                }
+            }
+
+            updateAnalysis(metrics) {
+                let analysis = '';
+                const impacts = [];
+
+                if (metrics.supplyDemandRatio < 0.8) {
+                    analysis += 'Housing shortage detected. ';
+                    impacts.push({ text: 'Supply Shortage', type: 'negative' });
+                } else if (metrics.supplyDemandRatio > 1.2) {
+                    analysis += 'Housing surplus available. ';
+                    impacts.push({ text: 'Adequate Supply', type: 'positive' });
+                }
+
+                if (metrics.affordability < 40) {
+                    analysis += 'Housing affordability crisis - most residents cannot afford average housing. ';
+                    impacts.push({ text: 'Affordability Crisis', type: 'negative' });
+                } else if (metrics.affordability > 70) {
+                    analysis += 'Housing remains affordable for most residents. ';
+                    impacts.push({ text: 'Affordable Housing', type: 'positive' });
+                }
+
+                if (metrics.policies.inclusionary) {
+                    analysis += 'Inclusionary zoning provides affordable units but may reduce overall supply. ';
+                    impacts.push({ text: 'Inclusionary Policy', type: 'neutral' });
+                }
+
+                if (metrics.policies.fastTrack) {
+                    analysis += 'Fast-track permitting accelerates development. ';
+                    impacts.push({ text: 'Fast Permitting', type: 'positive' });
+                }
+
+                if (!metrics.zoning.apartments && !metrics.zoning.highRise) {
+                    analysis += 'Restrictive zoning limits housing density and supply. ';
+                    impacts.push({ text: 'Restrictive Zoning', type: 'negative' });
+                }
+
+                document.getElementById('analysisText').textContent = analysis || 'Current policies maintain housing market stability.';
+
+                // Update impact indicators
+                const indicatorsContainer = document.getElementById('impactIndicators');
+                indicatorsContainer.innerHTML = '';
+
+                impacts.forEach(impact => {
+                    const tag = document.createElement('div');
+                    tag.className = `impact-tag impact-${impact.type}`;
+                    tag.textContent = impact.text;
+                    indicatorsContainer.appendChild(tag);
+                });
+            }
+
+            resetToDefault() {
+                document.getElementById('allowSingleFamily').checked = true;
+                document.getElementById('allowTownhouses').checked = false;
+                document.getElementById('allowApartments').checked = false;
+                document.getElementById('allowHighRise').checked = false;
+                document.getElementById('inclusionaryZoning').checked = false;
+                document.getElementById('developmentFees').checked = false;
+                document.getElementById('fastTrackPermits').checked = false;
+                document.getElementById('heightRestrictions').checked = false;
+                document.getElementById('populationGrowth').value = 2;
+                document.getElementById('incomeLevel').value = 50;
+                document.getElementById('constructionCosts').value = 2;
+
+                document.querySelectorAll('input[type="range"]').forEach(slider => {
+                    this.updateSliderDisplay(slider);
+                });
+
+                this.updateSimulation();
+            }
+
+            generateRandomScenario() {
+                document.getElementById('allowSingleFamily').checked = Math.random() > 0.3;
+                document.getElementById('allowTownhouses').checked = Math.random() > 0.5;
+                document.getElementById('allowApartments').checked = Math.random() > 0.4;
+                document.getElementById('allowHighRise').checked = Math.random() > 0.7;
+                document.getElementById('inclusionaryZoning').checked = Math.random() > 0.6;
+                document.getElementById('developmentFees').checked = Math.random() > 0.5;
+                document.getElementById('fastTrackPermits').checked = Math.random() > 0.6;
+                document.getElementById('heightRestrictions').checked = Math.random() > 0.4;
+                document.getElementById('populationGrowth').value = (Math.random() * 5).toFixed(1);
+                document.getElementById('incomeLevel').value = Math.floor(Math.random() * 70) + 30;
+                document.getElementById('constructionCosts').value = Math.floor(Math.random() * 3) + 1;
+
+                document.querySelectorAll('input[type="range"]').forEach(slider => {
+                    this.updateSliderDisplay(slider);
+                });
+
+                this.updateSimulation();
+            }
+
+            simulateCrisis() {
+                document.getElementById('allowSingleFamily').checked = true;
+                document.getElementById('allowTownhouses').checked = false;
+                document.getElementById('allowApartments').checked = false;
+                document.getElementById('allowHighRise').checked = false;
+                document.getElementById('inclusionaryZoning').checked = true;
+                document.getElementById('developmentFees').checked = true;
+                document.getElementById('fastTrackPermits').checked = false;
+                document.getElementById('heightRestrictions').checked = true;
+                document.getElementById('populationGrowth').value = 4.5;
+                document.getElementById('incomeLevel').value = 35;
+                document.getElementById('constructionCosts').value = 3;
+
+                document.querySelectorAll('input[type="range"]').forEach(slider => {
+                    this.updateSliderDisplay(slider);
+                });
+
+                this.updateSimulation();
+            }
+        }
+
+        // Initialize the simulator when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new HousingSimulator();
+        });
+    </script>
+</body>
+
+</html>
