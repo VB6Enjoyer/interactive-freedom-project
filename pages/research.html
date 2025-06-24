@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Funding Models: Government vs Private Innovation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            text-align: center;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+
+        .idea-pool {
+            min-height: 400px;
+            position: relative;
+        }
+
+        .pool-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 10px;
+        }
+
+        .pool-status {
+            font-size: 0.9em;
+            color: #34495e;
+        }
+
+        .pool-capacity {
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .ideas-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 10px;
+            min-height: 300px;
+            padding: 15px;
+            border: 2px dashed #bdc3c7;
+            border-radius: 15px;
+            background: linear-gradient(45deg, #f8f9fa 25%, transparent 25%),
+                linear-gradient(-45deg, #f8f9fa 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #f8f9fa 75%),
+                linear-gradient(-45deg, transparent 75%, #f8f9fa 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+
+        .research-zone {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .research-zone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .research-zone:hover::before {
+            left: 100%;
+        }
+
+        .research-zone:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .research-zone.can-drop {
+            border-color: #2ecc71;
+            background: rgba(46, 204, 113, 0.1);
+        }
+
+        .gov-zone {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .private-zone {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+        }
+
+        .zone-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .zone-description {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .zone-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .zone-stat {
+            text-align: center;
+        }
+
+        .zone-stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .zone-stat-label {
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+
+        .idea {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .idea::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 50%;
+        }
+
+        .idea:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .idea.selected {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 4px #f1c40f, 0 8px 25px rgba(0, 0, 0, 0.3);
+            animation: pulse 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 4px #f1c40f, 0 8px 25px rgba(0, 0, 0, 0.3);
+            }
+
+            100% {
+                box-shadow: 0 0 0 8px rgba(241, 196, 15, 0.5), 0 8px 25px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        .idea.processing {
+            animation: spin 1s linear infinite;
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Idea Types */
+        .idea[data-type="biotech"] {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .idea[data-type="ai"] {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+
+        .idea[data-type="energy"] {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .idea[data-type="space"] {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+        }
+
+        .idea[data-type="materials"] {
+            background: linear-gradient(135deg, #16a085, #1abc9c);
+        }
+
+        .idea[data-type="quantum"] {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        .output-area {
+            min-height: 200px;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .output-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .output-item {
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .output-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .gov-paper {
+            background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+            color: #2c3e50;
+            border: 2px solid #95a5a6;
+        }
+
+        .gov-paper.breakthrough {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border-color: #229954;
+        }
+
+        .gov-paper.problem {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border-color: #a93226;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        .private-innovation {
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+            color: #2c3e50;
+            border: 2px solid #e67e22;
+            font-size: 1.5em;
+        }
+
+        .private-innovation.major {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            border-color: #7d3c98;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 5px rgba(155, 89, 182, 0.5);
+            }
+
+            100% {
+                box-shadow: 0 0 20px rgba(155, 89, 182, 0.8);
+            }
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .control-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        }
+
+        .control-button.danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .control-button.danger:hover {
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+
+        .notification.warning {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+
+            .ideas-container {
+                grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            }
+
+            .idea {
+                width: 50px;
+                height: 50px;
+                font-size: 1em;
+            }
+        }
+
+        /* Return button */
+        .return-home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .return-home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        .return-home-button:focus {
+            outline: 2px solid rgba(255, 255, 255, 0.8);
+            outline-offset: 2px;
+        }
+
+        .return-home-button .icon {
+            font-size: 1.1em;
+            transition: transform 0.3s ease;
+        }
+
+        .return-home-button:hover .icon {
+            transform: translateX(-2px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .return-home-button {
+                top: 15px;
+                left: 15px;
+                padding: 10px 16px;
+                font-size: 0.85em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .return-home-button {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin: 15px;
+                display: inline-flex;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index.html" class="return-home-button" aria-label="Return to Interactive Freedom Project homepage">
+        <span class="icon">←</span>
+        <span>Home</span> </a>
+
+    <div class="app-container">
+        <div class="header">
+            <h1>Research Funding Models</h1>
+            <p>Explore how government and private research approaches lead to different innovation outcomes.
+                Select ideas and assign them to different research models to see the results.</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value" id="totalIdeas">0</div>
+                <div class="stat-label">Ideas Generated</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="govSuccess">0</div>
+                <div class="stat-label">Gov Breakthroughs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="privateSuccess">0</div>
+                <div class="stat-label">Private Innovations</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalFailures">0</div>
+                <div class="stat-label">Failed Projects</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="section idea-pool">
+                <h2>Research Ideas Pool</h2>
+                <div class="pool-controls">
+                    <div class="pool-status">
+                        <span class="pool-capacity" id="poolCapacity">0/8</span> ideas available
+                    </div>
+                    <button class="control-button" id="pauseGeneration">Pause</button>
+                </div>
+                <div class="ideas-container" id="ideasContainer">
+                    <!-- Ideas will appear here -->
+                </div>
+            </div>
+
+            <div class="section research-zone gov-zone" id="govZone">
+                <div class="zone-header">
+                    <h2>🏛️ Government Research</h2>
+                    <div class="zone-description">
+                        Systematic, peer-reviewed research with focus on publication and knowledge sharing.
+                        Lower risk but may face bureaucratic challenges.
+                    </div>
+                </div>
+                <div class="zone-stats">
+                    <div class="zone-stat">
+                        <div class="zone-stat-value" id="govProjects">0</div>
+                        <div class="zone-stat-label">Projects</div>
+                    </div>
+                    <div class="zone-stat">
+                        <div class="zone-stat-value" id="govSuccessRate">0%</div>
+                        <div class="zone-stat-label">Success Rate</div>
+                    </div>
+                </div>
+                <div class="output-area">
+                    <h3>Research Outputs</h3>
+                    <div class="output-grid" id="govOutput">
+                        <!-- Government outputs appear here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="section research-zone private-zone" id="privateZone">
+                <div class="zone-header">
+                    <h2>🏢 Private Research</h2>
+                    <div class="zone-description">
+                        Market-driven innovation with higher risk and reward.
+                        Focus on practical applications and commercial viability.
+                    </div>
+                </div>
+                <div class="zone-stats">
+                    <div class="zone-stat">
+                        <div class="zone-stat-value" id="privateProjects">0</div>
+                        <div class="zone-stat-label">Projects</div>
+                    </div>
+                    <div class="zone-stat">
+                        <div class="zone-stat-value" id="privateSuccessRate">0%</div>
+                        <div class="zone-stat-label">Success Rate</div>
+                    </div>
+                </div>
+                <div class="output-area">
+                    <h3>Innovation Outputs</h3>
+                    <div class="output-grid" id="privateOutput">
+                        <!-- Private outputs appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="control-button" id="resetSimulation">Reset Simulation</button>
+            <button class="control-button" id="autoAssign">Auto-Assign Mode</button>
+            <button class="control-button danger" id="clearOutputs">Clear Outputs</button>
+        </div>
+    </div>
+
+    <script>
+        class ResearchSimulator {
+            constructor() {
+                this.maxIdeas = 8; // Limit simultaneous ideas
+                this.currentIdeas = [];
+                this.selectedIdea = null;
+                this.generationPaused = false;
+                this.autoAssignMode = false;
+
+                this.stats = {
+                    totalIdeas: 0,
+                    govProjects: 0,
+                    govSuccesses: 0,
+                    govFailures: 0,
+                    privateProjects: 0,
+                    privateSuccesses: 0,
+                    privateFailures: 0
+                };
+
+                this.ideaTypes = {
+                    biotech: { icon: '🧬', name: 'Biotechnology', govChance: 0.3, privateChance: 0.45 }, // Originally 0.2 to 0.35
+                    ai: { icon: '🤖', name: 'Artificial Intelligence', govChance: 0.2, privateChance: 0.6 }, // Originally 0.1 to 0.5
+                    energy: { icon: '⚡', name: 'Energy Technology', govChance: 0.35, privateChance: 0.4 }, // Originally 0.25 to 0.3
+                    space: { icon: '🚀', name: 'Space Technology', govChance: 0.3, privateChance: 0.5 }, // Originally 0.2 to 0.4
+                    materials: { icon: '🔬', name: 'Materials Science', govChance: 0.45, privateChance: 0.3 }, // Originally 0.35 to 0.2
+                    quantum: { icon: '⚛️', name: 'Quantum Computing', govChance: 0.4, privateChance: 0.55 } // Originally 0.3 to 0.35
+                };
+
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.startIdeaGeneration();
+                this.updateUI();
+
+                // Generate initial ideas
+                setTimeout(() => this.generateIdea(), 500);
+                setTimeout(() => this.generateIdea(), 1000);
+                setTimeout(() => this.generateIdea(), 1500);
+            }
+
+            bindEvents() {
+                document.getElementById('govZone').addEventListener('click', () => this.assignToResearch('government'));
+                document.getElementById('privateZone').addEventListener('click', () => this.assignToResearch('private'));
+                document.getElementById('resetSimulation').addEventListener('click', () => this.resetSimulation());
+                document.getElementById('autoAssign').addEventListener('click', () => this.toggleAutoAssign());
+                document.getElementById('clearOutputs').addEventListener('click', () => this.clearOutputs());
+                document.getElementById('pauseGeneration').addEventListener('click', () => this.toggleGeneration());
+            }
+
+            generateIdea() {
+                if (this.generationPaused || this.currentIdeas.length >= this.maxIdeas) {
+                    return;
+                }
+
+                const types = Object.keys(this.ideaTypes);
+                const randomType = types[Math.floor(Math.random() * types.length)];
+                const typeData = this.ideaTypes[randomType];
+
+                const idea = {
+                    id: Date.now() + Math.random(),
+                    type: randomType,
+                    icon: typeData.icon,
+                    name: typeData.name,
+                    element: this.createIdeaElement(randomType, typeData)
+                };
+
+                this.currentIdeas.push(idea);
+                this.stats.totalIdeas++;
+
+                document.getElementById('ideasContainer').appendChild(idea.element);
+                this.updateUI();
+
+                // Auto-assign if mode is enabled
+                if (this.autoAssignMode && this.currentIdeas.length > 0) {
+                    setTimeout(() => {
+                        if (this.currentIdeas.length > 0) {
+                            const randomIdea = this.currentIdeas[Math.floor(Math.random() * this.currentIdeas.length)];
+                            this.selectIdea(randomIdea);
+                            const zone = Math.random() > 0.5 ? 'government' : 'private';
+                            setTimeout(() => this.assignToResearch(zone), 500);
+                        }
+                    }, 1000);
+                }
+            }
+
+            createIdeaElement(type, typeData) {
+                const element = document.createElement('div');
+                element.className = 'idea';
+                element.dataset.type = type;
+                element.textContent = typeData.icon;
+                element.title = typeData.name;
+
+                element.addEventListener('click', () => {
+                    const idea = this.currentIdeas.find(i => i.element === element);
+                    if (idea && !element.classList.contains('processing')) {
+                        this.selectIdea(idea);
+                    }
+                });
+
+                return element;
+            }
+
+            selectIdea(idea) {
+                // Clear previous selection
+                if (this.selectedIdea) {
+                    this.selectedIdea.element.classList.remove('selected');
+                }
+
+                this.selectedIdea = idea;
+                idea.element.classList.add('selected');
+
+                // Highlight drop zones
+                document.getElementById('govZone').classList.add('can-drop');
+                document.getElementById('privateZone').classList.add('can-drop');
+            }
+
+            assignToResearch(zone) {
+                if (!this.selectedIdea) {
+                    this.showNotification('Please select an idea first!', 'warning');
+                    return;
+                }
+
+                const idea = this.selectedIdea;
+                const typeData = this.ideaTypes[idea.type];
+
+                // Remove from current ideas
+                this.currentIdeas = this.currentIdeas.filter(i => i.id !== idea.id);
+
+                // Add processing animation
+                idea.element.classList.add('processing');
+                idea.element.classList.remove('selected');
+
+                // Clear drop zone highlights
+                document.getElementById('govZone').classList.remove('can-drop');
+                document.getElementById('privateZone').classList.remove('can-drop');
+
+                // Process after delay
+                setTimeout(() => {
+                    idea.element.remove();
+                    this.processResearch(zone, idea, typeData);
+                    this.selectedIdea = null;
+                    this.updateUI();
+                }, 1500);
+            }
+
+            processResearch(zone, idea, typeData) {
+                if (zone === 'government') {
+                    this.stats.govProjects++;
+                    const success = Math.random() < typeData.govChance;
+
+                    if (success) {
+                        this.stats.govSuccesses++;
+                        this.createGovernmentOutput(idea, true);
+                        this.showNotification(`Government breakthrough in ${idea.name}!`, 'success');
+                    } else {
+                        this.stats.govFailures++;
+                        this.createGovernmentOutput(idea, false);
+                        this.showNotification(`Government research encountered issues in ${idea.name}`, 'error');
+                    }
+                } else {
+                    this.stats.privateProjects++;
+                    const success = Math.random() < typeData.privateChance;
+
+                    if (success) {
+                        this.stats.privateSuccesses++;
+                        const isMajor = Math.random() < 0.3; // 30% chance of major innovation
+                        this.createPrivateOutput(idea, isMajor);
+                        this.showNotification(`Private innovation in ${idea.name}!`, 'success');
+                    } else {
+                        this.stats.privateFailures++;
+                        this.showNotification(`Private research failed in ${idea.name}`, 'error');
+                    }
+                }
+            }
+
+            createGovernmentOutput(idea, isSuccess) {
+                const output = document.createElement('div');
+                output.className = `output-item gov-paper ${isSuccess ? 'breakthrough' : 'problem'}`;
+                output.innerHTML = `
+                    <div>${idea.icon}</div>
+                    <div style="font-size: 0.8em; margin-top: 5px;">
+                        ${isSuccess ? 'Breakthrough' : 'Issues Found'}
+                    </div>
+                `;
+                output.title = `${idea.name} - ${isSuccess ? 'Successful research with peer review' : 'Problems identified in research'}`;
+
+                document.getElementById('govOutput').appendChild(output);
+            }
+
+            createPrivateOutput(idea, isMajor) {
+                const output = document.createElement('div');
+                output.className = `output-item private-innovation ${isMajor ? 'major' : ''}`;
+                output.innerHTML = `
+                    <div>${idea.icon}</div>
+                    <div style="font-size: 0.8em; margin-top: 5px;">
+                        ${isMajor ? 'Major Innovation' : 'Innovation'}
+                    </div>
+                `;
+                output.title = `${idea.name} - ${isMajor ? 'Major commercial breakthrough' : 'Successful commercial application'}`;
+
+                document.getElementById('privateOutput').appendChild(output);
+            }
+
+            showNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+
+                document.body.appendChild(notification);
+
+                setTimeout(() => notification.classList.add('show'), 100);
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+
+            updateUI() {
+                // Update stats
+                document.getElementById('totalIdeas').textContent = this.stats.totalIdeas;
+                document.getElementById('govSuccess').textContent = this.stats.govSuccesses;
+                document.getElementById('privateSuccess').textContent = this.stats.privateSuccesses;
+                document.getElementById('totalFailures').textContent = this.stats.govFailures + this.stats.privateFailures;
+
+                // Update pool capacity
+                document.getElementById('poolCapacity').textContent = `${this.currentIdeas.length}/${this.maxIdeas}`;
+
+                // Update zone stats
+                document.getElementById('govProjects').textContent = this.stats.govProjects;
+                document.getElementById('privateProjects').textContent = this.stats.privateProjects;
+
+                const govRate = this.stats.govProjects > 0 ? Math.round((this.stats.govSuccesses / this.stats.govProjects) * 100) : 0;
+                const privateRate = this.stats.privateProjects > 0 ? Math.round((this.stats.privateSuccesses / this.stats.privateProjects) * 100) : 0;
+
+                document.getElementById('govSuccessRate').textContent = `${govRate}%`;
+                document.getElementById('privateSuccessRate').textContent = `${privateRate}%`;
+            }
+
+            startIdeaGeneration() {
+                this.generationInterval = setInterval(() => {
+                    this.generateIdea();
+                }, 3000); // Generate every 3 seconds
+            }
+
+            toggleGeneration() {
+                const button = document.getElementById('pauseGeneration');
+                this.generationPaused = !this.generationPaused;
+                button.textContent = this.generationPaused ? 'Resume' : 'Pause';
+                button.style.background = this.generationPaused ?
+                    'linear-gradient(135deg, #2ecc71, #27ae60)' :
+                    'linear-gradient(135deg, #e74c3c, #c0392b)';
+            }
+
+            toggleAutoAssign() {
+                const button = document.getElementById('autoAssign');
+                this.autoAssignMode = !this.autoAssignMode;
+                button.textContent = this.autoAssignMode ? 'Manual Mode' : 'Auto-Assign Mode';
+                button.style.background = this.autoAssignMode ?
+                    'linear-gradient(135deg, #e74c3c, #c0392b)' :
+                    'linear-gradient(135deg, #3498db, #2980b9)';
+
+                this.showNotification(
+                    this.autoAssignMode ? 'Auto-assign mode enabled' : 'Manual mode enabled',
+                    'success'
+                );
+            }
+
+            clearOutputs() {
+                document.getElementById('govOutput').innerHTML = '';
+                document.getElementById('privateOutput').innerHTML = '';
+                this.showNotification('All outputs cleared', 'success');
+            }
+
+            resetSimulation() {
+                // Clear all ideas
+                this.currentIdeas.forEach(idea => idea.element.remove());
+                this.currentIdeas = [];
+                this.selectedIdea = null;
+
+                // Reset stats
+                this.stats = {
+                    totalIdeas: 0,
+                    govProjects: 0,
+                    govSuccesses: 0,
+                    govFailures: 0,
+                    privateProjects: 0,
+                    privateSuccesses: 0,
+                    privateFailures: 0
+                };
+
+                // Clear outputs
+                this.clearOutputs();
+
+                // Reset UI
+                this.updateUI();
+
+                // Clear drop zone highlights
+                document.getElementById('govZone').classList.remove('can-drop');
+                document.getElementById('privateZone').classList.remove('can-drop');
+
+                this.showNotification('Simulation reset', 'success');
+            }
+        }
+
+        // Initialize the simulator when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new ResearchSimulator();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Minimum Wage Economics Explorer</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #0056b3;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        h2 {
+            color: #0056b3;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .intro-section {
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+
+        /* Car Wash Simulation Styles */
+        .status-display,
+        .automation-details,
+        .outcome,
+        .key-takeaway {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #eef;
+        }
+
+        .status-display p,
+        .automation-details p {
+            margin: 8px 0;
+        }
+
+        .status-display p strong,
+        .automation-details p strong {
+            display: inline-block;
+            width: 200px;
+        }
+
+        .controls,
+        .decision-point {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 20px;
+            margin: 5px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-left: 4px solid #f0ad4e;
+            background-color: #fcf8e3;
+            color: #8a6d3b;
+            border-radius: 4px;
+        }
+
+        .outcome {
+            border-color: #d9534f;
+            background-color: #f2dede;
+            color: #a94442;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .outcome.success {
+            border-color: #5cb85c;
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+
+        .key-takeaway {
+            border-color: #5bc0de;
+            background-color: #d9edf7;
+            color: #31708f;
+            font-style: italic;
+        }
+
+        /* Barrier Visualization Styles */
+        .barrier-controls {
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .control-group {
+            width: 100%;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .control-group input[type="range"] {
+            width: calc(100% - 60px);
+            vertical-align: middle;
+        }
+
+        .control-group span {
+            display: inline-block;
+            width: 50px;
+            text-align: right;
+            font-weight: normal;
+            color: #333;
+            vertical-align: middle;
+        }
+
+        .visualization-area {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 200px;
+            border: 1px solid #ccc;
+            margin: 20px auto;
+            overflow: hidden;
+            background-color: #e9e9e9;
+        }
+
+        .worker {
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            width: 30px;
+            height: 40px;
+            background-color: #007bff;
+            border-radius: 5px;
+            transition: left 1s ease-in-out;
+            z-index: 2;
+        }
+
+        .worker::after {
+            content: '';
+            display: block;
+            width: 15px;
+            height: 15px;
+            background-color: #007bff;
+            border-radius: 50%;
+            position: absolute;
+            top: -15px;
+            left: 7.5px;
+        }
+
+        .barrier-container {
+            position: absolute;
+            bottom: 0;
+            left: 45%;
+            width: 30px;
+            height: 100%;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .barrier {
+            width: 100%;
+            background-color: #dc3545;
+            transition: height 0.5s ease-out;
+        }
+
+        .barrier-label {
+            position: absolute;
+            top: -20px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8em;
+            color: #dc3545;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .workplace {
+            position: absolute;
+            bottom: 0;
+            right: 10px;
+            width: 100px;
+            height: 180px;
+            background-color: #28a745;
+            opacity: 0.2;
+            border-radius: 5px;
+            z-index: 0;
+        }
+
+        .outcome-message {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            min-height: 1.5em;
+            text-align: center;
+        }
+
+        .outcome-hired {
+            color: #28a745;
+        }
+
+        .outcome-unemployed {
+            color: #dc3545;
+        }
+
+        /* Worker Profiles Styles */
+        .worker-profiles-section {
+            margin-top: 30px;
+        }
+
+        .wage-control-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .wage-control-section label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .wage-control-section input[type="range"] {
+            width: 80%;
+            max-width: 400px;
+            margin-bottom: 10px;
+        }
+
+        #min-wage-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .explanation {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #d1ecf1;
+            border-radius: 5px;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        .worker-profiles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .worker-profile {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            flex: 1 1 280px;
+            max-width: 350px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .worker-profile h3 {
+            margin-top: 0;
+            color: #007bff;
+            border-bottom: 1px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .worker-profile p {
+            margin-bottom: 10px;
+        }
+
+        .worker-profile p strong {
+            display: inline-block;
+            min-width: 150px;
+        }
+
+        .actual-wage.forced {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .cost-effectiveness {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .reflection {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #fff3cd;
+            border-radius: 5px;
+            border: 1px solid #ffeeba;
+            color: #856404;
+        }
+
+        /* Hidden elements */
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .worker-profile {
+                flex-basis: 100%;
+                max-width: none;
+            }
+
+            .control-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .visualization-area {
+                height: 150px;
+            }
+
+            .worker {
+                width: 20px;
+                height: 30px;
+            }
+
+            .worker::after {
+                width: 10px;
+                height: 10px;
+                top: -10px;
+                left: 5px;
+            }
+
+            .barrier-container {
+                width: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .workplace {
+                width: 80px;
+                height: 130px;
+            }
+        }
+
+        /* Return button */
+        .return-home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .return-home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        .return-home-button:focus {
+            outline: 2px solid rgba(255, 255, 255, 0.8);
+            outline-offset: 2px;
+        }
+
+        .return-home-button .icon {
+            font-size: 1.1em;
+            transition: transform 0.3s ease;
+        }
+
+        .return-home-button:hover .icon {
+            transform: translateX(-2px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .return-home-button {
+                top: 15px;
+                left: 15px;
+                padding: 10px 16px;
+                font-size: 0.85em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .return-home-button {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin: 15px;
+                display: inline-flex;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index.html" class="return-home-button" aria-label="Return to Interactive Freedom Project homepage">
+        <span class="icon">←</span>
+        <span>Home</span> </a>
+
+    <div class="main-container">
+        <h1>Comprehensive Minimum Wage Economics Explorer</h1>
+
+        <div class="intro-section">
+            <p><strong>Explore the complex economics of minimum wage policy through three interactive
+                    simulations.</strong></p>
+            <p>Each section demonstrates different aspects of how minimum wage laws affect businesses, workers, and
+                employment decisions.</p>
+        </div>
+
+        <!-- Section 1: Car Wash Business Simulation -->
+        <div class="section">
+            <h2>1. Business Impact Simulation: Car Wash Economics</h2>
+            <p>Explore how changing labor costs impact a simple car wash business and the decisions owners must make.
+            </p>
+
+            <div class="status-display" id="status-display">
+                <h3>Current Business Status: <span id="business-model">Manual Hand Wash</span></h3>
+                <p><strong>Number of Employees:</strong> <span id="num-employees">10</span></p>
+                <p><strong>Hourly Wage per Employee:</strong> $<span id="hourly-wage">10.00</span></p>
+                <p><strong>Total Hourly Labor Cost:</strong> $<span id="total-labor-cost">100.00</span></p>
+                <p><strong>Other Hourly Operating Costs:</strong> $<span id="other-operating-costs">250.00</span></p>
+                <p><strong>Total Hourly Costs:</strong> $<span id="total-hourly-costs">350.00</span></p>
+                <p><strong>Hourly Revenue:</strong> $<span id="hourly-revenue">400.00</span></p>
+                <p><strong>Hourly Profit/Loss:</strong> $<span id="hourly-profit-loss">50.00</span></p>
+            </div>
+
+            <div class="messages" id="messages"></div>
+
+            <div class="controls" id="controls">
+                <button id="btn-wage-15">Government Increases Minimum Wage to $15/hour</button>
+                <button id="btn-wage-20" class="hidden">Increased Benefits/Unionization Drives Labor Cost to
+                    $20/hour</button>
+                <button id="btn-explore-automation" class="hidden">Explore Automation Option</button>
+            </div>
+
+            <div class="automation-details hidden" id="automation-details">
+                <h3>Potential Automated Model Metrics:</h3>
+                <p><strong>Business Model:</strong> Automated Car Wash</p>
+                <p><strong>Number of Employees Required:</strong> 2</p>
+                <p><strong>Hourly Wage per Employee:</strong> $<span id="automation-wage">20.00</span></p>
+                <p><strong>Total Hourly Labor Cost (Automated):</strong> $<span id="automation-labor-cost">40.00</span>
+                </p>
+                <p><strong>Hourly Automation Operating Cost:</strong> $<span
+                        id="automation-operating-cost">150.00</span></p>
+                <p><strong>Other Hourly Operating Costs:</strong> $<span id="automation-other-costs">250.00</span></p>
+                <p><strong>Total Hourly Costs (Automated):</strong> $<span id="automation-total-costs">440.00</span></p>
+                <p><strong>Hourly Revenue (Automated):</strong> $<span id="automation-revenue">500.00</span></p>
+                <p><strong>Hourly Profit/Loss (Automated):</strong> $<span id="automation-profit-loss">60.00</span></p>
+                <p style="font-weight: bold; margin-top: 15px;">Note: Switching requires a large upfront investment in
+                    machinery (not shown in hourly costs).</p>
+            </div>
+
+            <div class="decision-point hidden" id="decision-point">
+                <h3>Decision Time:</h3>
+                <p>The business is currently losing money operating manually. What do you do?</p>
+                <button id="btn-continue-manual">Continue with Manual (Unsustainable)</button>
+                <button id="btn-switch-automated">Switch to Automated (Requires Investment)</button>
+                <button id="btn-close-business">Close Business</button>
+            </div>
+
+            <div class="outcome hidden" id="outcome"></div>
+            <div class="key-takeaway hidden" id="key-takeaway"></div>
+        </div>
+
+        <!-- Section 2: Visual Barrier Simulation -->
+        <div class="section">
+            <h2>2. Visual Barrier Simulation: Employment Obstacles</h2>
+            <p>This visualization shows how minimum wage can act as a barrier between workers and employment
+                opportunities.</p>
+
+            <div class="barrier-controls">
+                <div class="control-group">
+                    <label for="productivity">Worker Productivity:</label>
+                    <input type="range" id="productivity" name="productivity" min="1" max="25" value="10" step="0.5">
+                    <span id="productivity-value">$10.0 / hr</span>
+                </div>
+
+                <div class="control-group">
+                    <label for="minimum-wage">Minimum Wage:</label>
+                    <input type="range" id="minimum-wage" name="minimum-wage" min="0" max="20" value="15" step="0.5">
+                    <span id="minimum-wage-value">$15.0 / hr</span>
+                </div>
+            </div>
+
+            <div class="visualization-area">
+                <div class="worker" id="worker"></div>
+                <div class="barrier-container">
+                    <div class="barrier" id="barrier"></div>
+                    <div class="barrier-label" id="barrier-label">Minimum Wage</div>
+                </div>
+                <div class="workplace" id="workplace"></div>
+            </div>
+
+            <div class="outcome-message" id="outcome-message"></div>
+        </div>
+
+        <!-- Section 3: Worker Profile Analysis -->
+        <div class="section worker-profiles-section">
+            <h2>3. Worker Profile Analysis: Cost-Effectiveness Impact</h2>
+
+            <div class="explanation">
+                <p>Businesses make hiring decisions based on the cost of labor and the value (productivity) that workers
+                    provide. When a minimum wage is set by law, it creates a floor below which hourly wages cannot fall.
+                </p>
+                <p>The <strong>Actual Hourly Wage</strong> for a worker is the higher of their Hypothetical Market Wage
+                    and the Minimum Wage.</p>
+                <p><strong>Cost-Effectiveness</strong> is a simplified measure showing the value a worker brings to the
+                    business per dollar spent on their wage (Productivity Value / Actual Hourly Wage). A higher number
+                    indicates greater cost-effectiveness.</p>
+            </div>
+
+            <div class="wage-control-section">
+                <label for="minWageSlider">Set Minimum Hourly Wage:</label>
+                <input type="range" id="minWageSlider" min="0.00" max="25.00" value="7.25" step="0.01">
+                <div>Current Minimum Wage: $<span id="min-wage-display">7.25</span></div>
+            </div>
+
+            <div class="worker-profiles" id="workerProfilesContainer"></div>
+
+            <div class="reflection">
+                <p>Observe how changing the Minimum Wage affects the Actual Wage and Cost-Effectiveness of workers at
+                    different experience levels. Consider how this might influence a business's decisions about whom to
+                    hire, especially for entry-level positions.</p>
+            </div>
+        </div>
+
+        <!-- Final Reflection -->
+        <div class="section">
+            <h2>Key Economic Insights</h2>
+            <div class="reflection">
+                <p><strong>These simulations illustrate several important economic concepts:</strong></p>
+                <ul>
+                    <li><strong>Unintended Consequences:</strong> Policies designed to help workers often lead to job
+                        losses or business closures.</li>
+                    <li><strong>Automation Incentives:</strong> Higher labor costs can accelerate the adoption of
+                        automation technologies, causing further job losses.</li>
+                    <li><strong>Employment Barriers:</strong> Minimum wage laws can prevent low-skilled workers from
+                        gaining employment and developing skills.</li>
+                    <li><strong>Cost-Effectiveness:</strong> Employers evaluate workers based on the value they provide
+                        relative to their cost.</li>
+                </ul>
+                <p>Recognizing these mechanisms is essential for understanding how free labor markets promote
+                    coordination, opportunity, and long-term prosperity.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Car Wash Simulation Variables
+        let businessModel = 'Manual Hand Wash';
+        let numEmployees = 10;
+        let hourlyWage = 10;
+        const otherOperatingCosts = 250;
+        const hourlyRevenueManual = 400;
+        const hourlyRevenueAutomated = 500;
+        const numEmployeesAutomated = 2;
+        const automationOperatingCost = 150;
+
+        // Worker Profile Data
+        const workers = [
+            {
+                name: "Entry-Level Worker",
+                marketWage: 8.00,
+                productivity: 10.00
+            },
+            {
+                name: "Mid-Level Worker",
+                marketWage: 12.00,
+                productivity: 15.00
+            },
+            {
+                name: "Experienced Worker",
+                marketWage: 18.00,
+                productivity: 22.50
+            }
+        ];
+
+        // Get UI Elements - Car Wash
+        const businessModelEl = document.getElementById('business-model');
+        const numEmployeesEl = document.getElementById('num-employees');
+        const hourlyWageEl = document.getElementById('hourly-wage');
+        const totalLaborCostEl = document.getElementById('total-labor-cost');
+        const otherOperatingCostsEl = document.getElementById('other-operating-costs');
+        const totalHourlyCostsEl = document.getElementById('total-hourly-costs');
+        const hourlyRevenueEl = document.getElementById('hourly-revenue');
+        const hourlyProfitLossEl = document.getElementById('hourly-profit-loss');
+        const messagesEl = document.getElementById('messages');
+        const controlsEl = document.getElementById('controls');
+        const btnWage15 = document.getElementById('btn-wage-15');
+        const btnWage20 = document.getElementById('btn-wage-20');
+        const btnExploreAutomation = document.getElementById('btn-explore-automation');
+        const automationDetailsEl = document.getElementById('automation-details');
+        const decisionPointEl = document.getElementById('decision-point');
+        const btnContinueManual = document.getElementById('btn-continue-manual');
+        const btnSwitchAutomated = document.getElementById('btn-switch-automated');
+        const btnCloseBusiness = document.getElementById('btn-close-business');
+        const outcomeEl = document.getElementById('outcome');
+        const keyTakeawayEl = document.getElementById('key-takeaway');
+
+        // Get UI Elements - Barrier Simulation
+        const productivitySlider = document.getElementById('productivity');
+        const minimumWageSlider = document.getElementById('minimum-wage');
+        const productivityValueSpan = document.getElementById('productivity-value');
+        const minimumWageValueSpan = document.getElementById('minimum-wage-value');
+        const workerElement = document.getElementById('worker');
+        const barrierElement = document.getElementById('barrier');
+        const barrierLabelElement = document.getElementById('barrier-label');
+        const workplaceElement = document.getElementById('workplace');
+        const outcomeMessageElement = document.getElementById('outcome-message');
+        const visualizationArea = document.querySelector('.visualization-area');
+
+        // Get UI Elements - Worker Profiles
+        const minWageSlider = document.getElementById('minWageSlider');
+        const minWageDisplay = document.getElementById('min-wage-display');
+        const workerProfilesContainer = document.getElementById('workerProfilesContainer');
+
+        // Car Wash Simulation Functions
+        function updateCarWashStatus() {
+            const currentRevenue = (businessModel === 'Manual Hand Wash') ? hourlyRevenueManual : hourlyRevenueAutomated;
+            const currentNumEmployees = (businessModel === 'Manual Hand Wash') ? numEmployees : numEmployeesAutomated;
+            const currentAutomationCost = (businessModel === 'Automated Car Wash') ? automationOperatingCost : 0;
+
+            const totalLaborCost = currentNumEmployees * hourlyWage;
+            const totalHourlyCosts = totalLaborCost + otherOperatingCosts + currentAutomationCost;
+            const hourlyProfitLoss = currentRevenue - totalHourlyCosts;
+
+            businessModelEl.textContent = businessModel;
+            numEmployeesEl.textContent = currentNumEmployees;
+            hourlyWageEl.textContent = hourlyWage.toFixed(2);
+            totalLaborCostEl.textContent = totalLaborCost.toFixed(2);
+            otherOperatingCostsEl.textContent = otherOperatingCosts.toFixed(2);
+            totalHourlyCostsEl.textContent = totalHourlyCosts.toFixed(2);
+            hourlyRevenueEl.textContent = currentRevenue.toFixed(2);
+            hourlyProfitLossEl.textContent = hourlyProfitLoss.toFixed(2);
+
+            if (hourlyProfitLoss > 0) {
+                hourlyProfitLossEl.style.color = 'green';
+            } else if (hourlyProfitLoss < 0) {
+                hourlyProfitLossEl.style.color = 'red';
+            } else {
+                hourlyProfitLossEl.style.color = '#333';
+            }
+        }
+
+        function displayMessage(text) {
+            messagesEl.innerHTML = `<div class="message">${text}</div>`;
+        }
+
+        function displayAutomationDetails() {
+            const potentialLaborCost = numEmployeesAutomated * hourlyWage;
+            const potentialTotalCosts = potentialLaborCost + otherOperatingCosts + automationOperatingCost;
+            const potentialProfitLoss = hourlyRevenueAutomated - potentialTotalCosts;
+
+            document.getElementById('automation-wage').textContent = hourlyWage.toFixed(2);
+            document.getElementById('automation-labor-cost').textContent = potentialLaborCost.toFixed(2);
+            document.getElementById('automation-operating-cost').textContent = automationOperatingCost.toFixed(2);
+            document.getElementById('automation-other-costs').textContent = otherOperatingCosts.toFixed(2);
+            document.getElementById('automation-total-costs').textContent = potentialTotalCosts.toFixed(2);
+            document.getElementById('automation-revenue').textContent = hourlyRevenueAutomated.toFixed(2);
+            document.getElementById('automation-profit-loss').textContent = potentialProfitLoss.toFixed(2);
+
+            const automationProfitLossEl = document.getElementById('automation-profit-loss');
+            if (potentialProfitLoss > 0) {
+                automationProfitLossEl.style.color = 'green';
+            } else if (potentialProfitLoss < 0) {
+                automationProfitLossEl.style.color = 'red';
+            } else {
+                automationProfitLossEl.style.color = '#333';
+            }
+
+            automationDetailsEl.classList.remove('hidden');
+        }
+
+        function displayOutcome(message, isSuccess = false) {
+            outcomeEl.innerHTML = message;
+            outcomeEl.classList.remove('hidden');
+            if (isSuccess) {
+                outcomeEl.classList.add('success');
+            } else {
+                outcomeEl.classList.remove('success');
+            }
+        }
+
+        function displayKeyTakeaway(message) {
+            keyTakeawayEl.textContent = message;
+            keyTakeawayEl.classList.remove('hidden');
+        }
+
+        // Barrier Simulation Functions
+        const maxBarrierHeight = 0.85 * 200; // 80% of visualization area height
+        const minBarrierHeight = 5;
+
+        function updateBarrierSimulation() {
+            const productivity = parseFloat(productivitySlider.value);
+            const minimumWage = parseFloat(minimumWageSlider.value);
+
+            productivityValueSpan.textContent = `$${productivity.toFixed(1)} / hr`;
+            minimumWageValueSpan.textContent = `$${minimumWage.toFixed(1)} / hr`;
+            barrierLabelElement.textContent = `Min Wage: $${minimumWage.toFixed(1)}`;
+
+            const wageRange = parseFloat(minimumWageSlider.max) - parseFloat(minimumWageSlider.min);
+            const heightRange = maxBarrierHeight - minBarrierHeight;
+            const scaledHeight = minBarrierHeight + ((minimumWage - parseFloat(minimumWageSlider.min)) / wageRange) * heightRange;
+            barrierElement.style.height = `${scaledHeight}px`;
+
+            const isHired = productivity >= minimumWage;
+            animateWorker(isHired, productivity, minimumWage);
+        }
+
+        function animateWorker(isHired, productivity, minimumWage) {
+            workerElement.style.transition = 'none';
+            workerElement.style.left = '10px';
+
+            setTimeout(() => {
+                workerElement.style.transition = 'left 1s ease-in-out';
+
+                if (isHired) {
+                    workerElement.style.left = '520px';
+                    outcomeMessageElement.textContent = "Hired!";
+                    outcomeMessageElement.className = 'outcome-message outcome-hired';
+                } else {
+                    workerElement.style.left = '240px';
+                    outcomeMessageElement.textContent = `Unemployed (Productivity $${productivity.toFixed(1)} < Wage $${minimumWage.toFixed(1)})`;
+                    outcomeMessageElement.className = 'outcome-message outcome-unemployed';
+                }
+            }, 50);
+        }
+
+        // Worker Profile Functions
+        function createWorkerProfileHTML(worker) {
+            return `
+                <div class="worker-profile" data-market-wage="${worker.marketWage}" data-productivity="${worker.productivity}">
+                    <h3>${worker.name}</h3>
+                    <p><strong>Hypothetical Market Wage:</strong> $${worker.marketWage.toFixed(2)}/hr</p>
+                    <p><strong>Hypothetical Productivity Value:</strong> $${worker.productivity.toFixed(2)}/hr</p>
+                    <p><strong>Actual Wage:</strong> $<span class="actual-wage"></span>/hr</p>
+                    <p><strong>Cost-Effectiveness:</strong> <span class="cost-effectiveness"></span></p>
+                </div>
+            `;
+        }
+
+        function updateWorkerProfile(profileElement, currentMinWage) {
+            const marketWage = parseFloat(profileElement.dataset.marketWage);
+            const productivity = parseFloat(profileElement.dataset.productivity);
+
+            const actualWage = Math.max(marketWage, currentMinWage);
+            const costEffectiveness = productivity / actualWage;
+
+            const actualWageSpan = profileElement.querySelector('.actual-wage');
+            const costEffectivenessSpan = profileElement.querySelector('.cost-effectiveness');
+
+            actualWageSpan.textContent = actualWage.toFixed(2);
+            costEffectivenessSpan.textContent = costEffectiveness.toFixed(3);
+
+            if (currentMinWage > marketWage) {
+                actualWageSpan.classList.add('forced');
+            } else {
+                actualWageSpan.classList.remove('forced');
+            }
+        }
+
+        function updateAllWorkerProfiles() {
+            const currentMinWage = parseFloat(minWageSlider.value);
+            minWageDisplay.textContent = currentMinWage.toFixed(2);
+
+            const profileElements = workerProfilesContainer.querySelectorAll('.worker-profile');
+            profileElements.forEach(profileElement => {
+                updateWorkerProfile(profileElement, currentMinWage);
+            });
+        }
+
+        // Event Listeners - Car Wash
+        btnWage15.addEventListener('click', () => {
+            hourlyWage = 15;
+            updateCarWashStatus();
+            displayMessage('Profitability has decreased significantly due to higher labor costs.');
+            btnWage15.classList.add('hidden');
+            btnWage20.classList.remove('hidden');
+        });
+
+        btnWage20.addEventListener('click', () => {
+            hourlyWage = 20;
+            updateCarWashStatus();
+            displayMessage('The business is now operating at a loss. Difficult decisions may be needed.');
+            btnWage20.classList.add('hidden');
+            btnExploreAutomation.classList.remove('hidden');
+        });
+
+        btnExploreAutomation.addEventListener('click', () => {
+            controlsEl.classList.add('hidden');
+            displayAutomationDetails();
+            decisionPointEl.classList.remove('hidden');
+        });
+
+        btnContinueManual.addEventListener('click', () => {
+            decisionPointEl.classList.add('hidden');
+            displayOutcome('Operating manually at a loss is unsustainable. <strong>Business Closed</strong>');
+            displayKeyTakeaway('Raising labor costs can make manual labor too expensive for some businesses, incentivizing automation or leading to closures. While aiming to improve wages, such policies can unintentionally reduce the total number of jobs available, particularly for low-skilled workers.');
+            businessModelEl.textContent = 'Closed';
+            numEmployeesEl.textContent = 0;
+            ['hourly-wage', 'total-labor-cost', 'total-hourly-costs', 'hourly-revenue', 'hourly-profit-loss'].forEach(id => {
+                document.getElementById(id).textContent = '-';
+            });
+        });
+
+        btnSwitchAutomated.addEventListener('click', () => {
+            businessModel = 'Automated Car Wash';
+            numEmployees = numEmployeesAutomated;
+            decisionPointEl.classList.add('hidden');
+            updateCarWashStatus();
+            displayOutcome(`Sparkle Clean invests in automation. The business is now profitable ($${document.getElementById('hourly-profit-loss').textContent}/hour). However, only ${numEmployees} employees are needed. ${10 - numEmployees} jobs were lost. <strong>Automated Operations</strong>`, true);
+            displayKeyTakeaway('Raising labor costs can make manual labor too expensive for some businesses, incentivizing automation or leading to closures. While aiming to improve wages, such policies can unintentionally reduce the total number of jobs available, particularly for low-skilled workers.');
+            automationDetailsEl.classList.add('hidden');
+        });
+
+        btnCloseBusiness.addEventListener('click', () => {
+            decisionPointEl.classList.add('hidden');
+            displayOutcome('The owner decides to close Sparkle Clean. <strong>Business Closed</strong>');
+            displayKeyTakeaway('Raising labor costs can make manual labor too expensive for some businesses, incentivizing automation or leading to closures. While aiming to improve wages, such policies can unintentionally reduce the total number of jobs available, particularly for low-skilled workers.');
+            businessModelEl.textContent = 'Closed';
+            numEmployeesEl.textContent = 0;
+            ['hourly-wage', 'total-labor-cost', 'total-hourly-costs', 'hourly-revenue', 'hourly-profit-loss'].forEach(id => {
+                document.getElementById(id).textContent = '-';
+            });
+        });
+
+        // Event Listeners - Barrier Simulation
+        productivitySlider.addEventListener('input', updateBarrierSimulation);
+        minimumWageSlider.addEventListener('input', updateBarrierSimulation);
+
+        // Event Listeners - Worker Profiles
+        minWageSlider.addEventListener('input', updateAllWorkerProfiles);
+
+        // Initialize all simulations
+        function initializeAll() {
+            // Car Wash
+            updateCarWashStatus();
+
+            // Barrier Simulation
+            updateBarrierSimulation();
+
+            // Worker Profiles
+            workers.forEach(worker => {
+                workerProfilesContainer.innerHTML += createWorkerProfileHTML(worker);
+            });
+            updateAllWorkerProfiles();
+        }
+
+        // Initialize on page load
+        initializeAll();
+    </script>
+</body>
+
+</html>

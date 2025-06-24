@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Regulatory Trap: How Big Business Captures Government</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3.2em;
+            margin-bottom: 15px;
+            font-weight: 300;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .header .subtitle {
+            font-size: 1.5em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            font-style: italic;
+            color: #ffd700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.8;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .rothbard-quote {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #ffd700;
+            padding: 25px;
+            margin: 25px auto;
+            max-width: 900px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            color: white;
+            font-style: italic;
+            font-size: 1.2em;
+            line-height: 1.7;
+        }
+
+        .quote-attribution {
+            text-align: right;
+            margin-top: 15px;
+            font-size: 1em;
+            opacity: 0.9;
+            color: #ffd700;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .simulation-area {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .controls-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            height: fit-content;
+        }
+
+        .section-title {
+            color: #1a1a2e;
+            font-size: 1.5em;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 3px solid #ffd700;
+            padding-bottom: 12px;
+        }
+
+        .market-ecosystem {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+            min-height: 400px;
+        }
+
+        .big-corp-section {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .big-corp-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+
+        .small-business-section {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .startup-section {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .company-icon {
+            font-size: 1.5em;
+        }
+
+        .capacity-visualization {
+            height: 200px;
+            position: relative;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .capacity-bar {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
+            border-radius: 8px 8px 0 0;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .regulatory-burden {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            background: linear-gradient(to top, #e74c3c, #c0392b);
+            border-radius: 8px 8px 0 0;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.9;
+            z-index: 2;
+        }
+
+        .compliance-costs {
+            background: rgba(231, 76, 60, 0.33);
+            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 8px;
+            font-size: 0.8em;
+            text-align: center;
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+
+        .company-stats {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .market-dynamics {
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.05));
+            border-radius: 15px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .dynamics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .dynamic-indicator {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .indicator-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .indicator-value {
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.9em;
+        }
+
+        .positive {
+            background: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+
+        .negative {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        .neutral {
+            background: rgba(149, 165, 166, 0.2);
+            color: #7f8c8d;
+        }
+
+        .warning {
+            background: rgba(241, 196, 15, 0.2);
+            color: #f39c12;
+        }
+
+        .slider-container {
+            margin-bottom: 25px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .slider-value {
+            background: linear-gradient(135deg, #1a1a2e, #ffd700);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .slider {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #2ecc71, #f39c12, #e74c3c);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            margin-bottom: 10px;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #1a1a2e;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            border-color: #ffd700;
+        }
+
+        .regulatory-categories {
+            margin-bottom: 25px;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: rgba(26, 26, 46, 0.05);
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .category-item:hover {
+            background: rgba(26, 26, 46, 0.1);
+        }
+
+        .category-checkbox {
+            margin-right: 12px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .category-label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .category-impact {
+            font-size: 0.8em;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .control-button {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #1a1a2e, #ffd700);
+            color: white;
+            box-shadow: 0 5px 15px rgba(26, 26, 46, 0.3);
+        }
+
+        .control-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26, 26, 46, 0.4);
+        }
+
+        .control-button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .control-button.danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .control-button.danger:hover:not(:disabled) {
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+        }
+
+        .barrier-analysis {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            margin-top: 20px;
+        }
+
+        .analysis-section {
+            margin-bottom: 25px;
+        }
+
+        .analysis-section h3 {
+            color: #1a1a2e;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            border-left: 4px solid #ffd700;
+            padding-left: 15px;
+        }
+
+        .analysis-section p {
+            color: #34495e;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(26, 26, 46, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .highlight-box h4 {
+            color: #1a1a2e;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .regulatory-timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 25px 0;
+            padding: 20px;
+            background: rgba(52, 152, 219, 0.05);
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .timeline-stage {
+            text-align: center;
+            flex: 1;
+            position: relative;
+            z-index: 0;
+        }
+
+        .timeline-stage::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -58%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, transparent);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .timeline-stage:last-child::after {
+            display: none;
+        }
+
+        .stage-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px auto 0px;
+            font-size: 1.2em;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            z-index: 2;
+        }
+
+        .stage-label {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .capture-mechanism {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .mechanism-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .mechanism-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .mechanism-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .mechanism-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .mechanism-description {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+
+        .block-quote {
+            background: #7a7a7a1a;
+            border-left: 4px solid #0051ff;
+            padding: 15px;
+            margin: 0 auto;
+            max-width: 900px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            font-style: italic;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+
+        #block-quote-attribution {
+            color: #0051ff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .market-ecosystem {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dynamics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .capture-mechanism {
+                grid-template-columns: 1fr;
+            }
+
+            .regulatory-timeline {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .timeline-stage::after {
+                display: none;
+            }
+        }
+
+        /* Return button */
+        .return-home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .return-home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        .return-home-button:focus {
+            outline: 2px solid rgba(255, 255, 255, 0.8);
+            outline-offset: 2px;
+        }
+
+        .return-home-button .icon {
+            font-size: 1.1em;
+            transition: transform 0.3s ease;
+        }
+
+        .return-home-button:hover .icon {
+            transform: translateX(-2px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .return-home-button {
+                top: 15px;
+                left: 15px;
+                padding: 10px 16px;
+                font-size: 0.85em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .return-home-button {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin: 15px;
+                display: inline-flex;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index.html" class="return-home-button" aria-label="Return to Interactive Freedom Project homepage">
+        <span class="icon">←</span>
+        <span>Home</span> </a>
+
+    <div class="app-container">
+        <div class="header">
+            <h1>The Regulatory Trap</h1>
+            <div class="subtitle">How Big Business Captures Government</div>
+            <p>Explore how regulations, ostensibly designed to protect consumers, actually serve to entrench established
+                players and create barriers to entry for innovative competitors.</p>
+        </div>
+
+        <div class="rothbard-quote">
+            "Since the State necessarily lives by the compulsory confiscation of private capital, and since its
+            expansion necessarily
+            involves ever-greater incursions on private individuals and private enterprise, we must assert that the
+            state is
+            profoundly and inherently anti-capitalist."
+            <div class="quote-attribution">— Murray N. Rothbard, "Anatomy of the State"</div>
+        </div>
+
+        <div class="main-content">
+            <div class="simulation-area">
+                <h3 class="section-title">Market Impact Simulation</h3>
+
+                <div class="market-ecosystem">
+                    <div class="big-corp-section">
+                        <div class="company-title">
+                            <span class="company-icon">🏢</span>
+                            MegaCorp Industries
+                        </div>
+                        <div class="compliance-costs" id="bigCorpCosts">
+                            Compliance: $<span id="bigCorpCostValue">0</span>M
+                        </div>
+                        <div class="capacity-visualization">
+                            <div class="capacity-bar" id="bigCorpCapacity"></div>
+                            <div class="regulatory-burden" id="bigCorpBurden"></div>
+
+                        </div>
+                        <div class="company-stats">
+                            <div class="stat-item">
+                                <span>Base Capacity</span>
+                                <span class="stat-value" id="bigCorpBaseCapacity">1000</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Effective Capacity</span>
+                                <span class="stat-value" id="bigCorpEffective">1000</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Market Share</span>
+                                <span class="stat-value" id="bigCorpShare">45%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Lobbying Power</span>
+                                <span class="stat-value" id="bigCorpLobby">High</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="small-business-section">
+                        <div class="company-title">
+                            <span class="company-icon">🏪</span>
+                            Local Business
+                        </div>
+                        <div class="compliance-costs" id="smallBizCosts">
+                            Compliance: $<span id="smallBizCostValue">0</span>K
+                        </div>
+                        <div class="capacity-visualization">
+                            <div class="capacity-bar" id="smallBizCapacity"></div>
+                            <div class="regulatory-burden" id="smallBizBurden"></div>
+
+                        </div>
+                        <div class="company-stats">
+                            <div class="stat-item">
+                                <span>Base Capacity</span>
+                                <span class="stat-value" id="smallBizBaseCapacity">100</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Effective Capacity</span>
+                                <span class="stat-value" id="smallBizEffective">100</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Market Share</span>
+                                <span class="stat-value" id="smallBizShare">25%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Survival Risk</span>
+                                <span class="stat-value" id="smallBizRisk">Low</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="startup-section">
+                        <div class="company-title">
+                            <span class="company-icon">🚀</span>
+                            Tech Startup
+                        </div>
+                        <div class="compliance-costs" id="startupCosts">
+                            Compliance: $<span id="startupCostValue">0</span>K
+                        </div>
+                        <div class="capacity-visualization">
+                            <div class="capacity-bar" id="startupCapacity"></div>
+                            <div class="regulatory-burden" id="startupBurden"></div>
+
+                        </div>
+                        <div class="company-stats">
+                            <div class="stat-item">
+                                <span>Base Capacity</span>
+                                <span class="stat-value" id="startupBaseCapacity">50</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Effective Capacity</span>
+                                <span class="stat-value" id="startupEffective">50</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Innovation Rate</span>
+                                <span class="stat-value" id="startupInnovation">High</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Entry Barrier</span>
+                                <span class="stat-value" id="startupBarrier">Low</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="market-dynamics">
+                    <h4 style="margin-bottom: 15px; color: #2c3e50; text-align: center;">Market Dynamics Analysis</h4>
+                    <div class="dynamics-grid">
+                        <div class="dynamic-indicator">
+                            <span class="indicator-label">Competition Level</span>
+                            <span class="indicator-value" id="competitionLevel">High</span>
+                        </div>
+                        <div class="dynamic-indicator">
+                            <span class="indicator-label">Innovation Rate</span>
+                            <span class="indicator-value" id="innovationRate">Rapid</span>
+                        </div>
+                        <div class="dynamic-indicator">
+                            <span class="indicator-label">Market Concentration</span>
+                            <span class="indicator-value" id="marketConcentration">Low</span>
+                        </div>
+                        <div class="dynamic-indicator">
+                            <span class="indicator-label">Consumer Choice</span>
+                            <span class="indicator-value" id="consumerChoice">Abundant</span>
+                        </div>
+                        <div class="dynamic-indicator">
+                            <span class="indicator-label">Regulatory Capture</span>
+                            <span class="indicator-value" id="regulatoryCapture">Minimal</span>
+                        </div>
+                        <div class="dynamic-indicator">
+                            <span class="indicator-label">Crony Capitalism</span>
+                            <span class="indicator-value" id="cronyCap">Low Risk</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <h3 class="section-title">Regulatory Environment</h3>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Overall Regulation Level</span>
+                        <span class="slider-value" id="regulationLevelValue">Minimal</span>
+                    </div>
+                    <input type="range" class="slider" id="regulationLevelSlider" min="0" max="100" value="10">
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Compliance Complexity</span>
+                        <span class="slider-value" id="complexityValue">Simple</span>
+                    </div>
+                    <input type="range" class="slider" id="complexitySlider" min="1" max="10" value="2">
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Lobbying Influence</span>
+                        <span class="slider-value" id="lobbyingValue">Low</span>
+                    </div>
+                    <input type="range" class="slider" id="lobbyingSlider" min="0" max="100" value="20">
+                </div>
+
+                <div class="regulatory-categories">
+                    <h4 style="margin-bottom: 15px; color: #2c3e50;">Regulatory Categories</h4>
+                    <div class="category-item">
+                        <input type="checkbox" class="category-checkbox" id="environmental" checked>
+                        <label for="environmental" class="category-label">Environmental Compliance</label>
+                        <span class="category-impact warning">Medium Impact</span>
+                    </div>
+                    <div class="category-item">
+                        <input type="checkbox" class="category-checkbox" id="safety">
+                        <label for="safety" class="category-label">Safety & Health Standards</label>
+                        <span class="category-impact positive">Low Impact</span>
+                    </div>
+                    <div class="category-item">
+                        <input type="checkbox" class="category-checkbox" id="financial">
+                        <label for="financial" class="category-label">Financial Reporting</label>
+                        <span class="category-impact negative">High Impact</span>
+                    </div>
+                    <div class="category-item">
+                        <input type="checkbox" class="category-checkbox" id="licensing">
+                        <label for="licensing" class="category-label">Professional Licensing</label>
+                        <span class="category-impact negative">High Impact</span>
+                    </div>
+                    <div class="category-item">
+                        <input type="checkbox" class="category-checkbox" id="dataPrivacy">
+                        <label for="dataPrivacy" class="category-label">Data Privacy Laws</label>
+                        <span class="category-impact warning">Medium Impact</span>
+                    </div>
+                </div>
+
+                <button class="control-button" id="simulateCapture">Simulate Regulatory Capture</button>
+                <button class="control-button" id="freeMarket">Return to Free Market</button>
+                <button class="control-button danger" id="resetSimulation">Reset Simulation</button>
+            </div>
+        </div>
+
+        <div class="barrier-analysis">
+            <h3 class="section-title">Austrian Analysis: The Regulatory Trap Mechanism</h3>
+
+            <div class="analysis-section">
+                <h3>🎯 The Capture Process</h3>
+                <p>
+                    Austrian economists have long recognized that regulations, regardless of their stated intentions,
+                    tend to benefit established players at the expense of potential competitors. This occurs through
+                    several mechanisms that create artificial barriers to entry and reduce market dynamism.
+                </p>
+
+                <div class="regulatory-timeline">
+                    <div class="timeline-stage">
+                        <div class="stage-icon">💡</div>
+                        <div class="stage-label">Innovation Emerges</div>
+                    </div>
+                    <div class="timeline-stage">
+                        <div class="stage-icon">🏢</div>
+                        <div class="stage-label">Big Players Lobby</div>
+                    </div>
+                    <div class="timeline-stage">
+                        <div class="stage-icon">📜</div>
+                        <div class="stage-label">Regulations Created</div>
+                    </div>
+                    <div class="timeline-stage">
+                        <div class="stage-icon">🚫</div>
+                        <div class="stage-label">Barriers Erected</div>
+                    </div>
+                    <div class="timeline-stage">
+                        <div class="stage-icon">👑</div>
+                        <div class="stage-label">Incumbents Protected</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>⚖️ Disproportionate Impact</h3>
+                <p>
+                    The key insight is that regulatory compliance costs are largely fixed costs. A $100,000 compliance
+                    burden represents 0.01% of a billion-dollar corporation's revenue but 10% of a million-dollar
+                    startup's revenue. This mathematical reality creates an insurmountable advantage for large,
+                    established players.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>The Austrian Insight:</h4>
+                    <p>Regulations don't level the playing field—they tilt it toward those with the resources to
+                        navigate bureaucratic complexity and the political connections to influence rule-making.</p>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🔄 Capture Mechanisms</h3>
+                <div class="capture-mechanism">
+                    <div class="mechanism-card">
+                        <div class="mechanism-icon">🎭</div>
+                        <div class="mechanism-title">Revolving Door</div>
+                        <div class="mechanism-description">Regulators move between government and industry, creating
+                            aligned interests</div>
+                    </div>
+                    <div class="mechanism-card">
+                        <div class="mechanism-icon">💰</div>
+                        <div class="mechanism-title">Lobbying Power</div>
+                        <div class="mechanism-description">Large firms can afford professional lobbyists to shape
+                            regulations</div>
+                    </div>
+                    <div class="mechanism-card">
+                        <div class="mechanism-icon">📚</div>
+                        <div class="mechanism-title">Complexity Advantage</div>
+                        <div class="mechanism-description">Complex rules favor those with dedicated compliance
+                            departments</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🚀 The Free Market Alternative</h3>
+                <p>
+                    In truly free markets, consumer choice and competitive pressure provide natural regulation.
+                    Companies that harm consumers lose market share to competitors. Innovation flourishes when
+                    entrepreneurs aren't burdened by regulatory compliance costs that favor established players.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>Market-Based Solutions:</h4>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Reputation and brand value incentivize quality</li>
+                        <li>Competition drives continuous improvement</li>
+                        <li>Consumer choice punishes bad actors</li>
+                        <li>Innovation isn't stifled by compliance costs</li>
+                        <li>Entry barriers remain naturally low</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>⚠️ The Crony Capitalism Trap</h3>
+                <p>
+                    What emerges is not capitalism but crony capitalism—a system where success depends more on political
+                    connections than on serving consumers. This perverts the market mechanism and leads to economic
+                    stagnation, reduced innovation, and higher prices for consumers.
+                </p>
+            </div>
+
+            <div class="block-quote">
+                "If you're a businessman and you raise prices, you are guilty of profiteering. If you lower prices, you
+                are
+                guilty of predatory
+                price cutting, and if you don't change prices, you are guilty of collusion. The point is, no matter what
+                you do, they can come to get you."
+                <div id="block-quote-attribution" class="quote-attribution">— Walter Block</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class RegulatoryTrapSimulator {
+            constructor() {
+                this.regulationLevel = 10;
+                this.complexity = 2;
+                this.lobbyingInfluence = 20;
+
+                this.companies = {
+                    bigCorp: {
+                        baseCapacity: 1000,
+                        resources: 10000,
+                        lobbyingPower: 100,
+                        complianceEfficiency: 0.9
+                    },
+                    smallBiz: {
+                        baseCapacity: 100,
+                        resources: 500,
+                        lobbyingPower: 5,
+                        complianceEfficiency: 0.6
+                    },
+                    startup: {
+                        baseCapacity: 50,
+                        resources: 100,
+                        lobbyingPower: 1,
+                        complianceEfficiency: 0.4
+                    }
+                };
+
+                this.regulatoryCategories = {
+                    environmental: { active: true, impact: 0.3 },
+                    safety: { active: false, impact: 0.2 },
+                    financial: { active: false, impact: 0.5 },
+                    licensing: { active: false, impact: 0.6 },
+                    dataPrivacy: { active: false, impact: 0.4 }
+                };
+
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.updateSimulation();
+            }
+
+            bindEvents() {
+                // Sliders
+                document.getElementById('regulationLevelSlider').addEventListener('input', (e) => {
+                    this.regulationLevel = parseInt(e.target.value);
+                    this.updateSliderDisplays();
+                    this.updateSimulation();
+                });
+
+                document.getElementById('complexitySlider').addEventListener('input', (e) => {
+                    this.complexity = parseInt(e.target.value);
+                    this.updateSliderDisplays();
+                    this.updateSimulation();
+                });
+
+                document.getElementById('lobbyingSlider').addEventListener('input', (e) => {
+                    this.lobbyingInfluence = parseInt(e.target.value);
+                    this.updateSliderDisplays();
+                    this.updateSimulation();
+                });
+
+                // Checkboxes
+                Object.keys(this.regulatoryCategories).forEach(category => {
+                    document.getElementById(category).addEventListener('change', (e) => {
+                        this.regulatoryCategories[category].active = e.target.checked;
+                        this.updateSimulation();
+                    });
+                });
+
+                // Control buttons
+                document.getElementById('simulateCapture').addEventListener('click', () => this.simulateCapture());
+                document.getElementById('freeMarket').addEventListener('click', () => this.returnToFreeMarket());
+                document.getElementById('resetSimulation').addEventListener('click', () => this.resetSimulation());
+
+                this.updateSliderDisplays();
+            }
+
+            updateSliderDisplays() {
+                // Regulation level
+                let regLabel = 'Minimal';
+                if (this.regulationLevel > 70) regLabel = 'Excessive';
+                else if (this.regulationLevel > 40) regLabel = 'Heavy';
+                else if (this.regulationLevel > 20) regLabel = 'Moderate';
+                document.getElementById('regulationLevelValue').textContent = regLabel;
+
+                // Complexity
+                let complexityLabel = 'Simple';
+                if (this.complexity > 7) complexityLabel = 'Byzantine';
+                else if (this.complexity > 5) complexityLabel = 'Complex';
+                else if (this.complexity > 3) complexityLabel = 'Moderate';
+                document.getElementById('complexityValue').textContent = complexityLabel;
+
+                // Lobbying
+                let lobbyLabel = 'Low';
+                if (this.lobbyingInfluence > 70) lobbyLabel = 'Dominant';
+                else if (this.lobbyingInfluence > 40) lobbyLabel = 'High';
+                else if (this.lobbyingInfluence > 20) lobbyLabel = 'Moderate';
+                document.getElementById('lobbyingValue').textContent = lobbyLabel;
+            }
+
+            calculateComplianceCosts(company) {
+                let baseCost = this.regulationLevel * this.complexity * 10;
+
+                // Add category-specific costs
+                Object.values(this.regulatoryCategories).forEach(category => {
+                    if (category.active) {
+                        baseCost += baseCost * category.impact;
+                    }
+                });
+
+                // Apply company-specific efficiency
+                const adjustedCost = baseCost / company.complianceEfficiency;
+
+                // Lobbying influence can reduce costs for those with power
+                const lobbyingDiscount = (company.lobbyingPower / 100) * (this.lobbyingInfluence / 100) * 0.5;
+
+                return Math.max(0, adjustedCost * (1 - lobbyingDiscount));
+            }
+
+            updateSimulation() {
+                Object.keys(this.companies).forEach(companyKey => {
+                    const company = this.companies[companyKey];
+                    const complianceCost = this.calculateComplianceCosts(company);
+                    const effectiveCapacity = Math.max(0, company.baseCapacity - (complianceCost / 10));
+
+                    this.updateCompanyDisplay(companyKey, company, complianceCost, effectiveCapacity);
+                });
+
+                this.updateMarketDynamics();
+            }
+
+            updateCompanyDisplay(companyKey, company, complianceCost, effectiveCapacity) {
+                const prefix = companyKey === 'bigCorp' ? 'bigCorp' :
+                    companyKey === 'smallBiz' ? 'smallBiz' : 'startup';
+
+                // Update capacity visualization
+                const capacityBar = document.getElementById(`${prefix}Capacity`);
+                const burdenBar = document.getElementById(`${prefix}Burden`);
+
+                const capacityPercent = (effectiveCapacity / company.baseCapacity) * 100;
+                const burdenPercent = ((complianceCost / 10) / company.baseCapacity) * 100;
+
+                capacityBar.style.height = `${Math.min(100, capacityPercent + burdenPercent)}%`;
+                burdenBar.style.height = `${Math.min(100, burdenPercent)}%`;
+
+                // Update cost display
+                const costUnit = companyKey === 'bigCorp' ? 'M' : 'K';
+                const costValue = companyKey === 'bigCorp' ?
+                    (complianceCost / 1000).toFixed(1) :
+                    complianceCost.toFixed(0);
+
+                document.getElementById(`${prefix}CostValue`).textContent = costValue;
+                document.getElementById(`${prefix}Effective`).textContent = Math.round(effectiveCapacity);
+
+                // Update additional stats
+                if (companyKey === 'bigCorp') {
+                    const marketShare = Math.min(80, 45 + (this.regulationLevel / 100) * 20);
+                    document.getElementById('bigCorpShare').textContent = `${marketShare.toFixed(0)}%`;
+
+                    let lobbyPower = 'High';
+                    if (this.lobbyingInfluence > 70) lobbyPower = 'Dominant';
+                    document.getElementById('bigCorpLobby').textContent = lobbyPower;
+                } else if (companyKey === 'smallBiz') {
+                    const marketShare = Math.max(5, 25 - (this.regulationLevel / 100) * 15);
+                    document.getElementById('smallBizShare').textContent = `${marketShare.toFixed(0)}%`;
+
+                    let risk = 'Low';
+                    if (burdenPercent > 60) risk = 'Critical';
+                    else if (burdenPercent > 40) risk = 'High';
+                    else if (burdenPercent > 20) risk = 'Moderate';
+                    document.getElementById('smallBizRisk').textContent = risk;
+                } else {
+                    let innovation = 'High';
+                    if (burdenPercent > 50) innovation = 'Stifled';
+                    else if (burdenPercent > 30) innovation = 'Reduced';
+                    else if (burdenPercent > 15) innovation = 'Moderate';
+                    document.getElementById('startupInnovation').textContent = innovation;
+
+                    let barrier = 'Low';
+                    if (this.regulationLevel > 60) barrier = 'Insurmountable';
+                    else if (this.regulationLevel > 40) barrier = 'High';
+                    else if (this.regulationLevel > 20) barrier = 'Moderate';
+                    document.getElementById('startupBarrier').textContent = barrier;
+                }
+            }
+
+            updateMarketDynamics() {
+                // Competition Level
+                let competition = 'High';
+                if (this.regulationLevel > 60) competition = 'Oligopoly';
+                else if (this.regulationLevel > 40) competition = 'Limited';
+                else if (this.regulationLevel > 20) competition = 'Moderate';
+
+                const competitionEl = document.getElementById('competitionLevel');
+                competitionEl.textContent = competition;
+                competitionEl.className = `indicator-value ${this.regulationLevel > 40 ? 'negative' : 'positive'}`;
+
+                // Innovation Rate
+                let innovation = 'Rapid';
+                if (this.regulationLevel > 50) innovation = 'Stagnant';
+                else if (this.regulationLevel > 30) innovation = 'Slow';
+                else if (this.regulationLevel > 15) innovation = 'Moderate';
+
+                const innovationEl = document.getElementById('innovationRate');
+                innovationEl.textContent = innovation;
+                innovationEl.className = `indicator-value ${this.regulationLevel > 30 ? 'negative' : 'positive'}`;
+
+                // Market Concentration
+                let concentration = 'Low';
+                if (this.regulationLevel > 60) concentration = 'Monopolistic';
+                else if (this.regulationLevel > 40) concentration = 'High';
+                else if (this.regulationLevel > 20) concentration = 'Moderate';
+
+                const concentrationEl = document.getElementById('marketConcentration');
+                concentrationEl.textContent = concentration;
+                concentrationEl.className = `indicator-value ${this.regulationLevel > 40 ? 'negative' : 'positive'}`;
+
+                // Consumer Choice
+                let choice = 'Abundant';
+                if (this.regulationLevel > 60) choice = 'Limited';
+                else if (this.regulationLevel > 40) choice = 'Reduced';
+                else if (this.regulationLevel > 20) choice = 'Moderate';
+
+                const choiceEl = document.getElementById('consumerChoice');
+                choiceEl.textContent = choice;
+                choiceEl.className = `indicator-value ${this.regulationLevel > 40 ? 'negative' : 'positive'}`;
+
+                // Regulatory Capture
+                let capture = 'Minimal';
+                if (this.lobbyingInfluence > 70) capture = 'Complete';
+                else if (this.lobbyingInfluence > 50) capture = 'Significant';
+                else if (this.lobbyingInfluence > 30) capture = 'Moderate';
+
+                const captureEl = document.getElementById('regulatoryCapture');
+                captureEl.textContent = capture;
+                captureEl.className = `indicator-value ${this.lobbyingInfluence > 50 ? 'negative' : this.lobbyingInfluence > 30 ? 'warning' : 'positive'}`;
+
+                // Crony Capitalism
+                let crony = 'Low Risk';
+                if (this.regulationLevel > 50 && this.lobbyingInfluence > 50) crony = 'Dominant';
+                else if (this.regulationLevel > 30 && this.lobbyingInfluence > 30) crony = 'High Risk';
+                else if (this.regulationLevel > 20 || this.lobbyingInfluence > 20) crony = 'Moderate Risk';
+
+                const cronyEl = document.getElementById('cronyCap');
+                cronyEl.textContent = crony;
+                cronyEl.className = `indicator-value ${crony.includes('Dominant') ? 'negative' : crony.includes('High') ? 'warning' : 'positive'}`;
+            }
+
+            simulateCapture() {
+                this.regulationLevel = 80;
+                this.complexity = 8;
+                this.lobbyingInfluence = 90;
+
+                // Enable high-impact regulations
+                this.regulatoryCategories.financial.active = true;
+                this.regulatoryCategories.licensing.active = true;
+                this.regulatoryCategories.dataPrivacy.active = true;
+
+                this.updateControls();
+                this.updateSimulation();
+            }
+
+            returnToFreeMarket() {
+                this.regulationLevel = 5;
+                this.complexity = 1;
+                this.lobbyingInfluence = 10;
+
+                // Disable most regulations
+                Object.keys(this.regulatoryCategories).forEach(key => {
+                    this.regulatoryCategories[key].active = false;
+                });
+                this.regulatoryCategories.safety.active = true; // Keep basic safety
+
+                this.updateControls();
+                this.updateSimulation();
+            }
+
+            resetSimulation() {
+                this.regulationLevel = 10;
+                this.complexity = 2;
+                this.lobbyingInfluence = 20;
+
+                // Reset to initial state
+                this.regulatoryCategories.environmental.active = true;
+                this.regulatoryCategories.safety.active = false;
+                this.regulatoryCategories.financial.active = false;
+                this.regulatoryCategories.licensing.active = false;
+                this.regulatoryCategories.dataPrivacy.active = false;
+
+                this.updateControls();
+                this.updateSimulation();
+            }
+
+            updateControls() {
+                document.getElementById('regulationLevelSlider').value = this.regulationLevel;
+                document.getElementById('complexitySlider').value = this.complexity;
+                document.getElementById('lobbyingSlider').value = this.lobbyingInfluence;
+
+                Object.keys(this.regulatoryCategories).forEach(key => {
+                    document.getElementById(key).checked = this.regulatoryCategories[key].active;
+                });
+
+                this.updateSliderDisplays();
+            }
+        }
+
+        // Initialize the simulator when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new RegulatoryTrapSimulator();
+        });
+    </script>
+</body>
+
+</html>

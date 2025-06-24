@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culture, Institutions & Prosperity: A Civilization Simulator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .simulation-area {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .civilization-view {
+            background: linear-gradient(to bottom, #87CEEB 0%, #87CEEB 30%, #90EE90 30%, #228B22 100%);
+            border-radius: 15px;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.8s ease;
+        }
+
+        .civilization-buildings {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            transition: all 0.6s ease;
+        }
+
+        .building {
+            background: linear-gradient(to top, #34495e, #2c3e50);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .building::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 10%;
+            right: 10%;
+            height: 4px;
+            background: #f39c12;
+            border-radius: 2px;
+        }
+
+        .building.prosperity-1 {
+            width: 20px;
+            height: 40px;
+            background: linear-gradient(to top, #7f8c8d, #95a5a6);
+        }
+
+        .building.prosperity-2 {
+            width: 25px;
+            height: 60px;
+            background: linear-gradient(to top, #34495e, #2c3e50);
+        }
+
+        .building.prosperity-3 {
+            width: 30px;
+            height: 80px;
+            background: linear-gradient(to top, #2980b9, #3498db);
+        }
+
+        .building.prosperity-4 {
+            width: 35px;
+            height: 100px;
+            background: linear-gradient(to top, #27ae60, #2ecc71);
+        }
+
+        .building.prosperity-5 {
+            width: 40px;
+            height: 120px;
+            background: linear-gradient(to top, #f39c12, #f1c40f);
+        }
+
+        .civilization-effects {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        .effect-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #f1c40f;
+            border-radius: 50%;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 0;
+            }
+
+            50% {
+                transform: translateY(-50px) scale(1.5);
+                opacity: 1;
+            }
+        }
+
+        .metrics-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .metrics-panel h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+
+        .metric-item {
+            margin-bottom: 20px;
+        }
+
+        .metric-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .metric-value {
+            font-size: 1.1em;
+            padding: 4px 12px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .metric-bar {
+            height: 12px;
+            background: #ecf0f1;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .metric-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: all 0.6s ease;
+            position: relative;
+        }
+
+        .metric-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .prosperity .metric-fill {
+            background: linear-gradient(90deg, #e74c3c, #f39c12, #f1c40f);
+        }
+
+        .innovation .metric-fill {
+            background: linear-gradient(90deg, #9b59b6, #8e44ad);
+        }
+
+        .social-capital .metric-fill {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .inequality .metric-fill {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+        }
+
+        .prosperity .metric-value {
+            background: linear-gradient(135deg, #f39c12, #f1c40f);
+        }
+
+        .innovation .metric-value {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+
+        .social-capital .metric-value {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        .inequality .metric-value {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+
+        .choices-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .choice-category {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .choice-category:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .choice-category h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .choice-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .work-ethic .choice-icon {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+
+        .governance .choice-icon {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        .capital .choice-icon {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+
+        .education .choice-icon {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+
+        .trade .choice-icon {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .choice-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .choice-button {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 0.9em;
+            line-height: 1.4;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .choice-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .choice-button:hover::before {
+            left: 100%;
+        }
+
+        .choice-button:hover {
+            border-color: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.2);
+        }
+
+        .choice-button.selected {
+            border-color: #2ecc71;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            transform: scale(1.02);
+        }
+
+        .choice-button.negative {
+            border-color: #e74c3c;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .feedback-area {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            border-left: 5px solid #3498db;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feedback-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #3498db, #2980b9);
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .feedback-text {
+            color: #34495e;
+            line-height: 1.6;
+        }
+
+        .impact-summary {
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .impact-item {
+            text-align: center;
+            padding: 8px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .impact-value {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .impact-positive {
+            color: #27ae60;
+        }
+
+        .impact-negative {
+            color: #e74c3c;
+        }
+
+        .impact-neutral {
+            color: #7f8c8d;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .control-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reset-button {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .auto-play-button {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .civilization-status {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+        }
+
+        .turn-counter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(52, 152, 219, 0.9);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .choice-options {
+                flex-direction: column;
+            }
+
+            .impact-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Return button */
+        .return-home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .return-home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        .return-home-button:focus {
+            outline: 2px solid rgba(255, 255, 255, 0.8);
+            outline-offset: 2px;
+        }
+
+        .return-home-button .icon {
+            font-size: 1.1em;
+            transition: transform 0.3s ease;
+        }
+
+        .return-home-button:hover .icon {
+            transform: translateX(-2px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .return-home-button {
+                top: 15px;
+                left: 15px;
+                padding: 10px 16px;
+                font-size: 0.85em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .return-home-button {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin: 15px;
+                display: inline-flex;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index.html" class="return-home-button" aria-label="Return to Interactive Freedom Project homepage">
+        <span class="icon">←</span>
+        <span>Home</span> </a>
+
+    <div class="app-container">
+        <div class="header">
+            <h1>Culture, Institutions & Prosperity</h1>
+            <p>A Civilization Simulator showing how values, institutions, and voluntary cooperation shape prosperity and
+                resilience
+                over time</p>
+        </div>
+
+        <div class="main-content">
+            <div class="simulation-area">
+                <div class="civilization-view" id="civilizationView">
+                    <div class="civilization-status" id="civilizationStatus">Developing Society</div>
+                    <div class="turn-counter" id="turnCounter">Turn: 1</div>
+                    <div class="civilization-buildings" id="buildings"></div>
+                    <div class="civilization-effects" id="effects"></div>
+                </div>
+
+                <div class="choices-section">
+                    <div class="choice-category work-ethic">
+                        <h3><span class="choice-icon">⚒️</span>Work Ethic & Values</h3>
+                        <div class="choice-options">
+                            <div class="choice-button" data-category="workEthic" data-option="productive">
+                                <strong>Productive Culture</strong><br>
+                                Value responsibility, practical skills, and the freedom to thrive through one's own
+                                effort
+                            </div>
+                            <div class="choice-button" data-category="workEthic" data-option="extractive">
+                                <strong>Status-Oriented</strong><br>
+                                Prioritize status and connections over work and skill, limiting opportunity and upward
+                                mobility
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="choice-category governance">
+                        <h3><span class="choice-icon">🏛️</span>Institutions & Accountability</h3>
+                        <div class="choice-options">
+                            <div class="choice-button" data-category="governance" data-option="inclusive">
+                                <strong>Inclusive Institutions</strong><br>
+                                Stable rules, fair enforcement, and respect for individual rights
+                            </div>
+                            <div class="choice-button" data-category="governance" data-option="extractive">
+                                <strong>Extractive Institutions</strong><br>
+                                Centralized power, top-down control and legal favoritism
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="choice-category capital">
+                        <h3><span class="choice-icon">💰</span>Entrepreneurship & Access to Capital</h3>
+                        <div class="choice-options">
+                            <div class="choice-button" data-category="capital" data-option="inclusive">
+                                <strong>Broad Access</strong><br>
+                                Open financial markets, voluntary savings, and free capital flow
+                            </div>
+                            <div class="choice-button" data-category="capital" data-option="extractive">
+                                <strong>Elite Networks</strong><br>
+                                Limited access to credit, high taxation, and overregulation
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="choice-category education">
+                        <h3><span class="choice-icon">📚</span>Education & Knowledge</h3>
+                        <div class="choice-options">
+                            <div class="choice-button" data-category="education" data-option="inclusive">
+                                <strong>Free Education</strong><br>
+                                Decentralized learning, practical education, and free thinking
+                            </div>
+                            <div class="choice-button" data-category="education" data-option="extractive">
+                                <strong>State Education</strong><br>
+                                Centralized education, professional licensing, and indoctrination
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="choice-category trade">
+                        <h3><span class="choice-icon">🌐</span>Trade & Markets</h3>
+                        <div class="choice-options">
+                            <div class="choice-button" data-category="trade" data-option="inclusive">
+                                <strong>Open Markets</strong><br>
+                                Voluntary trade, consumer sovereignty, and peaceful cooperation
+                            </div>
+                            <div class="choice-button" data-category="trade" data-option="extractive">
+                                <strong>Protected Markets</strong><br>
+                                Protectionism, forced monopolies and rent-seeking behavior
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metrics-panel">
+                <h2>Societal Metrics</h2>
+
+                <div class="metric-item prosperity">
+                    <div class="metric-label">
+                        <span>Economic Prosperity</span>
+                        <span class="metric-value" id="prosperityValue">50</span>
+                    </div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="prosperityBar" style="width: 50%"></div>
+                    </div>
+                </div>
+
+                <div class="metric-item innovation">
+                    <div class="metric-label">
+                        <span>Innovation Index</span>
+                        <span class="metric-value" id="innovationValue">50</span>
+                    </div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="innovationBar" style="width: 50%"></div>
+                    </div>
+                </div>
+
+                <div class="metric-item social-capital">
+                    <div class="metric-label">
+                        <span>Social Capital</span>
+                        <span class="metric-value" id="socialCapitalValue">50</span>
+                    </div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="socialCapitalBar" style="width: 50%"></div>
+                    </div>
+                </div>
+
+                <div class="metric-item inequality">
+                    <div class="metric-label">
+                        <span>Opportunity Index</span>
+                        <span class="metric-value" id="inequalityValue">50</span>
+                    </div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="inequalityBar" style="width: 50%"></div>
+                    </div>
+                </div>
+
+                <div class="feedback-area" id="feedbackArea">
+                    <div class="feedback-title">Welcome to the Civilization Simulator</div>
+                    <div class="feedback-text">
+                        Shape your society by choosing values and institutions that promote freedom, trust, and
+                        opportunity, or the contrary. Every decision has
+                        trade-offs that affect prosperity, innovation, social cohesion and individual opportunity.
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="control-button reset-button" id="resetButton">Reset Civilization</button>
+                    <button class="control-button auto-play-button" id="autoPlayButton">Auto-Play Mode</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class CivilizationSimulator {
+            constructor() {
+                this.metrics = {
+                    prosperity: 50,
+                    innovation: 50,
+                    socialCapital: 50,
+                    inequality: 50
+                };
+
+                this.choices = {
+                    workEthic: null,
+                    governance: null,
+                    capital: null,
+                    education: null,
+                    trade: null
+                };
+
+                this.turn = 1;
+                this.autoPlay = false;
+                this.autoPlayInterval = null;
+
+                this.choiceEffects = {
+                    workEthic: {
+                        productive: {
+                            prosperity: 12, innovation: 8, socialCapital: 6, inequality: 8,
+                            description: "A culture that values self-responsibility and productive work fosters bottom-up prosperity and personal growth."
+                        },
+                        extractive: {
+                            prosperity: -8, innovation: -6, socialCapital: -4, inequality: -12,
+                            description: "When manual labor is devalued and status is tied to connections, opportunity and trust decline."
+                        }
+                    },
+                    governance: {
+                        inclusive: {
+                            prosperity: 10, innovation: 12, socialCapital: 10, inequality: 10,
+                            description: "Clear rules, limited centralized power, and respect for rights allow individuals to cooperate and innovate freely."
+                        },
+                        extractive: {
+                            prosperity: -10, innovation: -8, socialCapital: -12, inequality: -15,
+                            description: "Top-down control and favoritism weaken institutions, distort incentives, and restrict opportunity."
+                        }
+                    },
+                    capital: {
+                        inclusive: {
+                            prosperity: 8, innovation: 6, socialCapital: 12, inequality: 12,
+                            description: "When capital flows through open and voluntary markets, more people can build businesses and improve their condition."
+                        },
+                        extractive: {
+                            prosperity: -6, innovation: -4, socialCapital: -10, inequality: -14,
+                            description: "Access to finance limited by political favor concentrates power and shuts out productive innovation."
+                        }
+                    },
+                    education: {
+                        inclusive: {
+                            prosperity: 6, innovation: 15, socialCapital: 8, inequality: 10,
+                            description: "Accessible and flexible learning equips individuals to adapt, innovate, and contribute meaningfully to society."
+                        },
+                        extractive: {
+                            prosperity: -4, innovation: -12, socialCapital: -6, inequality: -12,
+                            description: "Rigid, status-driven education systems limit critical thinking and entrench inequality."
+                        }
+                    },
+                    trade: {
+                        inclusive: {
+                            prosperity: 14, innovation: 10, socialCapital: 4, inequality: 6,
+                            description: "Open markets and free exchange reward problem-solving and expand opportunity through peaceful cooperation."
+                        },
+                        extractive: {
+                            prosperity: -12, innovation: -8, socialCapital: -8, inequality: -10,
+                            description: "Protectionism and state-favored monopolies reduce competition and foster rent-seeking over productivity."
+                        }
+                    }
+                };
+
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.updateVisuals();
+                this.generateBuildings();
+            }
+
+            bindEvents() {
+                document.querySelectorAll('.choice-button').forEach(button => {
+                    button.addEventListener('click', (e) => this.makeChoice(e.target));
+                });
+
+                document.getElementById('resetButton').addEventListener('click', () => this.reset());
+                document.getElementById('autoPlayButton').addEventListener('click', () => this.toggleAutoPlay());
+            }
+
+            makeChoice(button) {
+                const category = button.dataset.category;
+                const option = button.dataset.option;
+
+                // Clear previous selections in this category
+                document.querySelectorAll(`[data-category="${category}"]`).forEach(btn => {
+                    btn.classList.remove('selected', 'negative');
+                });
+
+                // Mark current selection
+                if (option === 'inclusive' || option === 'productive') {
+                    button.classList.add('selected');
+                } else {
+                    button.classList.add('negative');
+                }
+
+                this.choices[category] = option;
+                this.applyChoice(category, option);
+                this.turn++;
+                this.updateVisuals();
+                this.generateEffects();
+            }
+
+            applyChoice(category, option) {
+                const effects = this.choiceEffects[category][option];
+
+                // Apply effects with some randomness
+                Object.keys(effects).forEach(metric => {
+                    if (metric !== 'description') {
+                        const baseEffect = effects[metric];
+                        const randomFactor = 0.8 + Math.random() * 0.4; // 0.8 to 1.2 multiplier
+                        const finalEffect = Math.round(baseEffect * randomFactor);
+
+                        this.metrics[metric] = Math.max(0, Math.min(100, this.metrics[metric] + finalEffect));
+                    }
+                });
+
+                // Calculate synergy bonuses
+                this.applySynergyEffects();
+
+                // Update feedback
+                this.updateFeedback(category, option, effects);
+            }
+
+            applySynergyEffects() {
+                const inclusiveCount = Object.values(this.choices).filter(choice =>
+                    choice === 'inclusive' || choice === 'productive'
+                ).length;
+
+                const extractiveCount = Object.values(this.choices).filter(choice =>
+                    choice === 'extractive'
+                ).length;
+
+                // Synergy bonuses for consistent choices
+                if (inclusiveCount >= 3) {
+                    const bonus = Math.floor(inclusiveCount * 2);
+                    this.metrics.prosperity = Math.min(100, this.metrics.prosperity + bonus);
+                    this.metrics.socialCapital = Math.min(100, this.metrics.socialCapital + bonus);
+                }
+
+                if (extractiveCount >= 3) {
+                    const penalty = Math.floor(extractiveCount * 2);
+                    this.metrics.innovation = Math.max(0, this.metrics.innovation - penalty);
+                    this.metrics.socialCapital = Math.max(0, this.metrics.socialCapital - penalty);
+                }
+            }
+
+            updateFeedback(category, option, effects) {
+                const feedbackArea = document.getElementById('feedbackArea');
+                const categoryNames = {
+                    workEthic: 'Work Ethic',
+                    governance: 'Governance',
+                    capital: 'Capital Access',
+                    education: 'Education',
+                    trade: 'Trade Policy'
+                };
+
+                const optionNames = {
+                    productive: 'Productive Culture',
+                    extractive: 'Status-Oriented Culture',
+                    inclusive: 'Inclusive Approach',
+                };
+
+                const choiceName = optionNames[option] || (option === 'extractive' ? 'Extractive Approach' : option);
+
+                feedbackArea.innerHTML = `
+                    <div class="feedback-title">${categoryNames[category]}: ${choiceName}</div>
+                    <div class="feedback-text">${effects.description}</div>
+                    <div class="impact-summary">
+                        ${Object.keys(effects).filter(key => key !== 'description').map(metric => {
+                    const value = effects[metric];
+                    const sign = value > 0 ? '+' : '';
+                    const className = value > 0 ? 'impact-positive' : value < 0 ? 'impact-negative' : 'impact-neutral';
+                    const metricName = metric.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                    return `
+                                <div class="impact-item">
+                                    <div class="impact-value ${className}">${sign}${value}</div>
+                                    <div>${metricName}</div>
+                                </div>
+                            `;
+                }).join('')}
+                    </div>
+                `;
+            }
+
+            updateVisuals() {
+                // Update metrics display
+                Object.keys(this.metrics).forEach(metric => {
+                    const value = Math.round(this.metrics[metric]);
+                    document.getElementById(`${metric}Value`).textContent = value;
+                    document.getElementById(`${metric}Bar`).style.width = `${value}%`;
+                });
+
+                // Update civilization status
+                const avgScore = Object.values(this.metrics).reduce((a, b) => a + b, 0) / 4;
+                let status = 'Struggling Society';
+                let statusClass = 'struggling';
+
+                if (avgScore >= 80) {
+                    status = 'Thriving Civilization';
+                    statusClass = 'thriving';
+                } else if (avgScore >= 60) {
+                    status = 'Prosperous Society';
+                    statusClass = 'prosperous';
+                } else if (avgScore >= 40) {
+                    status = 'Developing Society';
+                    statusClass = 'developing';
+                }
+
+                document.getElementById('civilizationStatus').textContent = status;
+                document.getElementById('turnCounter').textContent = `Turn: ${this.turn}`;
+
+                // Update civilization view
+                const civilizationView = document.getElementById('civilizationView');
+                civilizationView.className = `civilization-view ${statusClass}`;
+
+                this.updateBuildings();
+            }
+
+            generateBuildings() {
+                const buildingsContainer = document.getElementById('buildings');
+                buildingsContainer.innerHTML = '';
+
+                const prosperityLevel = Math.floor(this.metrics.prosperity / 20) + 1;
+                const numBuildings = Math.min(8, Math.max(3, Math.floor(this.metrics.prosperity / 12)));
+
+                for (let i = 0; i < numBuildings; i++) {
+                    const building = document.createElement('div');
+                    building.className = `building prosperity-${Math.min(5, prosperityLevel)}`;
+                    buildingsContainer.appendChild(building);
+                }
+            }
+
+            updateBuildings() {
+                this.generateBuildings();
+            }
+
+            generateEffects() {
+                const effectsContainer = document.getElementById('effects');
+                effectsContainer.innerHTML = '';
+
+                if (this.metrics.innovation > 60) {
+                    for (let i = 0; i < 5; i++) {
+                        setTimeout(() => {
+                            const particle = document.createElement('div');
+                            particle.className = 'effect-particle';
+                            particle.style.left = Math.random() * 100 + '%';
+                            particle.style.top = Math.random() * 100 + '%';
+                            particle.style.animationDelay = Math.random() * 2 + 's';
+                            effectsContainer.appendChild(particle);
+
+                            setTimeout(() => particle.remove(), 3000);
+                        }, i * 200);
+                    }
+                }
+            }
+
+            toggleAutoPlay() {
+                const button = document.getElementById('autoPlayButton');
+
+                if (this.autoPlay) {
+                    this.autoPlay = false;
+                    clearInterval(this.autoPlayInterval);
+                    button.textContent = 'Auto-Play Mode';
+                    button.style.background = 'linear-gradient(135deg, #f39c12, #e67e22)';
+                } else {
+                    this.autoPlay = true;
+                    button.textContent = 'Stop Auto-Play';
+                    button.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
+
+                    this.autoPlayInterval = setInterval(() => {
+                        this.makeRandomChoice();
+                    }, 2000);
+                }
+            }
+
+            makeRandomChoice() {
+                const categories = Object.keys(this.choiceEffects);
+                const availableCategories = categories.filter(cat => !this.choices[cat]);
+
+                if (availableCategories.length === 0) return;
+
+                const category = availableCategories[Math.floor(Math.random() * availableCategories.length)];
+                const options = Object.keys(this.choiceEffects[category]);
+                const option = options[Math.floor(Math.random() * options.length)];
+
+                const button = document.querySelector(`[data-category="${category}"][data-option="${option}"]`);
+                if (button) {
+                    button.click();
+                }
+            }
+
+            reset() {
+                this.metrics = {
+                    prosperity: 50,
+                    innovation: 50,
+                    socialCapital: 50,
+                    inequality: 50
+                };
+
+                this.choices = {
+                    workEthic: null,
+                    governance: null,
+                    capital: null,
+                    education: null,
+                    trade: null
+                };
+
+                this.turn = 1;
+
+                if (this.autoPlay) {
+                    this.toggleAutoPlay();
+                }
+
+                // Clear all button selections
+                document.querySelectorAll('.choice-button').forEach(button => {
+                    button.classList.remove('selected', 'negative');
+                });
+
+                // Reset feedback
+                document.getElementById('feedbackArea').innerHTML = `
+                    <div class="feedback-title">Civilization Reset</div>
+                    <div class="feedback-text">
+                        Your civilization has been reset to its starting state. 
+                        Begin making choices to shape its development path.
+                    </div>
+                `;
+
+                this.updateVisuals();
+            }
+        }
+
+        // Initialize the simulator when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new CivilizationSimulator();
+        });
+    </script>
+</body>
+
+</html>
