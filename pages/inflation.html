@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💵 Monetary Policy: Inflation, Central Banking & Sound Money</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            font-weight: 300;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 1.6em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #ecf0f1;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.8;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .mises-quote {
+            background: rgba(255, 215, 0, 0.1);
+            border-left: 4px solid #ffd700;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 1000px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            color: white;
+            font-style: italic;
+            font-size: 1.3em;
+            line-height: 1.7;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .quote-attribution {
+            text-align: right;
+            margin-top: 20px;
+            font-size: 1.1em;
+            opacity: 0.9;
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .simulation-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+        }
+
+        .controls-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(15px);
+            height: fit-content;
+        }
+
+        .section-title {
+            color: #1a1a2e;
+            font-size: 1.6em;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 3px solid #ffd700;
+            padding-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .economy-display {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 20px;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 3px solid #1a1a2e;
+            box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .central-bank {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 80px;
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+            z-index: 10;
+        }
+
+        .central-bank::before {
+            content: '🏛️';
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        .money-printer {
+            position: absolute;
+            top: 110px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 40px;
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            animation: none;
+        }
+
+        .money-printer.printing {
+            animation: shake 0.5s infinite;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            25% {
+                transform: translateX(-50%) translateY(-2px);
+            }
+
+            75% {
+                transform: translateX(-50%) translateY(2px);
+            }
+        }
+
+        .economic-actor {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8em;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .banks {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            top: 180px;
+            left: 15%;
+        }
+
+        .government {
+            background: linear-gradient(135deg, #6f42c1, #5a2d91);
+            top: 180px;
+            right: 15%;
+        }
+
+        .wall-street {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+            top: 280px;
+            left: 10%;
+        }
+
+        .corporations {
+            background: linear-gradient(135deg, #fd7e14, #e55a00);
+            top: 280px;
+            right: 10%;
+        }
+
+        .middle-class {
+            background: linear-gradient(135deg, #17a2b8, #117a8b);
+            bottom: 80px;
+            left: 20%;
+        }
+
+        .workers {
+            background: linear-gradient(135deg, #6c757d, #545b62);
+            bottom: 80px;
+            right: 20%;
+        }
+
+        .savers {
+            background: linear-gradient(135deg, #e83e8c, #d91a72);
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .money-flow {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #ffd700, #ffed4e);
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 5;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+        }
+
+        .money-flow.active {
+            opacity: 1;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        .price-indicator {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.1em;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        .economic-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #dee2e6;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #1a1a2e;
+        }
+
+        .money-supply {
+            color: #dc3545;
+        }
+
+        .price-level {
+            color: #fd7e14;
+        }
+
+        .purchasing-power {
+            color: #28a745;
+        }
+
+        .wealth-gap {
+            color: #6f42c1;
+        }
+
+        .control-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(26, 26, 46, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(26, 26, 46, 0.1);
+        }
+
+        .control-section h4 {
+            color: #1a1a2e;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .control-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .control-button {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .control-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .control-button.print-money {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+        }
+
+        .control-button.lower-rates {
+            background: linear-gradient(135deg, #fd7e14, #e55a00);
+            color: white;
+        }
+
+        .control-button.quantitative-easing {
+            background: linear-gradient(135deg, #6f42c1, #5a2d91);
+            color: white;
+        }
+
+        .control-button.stimulus {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+        }
+
+        .control-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .scenario-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .scenario-button {
+            padding: 12px 16px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .scenario-button.active {
+            border-color: #ffd700;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #1a1a2e;
+        }
+
+        .scenario-button:hover:not(.active) {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .impact-tracker {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .impact-tracker h5 {
+            color: #dc3545;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .impact-list {
+            list-style: none;
+            font-size: 0.9em;
+        }
+
+        .impact-list li {
+            margin-bottom: 5px;
+            color: #495057;
+        }
+
+        .impact-list li::before {
+            content: '→ ';
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .reset-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .reset-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .analysis-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(15px);
+            margin-top: 30px;
+        }
+
+        .analysis-section {
+            margin-bottom: 35px;
+        }
+
+        .analysis-section h3 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            border-left: 4px solid #ffd700;
+            padding-left: 20px;
+        }
+
+        .analysis-section p {
+            color: #495057;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 237, 78, 0.05));
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .highlight-box h4 {
+            color: #1a1a2e;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .highlight-box p {
+            margin-bottom: 12px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid #dee2e6;
+        }
+
+        .comparison-card h4 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .comparison-card .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .sound-money {
+            border-color: #28a745;
+        }
+
+        .fiat-money {
+            border-color: #dc3545;
+        }
+
+        .sound-money .icon {
+            color: #28a745;
+        }
+
+        .fiat-money .icon {
+            color: #dc3545;
+        }
+
+        .austrian-quote {
+            background: rgba(26, 26, 46, 0.1);
+            border-left: 4px solid #1a1a2e;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-style: italic;
+            color: #495057;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+
+        .quote-author {
+            text-align: right;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #1a1a2e;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1400px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
+            }
+
+            .economic-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .scenario-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation for money flow */
+        @keyframes flowAnimation {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+        }
+
+        .flowing {
+            animation: flowAnimation 2s ease-out;
+        }
+
+        /* Return button */
+        .return-home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .return-home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        .return-home-button:focus {
+            outline: 2px solid rgba(255, 255, 255, 0.8);
+            outline-offset: 2px;
+        }
+
+        .return-home-button .icon {
+            font-size: 1.1em;
+            transition: transform 0.3s ease;
+        }
+
+        .return-home-button:hover .icon {
+            transform: translateX(-2px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .return-home-button {
+                top: 15px;
+                left: 15px;
+                padding: 10px 16px;
+                font-size: 0.85em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .return-home-button {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin: 15px;
+                display: inline-flex;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index.html" class="return-home-button" aria-label="Return to Interactive Freedom Project homepage">
+        <span class="icon">←</span>
+        <span>Home</span> </a>
+    <div class="app-container">
+        <div class="header">
+            <h1>Monetary Policy</h1>
+            <div class="subtitle">Inflation, Central Banking & the Money Supply</div>
+            <p>
+                Explore the forces that shape modern economies—how central banks create money, the true drivers of
+                inflation,
+                and the consequences of unsound currency management. This interactive module draws from Austrian
+                insights
+                to expose the long-term effects of monetary manipulation and the critical importance of sound money.
+            </p>
+        </div>
+
+        <div class="mises-quote">
+            "The gold standard did not collapse. Governments abolished it in order to pave the way for inflation. The
+            whole grim apparatus of oppression and coercion, policemen, customs guards, penal courts, prisons, in some
+            countries even executioners, had to be put into action to destroy the gold standard."
+            <div class="quote-attribution">— Ludwig von Mises, Human Action</div>
+        </div>
+
+        <div class="main-content">
+            <div class="simulation-panel">
+                <h3 class="section-title">Interactive Monetary System</h3>
+
+                <div class="economy-display" id="economyDisplay">
+                    <div class="central-bank">
+                        <div>Central Bank</div>
+                    </div>
+                    <div class="money-printer" id="moneyPrinter">🖨️</div>
+                    <div class="price-indicator" id="priceIndicator">Prices: 100</div>
+
+                    <div class="economic-actor banks" id="banks">
+                        <div>🏦</div>
+                        <div>Big Banks</div>
+                    </div>
+                    <div class="economic-actor government" id="government">
+                        <div>🏛️</div>
+                        <div>Government</div>
+                    </div>
+                    <div class="economic-actor wall-street" id="wallStreet">
+                        <div>📈</div>
+                        <div>Wall Street</div>
+                    </div>
+                    <div class="economic-actor corporations" id="corporations">
+                        <div>🏢</div>
+                        <div>Corporations</div>
+                    </div>
+                    <div class="economic-actor middle-class" id="middleClass">
+                        <div>🏠</div>
+                        <div>Middle Class</div>
+                    </div>
+                    <div class="economic-actor workers" id="workers">
+                        <div>👷</div>
+                        <div>Workers</div>
+                    </div>
+                    <div class="economic-actor savers" id="savers">
+                        <div>💰</div>
+                        <div>Savers</div>
+                    </div>
+                </div>
+
+                <div class="economic-stats">
+                    <div class="stat-card">
+                        <div class="stat-label">Money Supply</div>
+                        <div class="stat-value money-supply" id="moneySupplyValue">$1.0T</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Price Level</div>
+                        <div class="stat-value price-level" id="priceLevelValue">100</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Purchasing Power</div>
+                        <div class="stat-value purchasing-power" id="purchasingPowerValue">100%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Wealth Inequality</div>
+                        <div class="stat-value wealth-gap" id="wealthGapValue">Low</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <h3 class="section-title">Central Bank Controls</h3>
+
+                <div class="scenario-selector">
+                    <div class="scenario-button active" id="normalTimes" onclick="selectScenario('normal')">
+                        📊 Normal Times
+                    </div>
+                    <div class="scenario-button" id="crisis" onclick="selectScenario('crisis')">
+                        🚨 Economic Crisis
+                    </div>
+                    <div class="scenario-button" id="wartime" onclick="selectScenario('war')">
+                        ⚔️ Wartime Economy
+                    </div>
+                    <div class="scenario-button" id="pandemic" onclick="selectScenario('pandemic')">
+                        🦠 Pandemic Response
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h4>Monetary Policy Tools</h4>
+                    <div class="control-buttons">
+                        <button class="control-button print-money" onclick="printMoney()">
+                            🖨️ Print Money (+20% Supply)
+                        </button>
+                        <button class="control-button lower-rates" onclick="lowerRates()">
+                            📉 Lower Interest Rates
+                        </button>
+                        <button class="control-button quantitative-easing" onclick="quantitativeEasing()">
+                            💸 Quantitative Easing
+                        </button>
+                        <button class="control-button stimulus" onclick="stimulusSpending()">
+                            💰 Government Stimulus
+                        </button>
+                    </div>
+                </div>
+
+                <div class="impact-tracker" id="impactTracker">
+                    <h5>Recent Economic Impacts:</h5>
+                    <ul class="impact-list" id="impactList">
+                        <li>Economy in equilibrium</li>
+                    </ul>
+                </div>
+
+                <button class="reset-button" onclick="resetEconomy()">
+                    🔄 Reset Economy
+                </button>
+            </div>
+        </div>
+
+        <div class="analysis-panel">
+            <h3 class="section-title">Insights from Austrian Monetary Theory</h3>
+
+            <div class="analysis-section">
+                <h3>🏛️ The Nature of Sound Money</h3>
+                <p>
+                    The Austrian School, founded by Carl Menger and developed by Eugen von Böhm-Bawerk, Friedrich von
+                    Wieser, and Ludwig von Mises, provides the most rigorous analysis of money and its role in the
+                    economy. According to Austrian theory, money emerges spontaneously from the market process as the
+                    most marketable commodity.
+                </p>
+
+                <div class="austrian-quote">
+                    "Money is not an invention of the state. It is not the product of a legislative act. Even the
+                    sanction of political authority is not necessary for its existence.
+                    Certain commodities came to be money quite naturally, as the result of economic relationships that
+                    were independent of
+                    the power of the state."
+                    <div class="quote-author">— Carl Menger, <em>Principles of Economics</em>, p. 261</div>
+                </div>
+
+                <p>
+                    Sound money possesses several critical characteristics: it serves as a reliable store of value,
+                    maintains purchasing power over time, and cannot be arbitrarily manipulated by political
+                    authorities. Historically, gold and silver emerged as sound money because they were scarce, durable,
+                    divisible, and widely accepted.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>💸 The Austrian Theory of Inflation</h3>
+                <p>
+                    Unlike mainstream economics, which defines inflation as rising prices, Austrian economics correctly
+                    identifies inflation as an increase in the money supply. Rising prices are merely the inevitable
+                    consequence of monetary inflation, not inflation itself.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>Mises' Regression Theorem</h4>
+                    <p>
+                        Ludwig von Mises proved that money's value today depends on its value yesterday, which in turn
+                        depended on its value the day before, regressing back to when the money commodity first had
+                        non-monetary uses. This explains why fiat currencies, lacking this historical foundation, are
+                        inherently unstable.
+                    </p>
+                </div>
+
+                <p>
+                    When central banks increase the money supply, they don't create wealth—they redistribute it. The new
+                    money enters the economy at specific points (banks, government, financial markets) and spreads
+                    outward, causing prices to rise unevenly. This process, known as the <strong>Cantillon
+                        Effect</strong>,
+                    systematically transfers wealth from late receivers of new money to early receivers.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🏦 The Central Banking Problem</h3>
+                <p>
+                    Central banking represents a fundamental departure from free market principles. By monopolizing
+                    money creation and manipulating interest rates, central banks distort the most important price
+                    signals in the economy—the price of money itself (interest rates) and the general price level.
+                </p>
+
+                <div class="austrian-quote">
+                    "There is no means of avoiding the final collapse of a boom brought about by credit expansion. The
+                    alternative is only whether the crisis should come sooner as the result of voluntary abandonment of
+                    further credit expansion, or later as a final and total catastrophe of the currency system
+                    involved."
+                    <div class="quote-author">— Ludwig von Mises, <em>Human Action</em>, p. 570</div>
+                </div>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card sound-money">
+                        <div class="icon">🥇</div>
+                        <h4>Sound Money (Gold Standard)</h4>
+                        <p><strong>Stable purchasing power</strong> - Gold maintained its value for centuries</p>
+                        <p><strong>Limited government spending</strong> - Cannot print gold to fund wars or welfare</p>
+                        <p><strong>Natural interest rates</strong> - Reflect genuine time preferences</p>
+                        <p><strong>Wealth preservation</strong> - Savers protected from debasement</p>
+                    </div>
+                    <div class="comparison-card fiat-money">
+                        <div class="icon">📄</div>
+                        <h4>Fiat Money (Current System)</h4>
+                        <p><strong>Declining purchasing power</strong> - US Dollar lost 96% of value since 1913</p>
+                        <p><strong>Unlimited government spending</strong> - Print money to fund any program</p>
+                        <p><strong>Manipulated interest rates</strong> - Distort investment decisions</p>
+                        <p><strong>Wealth confiscation</strong> - Inflation taxes savers and workers</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>📊 The Austrian Business Cycle Theory</h3>
+                <p>
+                    The Austrian School provides the only coherent explanation for the boom-bust cycles that plague
+                    modern economies. When central banks artificially lower interest rates below their natural market
+                    level, they signal to entrepreneurs that more savings are available for long-term investment than
+                    actually exist.
+                </p>
+
+                <p>
+                    This false signal triggers a boom in capital goods industries and long-term projects. However, since
+                    the low interest rates weren't based on genuine savings but on newly created money, the boom is
+                    unsustainable. Eventually, reality reasserts itself, and the malinvestments must be liquidated—this
+                    is the inevitable bust.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>The Crack-Up Boom</h4>
+                    <p>
+                        Mises warned of the ultimate consequence of continuous monetary expansion: the crack-up boom.
+                        This occurs when people lose confidence in the currency and rush to exchange it for real goods,
+                        causing hyperinflation and the complete breakdown of the monetary system. History provides
+                        numerous examples: Germany (1921-1923), Hungary (1945-1946), Zimbabwe (2007-2008), Venezuela
+                        (2016-2022), and more.
+                    </p>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>⚖️ The Moral Case Against Inflation</h3>
+                <p>
+                    Beyond its economic destructiveness, inflation represents a profound moral injustice. It constitutes
+                    a hidden tax that falls most heavily on those least able to protect themselves: the poor, the
+                    elderly on fixed incomes, and the middle class who save in monetary instruments.
+                </p>
+
+                <div class="austrian-quote">
+                    "Inflation is the fiscal complement of statism and arbitrary government. It is a cog in the complex
+                    of policies and institutions which gradually lead toward totalitarianism."
+                    <div class="quote-author">— Ludwig von Mises, <em>The Theory of Money and Credit</em>, p. 428</div>
+                </div>
+
+                <p>
+                    The wealthy can protect themselves through real assets—stocks, real estate, commodities—while
+                    ordinary citizens see their life savings evaporate. This systematic wealth transfer from the
+                    productive class to the politically connected represents one of the greatest injustices of our time.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>₿ The Return to Sound Money</h3>
+                <p>
+                    The Austrian School advocates for a return to sound money, whether through a gold standard, free
+                    banking, or emerging alternatives like Bitcoin. The key principle is removing money creation from
+                    political control and returning it to market forces.
+                </p>
+
+                <p>
+                    Bitcoin, with its mathematically limited supply and decentralized nature, exhibits many
+                    characteristics of sound money that Austrians have long advocated. While still evolving, it
+                    represents a potential path back to monetary sanity and away from the destructive fiat system.
+                </p>
+
+                <div class="austrian-quote">
+                    "The best way to destroy the capitalist system is to debauch the currency. By a continuing process
+                    of inflation, governments can confiscate, secretly and unobserved, an important part of the wealth
+                    of their citizens."
+                    <div class="quote-author">— John Maynard Keynes (ironically acknowledging Austrian insights)</div>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🎯 Conclusion: The Path Forward</h3>
+                <p>
+                    The Austrian School's monetary theory provides both a diagnosis of our current economic problems and
+                    a prescription for their solution. The boom-bust cycles, growing wealth inequality, and financial
+                    instability we observe today are not random events but the predictable consequences of monetary
+                    manipulation.
+                </p>
+
+                <p>
+                    Only by returning to sound money principles—whether through gold, Bitcoin, or free market
+                    competition in currencies—can we restore economic stability, protect individual savings, and ensure
+                    that money serves its proper function as a neutral medium of exchange rather than a tool of
+                    political manipulation.
+                </p>
+
+                <p>
+                    The choice before us is clear: continue down the path of monetary debasement toward eventual
+                    currency collapse, or return to the sound money principles that enabled the greatest period of
+                    economic growth and prosperity in human history.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class AustrianMonetarySimulator {
+            constructor() {
+                this.moneySupply = 1.0; // Trillions
+                this.priceLevel = 100;
+                this.purchasingPower = 100;
+                this.wealthInequality = 1; // 1 = low, 5 = extreme
+                this.scenario = 'normal';
+                this.actionCount = 0;
+                this.impactHistory = [];
+
+                this.cantillonLayers = {
+                    banks: { wealth: 100, inflationBenefit: 0 },
+                    government: { wealth: 100, inflationBenefit: 0 },
+                    wallStreet: { wealth: 100, inflationBenefit: 0 },
+                    corporations: { wealth: 100, inflationBenefit: 0 },
+                    middleClass: { wealth: 100, inflationBenefit: 0 },
+                    workers: { wealth: 100, inflationBenefit: 0 },
+                    savers: { wealth: 100, inflationBenefit: 0 }
+                };
+
+                this.init();
+            }
+
+            init() {
+                this.updateDisplay();
+                this.addImpact("Economy in equilibrium - sound money principles maintained");
+            }
+
+            selectScenario(scenario) {
+                this.scenario = scenario;
+
+                // Update UI
+                document.querySelectorAll('.scenario-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.getElementById(scenario === 'normal' ? 'normalTimes' : scenario).classList.add('active');
+
+                // Adjust base parameters based on scenario
+                switch (scenario) {
+                    case 'crisis':
+                        this.addImpact("Financial crisis declared - pressure to 'stimulate' economy");
+                        break;
+                    case 'war':
+                        this.addImpact("War declared - government needs massive funding");
+                        break;
+                    case 'pandemic':
+                        this.addImpact("Pandemic response - calls for unprecedented monetary intervention");
+                        break;
+                    default:
+                        this.addImpact("Normal economic conditions restored");
+                }
+            }
+
+            printMoney() {
+                const increase = 0.2; // 20% increase
+                const oldSupply = this.moneySupply;
+                this.moneySupply *= (1 + increase);
+
+                // Animate money printer
+                const printer = document.getElementById('moneyPrinter');
+                printer.classList.add('printing');
+                setTimeout(() => printer.classList.remove('printing'), 2000);
+
+                // Cantillon Effect - early receivers benefit first
+                this.cantillonLayers.banks.inflationBenefit += 15;
+                this.cantillonLayers.government.inflationBenefit += 12;
+                this.cantillonLayers.wallStreet.inflationBenefit += 10;
+                this.cantillonLayers.corporations.inflationBenefit += 5;
+
+                // Late receivers suffer
+                this.cantillonLayers.middleClass.inflationBenefit -= 8;
+                this.cantillonLayers.workers.inflationBenefit -= 10;
+                this.cantillonLayers.savers.inflationBenefit -= 15;
+
+                // Price effects (delayed and uneven)
+                setTimeout(() => {
+                    this.priceLevel *= 1.15; // Prices rise less than money supply initially
+                    this.purchasingPower = 100 / (this.priceLevel / 100);
+                    this.wealthInequality = Math.min(5, this.wealthInequality + 0.3);
+                    this.updateDisplay();
+                }, 1000);
+
+                this.animateMoneyFlow(['banks', 'government', 'wallStreet']);
+                this.addImpact(`Money supply increased by ${(increase * 100).toFixed(0)}% - early receivers benefit, savers lose purchasing power`);
+                this.updateDisplay();
+            }
+
+            lowerRates() {
+                // Artificially low rates distort investment decisions
+                this.cantillonLayers.banks.inflationBenefit += 10;
+                this.cantillonLayers.wallStreet.inflationBenefit += 12;
+                this.cantillonLayers.corporations.inflationBenefit += 8;
+
+                // Savers get destroyed by low rates
+                this.cantillonLayers.savers.inflationBenefit -= 20;
+                this.cantillonLayers.middleClass.inflationBenefit -= 5;
+
+                this.wealthInequality = Math.min(5, this.wealthInequality + 0.4);
+
+                this.animateMoneyFlow(['banks', 'wallStreet']);
+                this.addImpact("Interest rates lowered - malinvestment encouraged, savers punished");
+                this.updateDisplay();
+            }
+
+            quantitativeEasing() {
+                // Massive money creation directly into financial markets
+                this.moneySupply *= 1.3;
+
+                // QE primarily benefits asset holders
+                this.cantillonLayers.banks.inflationBenefit += 20;
+                this.cantillonLayers.wallStreet.inflationBenefit += 25;
+                this.cantillonLayers.corporations.inflationBenefit += 15;
+
+                // Everyone else gets inflation without the benefits
+                this.cantillonLayers.middleClass.inflationBenefit -= 12;
+                this.cantillonLayers.workers.inflationBenefit -= 15;
+                this.cantillonLayers.savers.inflationBenefit -= 25;
+
+                setTimeout(() => {
+                    this.priceLevel *= 1.2;
+                    this.purchasingPower = 100 / (this.priceLevel / 100);
+                    this.wealthInequality = Math.min(5, this.wealthInequality + 0.5);
+                    this.updateDisplay();
+                }, 1500);
+
+                this.animateMoneyFlow(['banks', 'wallStreet', 'corporations']);
+                this.addImpact("Quantitative Easing implemented - asset prices soar, wealth gap widens dramatically");
+                this.updateDisplay();
+            }
+
+            stimulusSpending() {
+                // Government spending newly created money
+                this.moneySupply *= 1.15;
+
+                this.cantillonLayers.government.inflationBenefit += 18;
+                this.cantillonLayers.corporations.inflationBenefit += 10; // Government contractors
+                this.cantillonLayers.banks.inflationBenefit += 8;
+
+                // Temporary benefit to some workers, but inflation erodes it
+                this.cantillonLayers.workers.inflationBenefit += 3;
+                this.cantillonLayers.middleClass.inflationBenefit -= 5;
+                this.cantillonLayers.savers.inflationBenefit -= 12;
+
+                setTimeout(() => {
+                    this.priceLevel *= 1.12;
+                    this.purchasingPower = 100 / (this.priceLevel / 100);
+                    this.wealthInequality = Math.min(5, this.wealthInequality + 0.2);
+                    this.updateDisplay();
+                }, 1200);
+
+                this.animateMoneyFlow(['government', 'corporations']);
+                this.addImpact("Stimulus spending enacted - government grows, private sector crowded out");
+                this.updateDisplay();
+            }
+
+            animateMoneyFlow(recipients) {
+                const centralBank = document.querySelector('.central-bank');
+                const centralBankRect = centralBank.getBoundingClientRect();
+                const containerRect = document.getElementById('economyDisplay').getBoundingClientRect();
+
+                recipients.forEach((recipient, index) => {
+                    setTimeout(() => {
+                        const targetElement = document.getElementById(recipient);
+                        const targetRect = targetElement.getBoundingClientRect();
+
+                        // Create money flow animation
+                        const moneyFlow = document.createElement('div');
+                        moneyFlow.className = 'money-flow active';
+                        moneyFlow.style.left = (centralBankRect.left + centralBankRect.width / 2 - containerRect.left) + 'px';
+                        moneyFlow.style.top = (centralBankRect.bottom - containerRect.top) + 'px';
+
+                        document.getElementById('economyDisplay').appendChild(moneyFlow);
+
+                        // Animate to target
+                        setTimeout(() => {
+                            moneyFlow.style.transition = 'all 1.5s ease-out';
+                            moneyFlow.style.left = (targetRect.left + targetRect.width / 2 - containerRect.left) + 'px';
+                            moneyFlow.style.top = (targetRect.top + targetRect.height / 2 - containerRect.top) + 'px';
+
+                            // Highlight recipient
+                            targetElement.style.transform = 'scale(1.1)';
+                            targetElement.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.8)';
+
+                            setTimeout(() => {
+                                targetElement.style.transform = '';
+                                targetElement.style.boxShadow = '';
+                                moneyFlow.remove();
+                            }, 1500);
+                        }, 100);
+                    }, index * 300);
+                });
+            }
+
+            addImpact(impact) {
+                this.impactHistory.unshift(impact);
+                if (this.impactHistory.length > 5) {
+                    this.impactHistory.pop();
+                }
+
+                const impactList = document.getElementById('impactList');
+                impactList.innerHTML = this.impactHistory.map(impact => `<li>${impact}</li>`).join('');
+            }
+
+            updateDisplay() {
+                // Update statistics
+                document.getElementById('moneySupplyValue').textContent = `$${this.moneySupply.toFixed(1)}T`;
+                document.getElementById('priceLevelValue').textContent = Math.round(this.priceLevel);
+                document.getElementById('purchasingPowerValue').textContent = `${this.purchasingPower.toFixed(0)}%`;
+
+                // Update wealth inequality indicator
+                const inequalityLevels = ['Very Low', 'Low', 'Moderate', 'High', 'Extreme'];
+                document.getElementById('wealthGapValue').textContent = inequalityLevels[Math.min(4, Math.floor(this.wealthInequality))];
+
+                // Update price indicator in economy display
+                document.getElementById('priceIndicator').textContent = `Prices: ${Math.round(this.priceLevel)}`;
+
+                // Color code based on inflation severity
+                const priceIndicator = document.getElementById('priceIndicator');
+                if (this.priceLevel > 200) {
+                    priceIndicator.style.background = 'rgba(220, 53, 69, 0.9)'; // Severe inflation
+                } else if (this.priceLevel > 150) {
+                    priceIndicator.style.background = 'rgba(253, 126, 20, 0.9)'; // High inflation
+                } else if (this.priceLevel > 120) {
+                    priceIndicator.style.background = 'rgba(255, 193, 7, 0.9)'; // Moderate inflation
+                } else {
+                    priceIndicator.style.background = 'rgba(40, 167, 69, 0.9)'; // Stable prices
+                }
+            }
+
+            resetEconomy() {
+                this.moneySupply = 1.0;
+                this.priceLevel = 100;
+                this.purchasingPower = 100;
+                this.wealthInequality = 1;
+                this.actionCount = 0;
+                this.impactHistory = [];
+
+                // Reset Cantillon layers
+                Object.keys(this.cantillonLayers).forEach(layer => {
+                    this.cantillonLayers[layer] = { wealth: 100, inflationBenefit: 0 };
+                });
+
+                this.addImpact("Economy reset to sound money baseline");
+                this.updateDisplay();
+            }
+        }
+
+        // Global functions for HTML onclick handlers
+        let simulator;
+
+        function selectScenario(scenario) {
+            simulator.selectScenario(scenario);
+        }
+
+        function printMoney() {
+            simulator.printMoney();
+        }
+
+        function lowerRates() {
+            simulator.lowerRates();
+        }
+
+        function quantitativeEasing() {
+            simulator.quantitativeEasing();
+        }
+
+        function stimulusSpending() {
+            simulator.stimulusSpending();
+        }
+
+        function resetEconomy() {
+            simulator.resetEconomy();
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            simulator = new AustrianMonetarySimulator();
+        });
+    </script>
+</body>
+
+</html>
