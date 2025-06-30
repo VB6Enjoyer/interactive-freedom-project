@@ -4,153 +4,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>👑 Authority & Support: A Visual Metaphor</title>
+    <title>👑 The Consent of the Governed: Authority, Legitimacy & State Power</title>
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
             min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            font-weight: 300;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 1.6em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #ecf0f1;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.8;
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .founding-quote {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid #e74c3c;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 1100px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            color: white;
+            font-style: italic;
+            font-size: 1.3em;
+            line-height: 1.7;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .quote-attribution {
+            text-align: right;
+            margin-top: 20px;
+            font-size: 1.1em;
+            opacity: 0.9;
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .simulation-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+        }
+
+        .controls-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(15px);
+            height: fit-content;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            font-size: 1.6em;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .political-system {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 20px;
+            height: 500px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 3px solid #2c3e50;
+            box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .state-apparatus {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 120px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border-radius: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #333;
-        }
-
-        .app-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            max-width: 700px;
-            width: 100%;
-            text-align: center;
-        }
-
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 2.5em;
-            font-weight: 300;
-        }
-
-        .subtitle {
-            color: #7f8c8d;
-            margin-bottom: 30px;
-            font-size: 1.1em;
-            line-height: 1.5;
-        }
-
-        .visualization-container {
-            position: relative;
-            height: 400px;
-            margin: 40px 0;
-            background: linear-gradient(to bottom, #87CEEB 0%, #87CEEB 60%, #8FBC8F 60%, #228B22 100%);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .ground {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 40%;
-            background: linear-gradient(to bottom, #8FBC8F, #228B22);
-        }
-
-        .support-foundation {
-            position: absolute;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            gap: 3px;
-            transition: all 0.5s ease;
-        }
-
-        .support-pillar {
-            width: 25px;
-            background: linear-gradient(to top, #2ecc71, #27ae60);
-            border-radius: 4px 4px 0 0;
-            transition: all 0.4s ease;
-            position: relative;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .support-pillar::before {
-            content: '';
-            position: absolute;
-            top: -3px;
-            left: -2px;
-            right: -2px;
-            height: 6px;
-            background: linear-gradient(to right, #2ecc71, #27ae60);
-            border-radius: 3px;
-        }
-
-        .support-pillar.fading {
-            opacity: 0.3;
-            transform: scaleY(0.3);
-            background: linear-gradient(to top, #95a5a6, #7f8c8d);
-        }
-
-        .support-pillar.hidden {
-            opacity: 0;
-            transform: scaleY(0);
-        }
-
-        .authority-block {
-            position: absolute;
-            bottom: 200px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 80px;
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             color: white;
             font-weight: bold;
-            font-size: 1.2em;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
-            transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            font-size: 1.1em;
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
             z-index: 10;
+            transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .authority-block::before {
+        .state-apparatus::before {
             content: '👑';
-            position: absolute;
-            top: -15px;
-            font-size: 1.5em;
+            font-size: 2.5em;
+            margin-bottom: 8px;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
         }
 
-        .authority-block.shaking {
-            animation: shake 0.5s ease-in-out infinite;
+        .state-apparatus.shaking {
+            animation: authorityShake 0.6s ease-in-out infinite;
         }
 
-        .authority-block.falling {
-            bottom: -150px;
+        .state-apparatus.falling {
+            top: 600px;
             opacity: 0;
-            transform: translateX(-50%) rotate(15deg);
+            transform: translateX(-50%) rotate(25deg);
             box-shadow: 0 0 0 rgba(231, 76, 60, 0);
         }
 
-        @keyframes shake {
+        @keyframes authorityShake {
 
             0%,
             100% {
@@ -158,211 +176,514 @@
             }
 
             25% {
-                transform: translateX(-50%) translateY(-3px) rotate(-1deg);
+                transform: translateX(-50%) translateY(-4px) rotate(-2deg);
             }
 
             75% {
-                transform: translateX(-50%) translateY(-3px) rotate(1deg);
+                transform: translateX(-50%) translateY(-4px) rotate(2deg);
             }
         }
 
-        .controls-section {
-            background: rgba(52, 73, 94, 0.05);
-            padding: 25px;
-            border-radius: 15px;
-            margin: 20px 0;
+        .coercion-apparatus {
+            position: absolute;
+            top: 170px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 8;
         }
 
-        .control-group {
-            margin-bottom: 20px;
+        .coercion-tool {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 73, 94, 0.3);
+            transition: all 0.3s ease;
         }
 
-        .control-label {
-            display: block;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 10px;
+        .coercion-tool.active {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            animation: coercionPulse 1s infinite;
+        }
+
+        @keyframes coercionPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .consent-foundation {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 4px;
+            transition: all 0.5s ease;
+        }
+
+        .consent-pillar {
+            width: 30px;
+            background: linear-gradient(to top, #27ae60, #2ecc71);
+            border-radius: 6px 6px 0 0;
+            transition: all 0.4s ease;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .consent-pillar::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -3px;
+            right: -3px;
+            height: 8px;
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+            border-radius: 4px;
+        }
+
+        .consent-pillar.weakening {
+            opacity: 0.4;
+            transform: scaleY(0.4);
+            background: linear-gradient(to top, #f39c12, #e67e22);
+        }
+
+        .consent-pillar.withdrawn {
+            opacity: 0;
+            transform: scaleY(0);
+        }
+
+        .population-layer {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(to top, #3498db, #5dade2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
             font-size: 1.1em;
         }
 
-        .slider-container {
+        .population-layer::before {
+            content: '👥';
+            font-size: 2em;
+            margin-right: 10px;
+        }
+
+        .resistance-indicators {
+            position: absolute;
+            bottom: 100px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-around;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .resistance-indicators.active {
+            opacity: 1;
+        }
+
+        .resistance-icon {
+            font-size: 2em;
+            animation: resistanceBounce 2s infinite;
+        }
+
+        @keyframes resistanceBounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .legitimacy-meter {
+            background: rgba(52, 73, 94, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .legitimacy-meter h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .meter-display {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .meter-bar {
+            flex: 1;
+            height: 20px;
+            background: linear-gradient(to right, #e74c3c 0%, #f39c12 30%, #f1c40f 60%, #27ae60 100%);
+            border-radius: 10px;
             position: relative;
+            overflow: hidden;
+        }
+
+        .meter-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 3px;
+            background: #2c3e50;
+            border-radius: 2px;
+            transition: left 0.3s ease;
+        }
+
+        .meter-value {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2c3e50;
+            min-width: 60px;
+        }
+
+        .control-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(52, 73, 94, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(52, 73, 94, 0.1);
+        }
+
+        .control-section h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .slider-container {
             margin: 15px 0;
         }
 
-        .support-slider {
+        .control-slider {
             width: 100%;
             height: 8px;
             border-radius: 4px;
-            background: linear-gradient(to right, #e74c3c 0%, #f39c12 50%, #2ecc71 100%);
+            background: linear-gradient(to right, #e74c3c 0%, #f39c12 50%, #27ae60 100%);
             outline: none;
             -webkit-appearance: none;
             appearance: none;
         }
 
-        .support-slider::-webkit-slider-thumb {
+        .control-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
             width: 24px;
             height: 24px;
             border-radius: 50%;
             background: #fff;
-            border: 3px solid #3498db;
+            border: 3px solid #e74c3c;
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: all 0.2s ease;
         }
 
-        .support-slider::-webkit-slider-thumb:hover {
+        .control-slider::-webkit-slider-thumb:hover {
             transform: scale(1.1);
-            border-color: #2980b9;
+            border-color: #c0392b;
         }
 
-        .support-slider::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #fff;
-            border: 3px solid #3498db;
+        .scenario-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .scenario-button {
+            padding: 15px 20px;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            background: white;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .support-display {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
-
-        .support-value {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: #2c3e50;
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 20px;
-            min-width: 80px;
-        }
-
-        .support-status {
-            font-size: 0.9em;
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-weight: 600;
             transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.95em;
         }
 
-        .status-stable {
-            background: #d5f4e6;
-            color: #27ae60;
-        }
-
-        .status-unstable {
-            background: #fdeaa7;
-            color: #f39c12;
-        }
-
-        .status-critical {
-            background: #fadbd8;
-            color: #e74c3c;
-        }
-
-        .status-collapsed {
-            background: #d5dbdb;
-            color: #7f8c8d;
-        }
-
-        .message-panel {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+        .scenario-button.active {
+            border-color: #e74c3c;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
             color: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 20px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
         }
 
-        .message-panel.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .scenario-button:hover:not(.active) {
+            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
         }
 
-        .message-panel h3 {
-            margin: 0 0 10px 0;
-            font-size: 1.3em;
+        .state-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .message-panel p {
-            margin: 0;
-            line-height: 1.6;
+        .state-action {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .state-action.surveillance {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+
+        .state-action.taxation {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+
+        .state-action.regulation {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+        }
+
+        .state-action.propaganda {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .state-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .status-display {
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .status-display h5 {
+            color: #e74c3c;
+            margin-bottom: 10px;
             font-size: 1em;
+        }
+
+        .status-list {
+            list-style: none;
+            font-size: 0.9em;
+        }
+
+        .status-list li {
+            margin-bottom: 5px;
+            color: #495057;
+        }
+
+        .status-list li::before {
+            content: '→ ';
+            color: #e74c3c;
+            font-weight: bold;
         }
 
         .reset-button {
-            background: linear-gradient(135deg, #3498db, #2980b9);
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
+            border-radius: 12px;
             font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 15px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            margin-top: 20px;
         }
 
         .reset-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .reset-button:active {
-            transform: translateY(0);
+        .collapse-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(231, 76, 60, 0.95);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 20;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .collapse-message.visible {
+            opacity: 1;
+        }
+
+        .analysis-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(15px);
+            margin-top: 30px;
+        }
+
+        .analysis-section {
+            margin-bottom: 35px;
+        }
+
+        .analysis-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            border-left: 4px solid #e74c3c;
+            padding-left: 20px;
+        }
+
+        .analysis-section p {
+            color: #495057;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.05));
+            border: 2px solid rgba(231, 76, 60, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .highlight-box h4 {
+            color: #c0392b;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .highlight-box p {
+            margin-bottom: 12px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid #dee2e6;
+        }
+
+        .comparison-card h4 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .comparison-card .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .legitimate-authority {
+            border-color: #27ae60;
+        }
+
+        .illegitimate-authority {
+            border-color: #e74c3c;
+        }
+
+        .legitimate-authority .icon {
+            color: #27ae60;
+        }
+
+        .illegitimate-authority .icon {
+            color: #e74c3c;
+        }
+
+        .political-quote {
+            background: rgba(52, 73, 94, 0.1);
+            border-left: 4px solid #2c3e50;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-style: italic;
+            color: #495057;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+
+        .quote-author {
+            text-align: right;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #2c3e50;
         }
 
         /* Responsive Design */
-        @media (max-width: 768px) {
-            .app-container {
-                padding: 20px;
-                margin: 10px;
-            }
-
-            h1 {
-                font-size: 2em;
-            }
-
-            .visualization-container {
-                height: 300px;
-            }
-
-            .authority-block {
-                width: 100px;
-                height: 60px;
-                font-size: 1em;
-            }
-
-            .support-pillar {
-                width: 20px;
+        @media (max-width: 1400px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 25px;
             }
         }
 
-        @media (max-width: 480px) {
-            .visualization-container {
-                height: 250px;
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
             }
 
-            .authority-block {
-                width: 80px;
-                height: 50px;
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .state-apparatus {
+                width: 160px;
+                height: 100px;
                 font-size: 0.9em;
-            }
-
-            .support-pillar {
-                width: 18px;
             }
         }
 
@@ -396,11 +717,6 @@
             color: white;
         }
 
-        .return-home-button:focus {
-            outline: 2px solid rgba(255, 255, 255, 0.8);
-            outline-offset: 2px;
-        }
-
         .return-home-button .icon {
             font-size: 1.1em;
             transition: transform 0.3s ease;
@@ -409,214 +725,705 @@
         .return-home-button:hover .icon {
             transform: translateX(-2px);
         }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .return-home-button {
-                top: 15px;
-                left: 15px;
-                padding: 10px 16px;
-                font-size: 0.85em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .return-home-button {
-                position: relative;
-                top: 0;
-                left: 0;
-                margin: 15px;
-                display: inline-flex;
-            }
-        }
     </style>
 </head>
 
 <body>
     <a href="../index.html" class="return-home-button" aria-label="Return to Interactive Freedom Project homepage">
         <span class="icon">←</span>
-        <span>Home</span> </a>
+        <span>Home</span>
+    </a>
+
     <div class="app-container">
-        <h1>Authority & Support</h1>
-        <p class="subtitle">
-            A visual metaphor exploring how authority depends on the support of the governed.
-            Adjust the support level and observe what happens to those in power.
-        </p>
-
-        <div class="visualization-container">
-            <div class="ground"></div>
-            <div class="support-foundation" id="supportFoundation">
-                <!-- Support pillars will be generated here -->
-            </div>
-            <div class="authority-block" id="authorityBlock">
-                AUTHORITY
-            </div>
-        </div>
-
-        <div class="controls-section">
-            <div class="control-group">
-                <label class="control-label" for="supportSlider">Popular Support Level</label>
-                <div class="slider-container">
-                    <input type="range" id="supportSlider" class="support-slider" min="0" max="100" value="85" step="1">
-                </div>
-                <div class="support-display">
-                    <span class="support-value" id="supportValue">85%</span>
-                    <span class="support-status" id="supportStatus">Stable</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="message-panel" id="messagePanel">
-            <h3>Authority Has Collapsed!</h3>
+        <div class="header">
+            <h1>The Consent of the Governed</h1>
+            <div class="subtitle">Authority, Legitimacy & the Dangers of State Power</div>
             <p>
-                When popular support erodes completely, even the most powerful authority becomes unsustainable.
-                True power comes not from force alone, but from the consent and cooperation of the governed.
+                Explore the fundamental principles of political legitimacy, the consent of the governed,
+                and why centralized state power inevitably becomes a threat to individual liberty and human flourishing.
             </p>
-            <button class="reset-button" id="resetButton">Restore Support</button>
+        </div>
+
+        <div class="founding-quote">
+            "Governments are instituted among Men, deriving their just powers from the consent of the governed, — That
+            whenever any Form of Government becomes destructive of these ends, it is the Right of the People to alter or
+            to abolish it."
+            <div class="quote-attribution">— U.S. Declaration of Independence, 1776</div>
+        </div>
+
+        <div class="main-content">
+            <div class="simulation-panel">
+                <h3 class="section-title">Interactive Political System</h3>
+
+                <div class="political-system" id="politicalSystem">
+                    <div class="state-apparatus" id="stateApparatus">
+                        <div>THE STATE</div>
+                    </div>
+
+                    <div class="coercion-apparatus" id="coercionApparatus">
+                        <div class="coercion-tool" title="Police">👮</div>
+                        <div class="coercion-tool" title="Military">⚔️</div>
+                        <div class="coercion-tool" title="Courts">⚖️</div>
+                        <div class="coercion-tool" title="Prisons">🏢</div>
+                    </div>
+
+                    <div class="consent-foundation" id="consentFoundation">
+                        <!-- Consent pillars will be generated here -->
+                    </div>
+
+                    <div class="resistance-indicators" id="resistanceIndicators">
+                        <div class="resistance-icon">✊</div>
+                        <div class="resistance-icon">🚩</div>
+                        <div class="resistance-icon">⚡</div>
+                    </div>
+
+                    <div class="population-layer">
+                        THE PEOPLE
+                    </div>
+
+                    <div class="collapse-message" id="collapseMessage">
+                        🏛️ STATE AUTHORITY COLLAPSED! 🏛️<br>
+                        <div style="font-size: 0.8em; margin-top: 10px;">
+                            Without consent, even the most powerful state becomes illegitimate and unsustainable
+                        </div>
+                    </div>
+                </div>
+
+                <div class="legitimacy-meter">
+                    <h4>Political Legitimacy Index</h4>
+                    <div class="meter-display">
+                        <div class="meter-bar">
+                            <div class="meter-indicator" id="legitimacyIndicator"></div>
+                        </div>
+                        <div class="meter-value" id="legitimacyValue">85%</div>
+                    </div>
+                    <div style="font-size: 0.9em; color: #7f8c8d;">
+                        Based on consent, effectiveness, and moral authority
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <h3 class="section-title">Political Dynamics</h3>
+
+                <div class="control-section">
+                    <h4>Consent of the Governed</h4>
+                    <div class="slider-container">
+                        <input type="range" id="consentSlider" class="control-slider" min="0" max="100" value="85"
+                            step="1">
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9em; color: #7f8c8d;">
+                        <span>Withdrawn</span>
+                        <span>Enthusiastic</span>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h4>State Coercion Level</h4>
+                    <div class="slider-container">
+                        <input type="range" id="coercionSlider" class="control-slider" min="0" max="100" value="30"
+                            step="1">
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9em; color: #7f8c8d;">
+                        <span>Minimal</span>
+                        <span>Totalitarian</span>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h4>Economic Freedom</h4>
+                    <div class="slider-container">
+                        <input type="range" id="freedomSlider" class="control-slider" min="0" max="100" value="70"
+                            step="1">
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9em; color: #7f8c8d;">
+                        <span>Planned</span>
+                        <span>Free Market</span>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h4>Historical Scenarios</h4>
+                    <div class="scenario-buttons">
+                        <div class="scenario-button active" id="democracy" onclick="selectScenario('democracy')">
+                            🗳️ Constitutional Democracy
+                        </div>
+                        <div class="scenario-button" id="authoritarian" onclick="selectScenario('authoritarian')">
+                            👨‍💼 Authoritarian Regime
+                        </div>
+                        <div class="scenario-button" id="totalitarian" onclick="selectScenario('totalitarian')">
+                            ☭ Totalitarian State
+                        </div>
+                        <div class="scenario-button" id="anarchist" onclick="selectScenario('anarchist')">
+                            🏴 Stateless Society
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h4>State Actions</h4>
+                    <div class="state-actions">
+                        <button class="state-action surveillance" onclick="increaseCoercion('surveillance')">
+                            👁️ Expand Surveillance
+                        </button>
+                        <button class="state-action taxation" onclick="increaseCoercion('taxation')">
+                            💰 Raise Taxes
+                        </button>
+                        <button class="state-action regulation" onclick="increaseCoercion('regulation')">
+                            📋 Add Regulations
+                        </button>
+                        <button class="state-action propaganda" onclick="increaseCoercion('propaganda')">
+                            📺 State Propaganda
+                        </button>
+                    </div>
+                </div>
+
+                <div class="status-display" id="statusDisplay">
+                    <h5>Current Political Status:</h5>
+                    <ul class="status-list" id="statusList">
+                        <li>Stable democratic governance</li>
+                    </ul>
+                </div>
+
+                <button class="reset-button" onclick="resetSystem()">
+                    🔄 Reset Political System
+                </button>
+            </div>
+        </div>
+
+        <div class="analysis-panel">
+            <h3 class="section-title">Political Theory & Analysis</h3>
+
+            <div class="analysis-section">
+                <h3>🏛️ The Foundation of Political Legitimacy</h3>
+                <p>
+                    Political legitimacy—the right to rule—cannot be derived from force alone. As John Locke argued in
+                    his Second Treatise of Government, legitimate political authority must be based on the consent of
+                    the governed. This principle, revolutionary in its time, forms the philosophical foundation of
+                    limited government and individual rights.
+                </p>
+
+                <div class="political-quote">
+                    "Men being, as has been said, by nature, all free, equal, and independent, no one can be put out of
+                    this estate, and subjected to the political power of another, without his own consent."
+                    <div class="quote-author">— John Locke, Second Treatise of Government</div>
+                </div>
+
+                <p>
+                    The consent of the governed is not a one-time event but an ongoing relationship. When a government
+                    loses the genuine support of its people, it loses its moral authority to govern, regardless of its
+                    legal or constitutional claims to power. This creates what political scientists call a "legitimacy
+                    crisis"—a situation where the State's commands are obeyed only through fear rather than respect.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>⚔️ The State as a Coercive Institution</h3>
+                <p>
+                    The State, by its very nature, is fundamentally different from all other institutions in society. As
+                    Max Weber famously defined it, the state is the institution that claims "the monopoly of the
+                    legitimate use of physical force within a given territory." This monopoly on violence is what
+                    distinguishes the state from voluntary associations, businesses, or civil society organizations.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>The Libertarian Critique</h4>
+                    <p>
+                        Libertarian thinkers like Murray Rothbard argue that this monopoly on force is inherently
+                        problematic. Unlike market transactions, which are voluntary and mutually beneficial, state
+                        actions are backed by the implicit or explicit threat of violence. When you pay taxes, comply
+                        with regulations, or follow laws, you do so ultimately because of the state's power to imprison,
+                        fine, or otherwise coerce you.
+                    </p>
+                </div>
+
+                <p>
+                    This coercive nature means that the state operates by different moral rules than individuals or
+                    voluntary organizations. Actions that would be considered theft, kidnapping, or assault when
+                    performed by private individuals become "taxation," "arrest," and "law enforcement" when performed
+                    by state agents. This double standard raises fundamental questions about the moral legitimacy of
+                    state power.
+                </p>
+
+                <div class="political-quote">
+                    "The State is that organization in society which attempts to maintain a monopoly of the use of force
+                    and violence in a
+                    given territorial area; in particular, it is the only organization in society that obtains its
+                    revenue not by voluntary
+                    contribution or payment for services rendered but by coercion."
+                    <div class="quote-author">— Murray N. Rothbard, Anatomy of the State</div>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🚨 The Dangers of Centralized Authority</h3>
+                <p>
+                    History demonstrates that concentrated political power inevitably leads to abuse. Lord Acton's
+                    famous observation that "power tends to corrupt, and absolute power corrupts absolutely" reflects a
+                    fundamental truth about human nature and political institutions. The more power that is concentrated
+                    in the hands of a few, the greater the temptation and opportunity for that power to be misused.
+                </p>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card legitimate-authority">
+                        <div class="icon">🤝</div>
+                        <h4>Legitimate Authority</h4>
+                        <p><strong>Based on consent</strong> - People voluntarily accept leadership</p>
+                        <p><strong>Limited scope</strong> - Authority restricted to specific areas</p>
+                        <p><strong>Accountable</strong> - Leaders can be removed or replaced</p>
+                        <p><strong>Serves the people</strong> - Exists to protect rights and provide services</p>
+                    </div>
+                    <div class="comparison-card illegitimate-authority">
+                        <div class="icon">👊</div>
+                        <h4>Illegitimate Authority</h4>
+                        <p><strong>Based on force</strong> - Compliance through fear and coercion</p>
+                        <p><strong>Unlimited scope</strong> - Claims authority over all aspects of life</p>
+                        <p><strong>Unaccountable</strong> - Leaders immune from removal</p>
+                        <p><strong>Self-serving</strong> - Exists primarily to benefit those in power</p>
+                    </div>
+                </div>
+
+                <p>
+                    Centralized authority creates several systemic problems: it concentrates decision-making power in
+                    the hands of people who lack local knowledge and personal stakes in the outcomes; it creates
+                    incentives for rent-seeking and corruption; it reduces competition and innovation in governance; and
+                    it makes entire societies vulnerable to the mistakes or malice of a small group of rulers.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>📈 The Growth of State Power</h3>
+                <p>
+                    One of the most troubling aspects of state power is its tendency to grow over time, regardless of
+                    the original intentions of those who establish or reform government institutions. This phenomenon,
+                    sometimes called "Leviathan's growth," occurs because those who benefit from expanded state power
+                    (politicians, bureaucrats, special interests) have concentrated incentives to expand it, while the
+                    costs are dispersed among the general population.
+                </p>
+
+                <div class="political-quote">
+                    "A government big enough to give you everything you want is a government big enough to take from you
+                    everything you have."
+                    <div class="quote-author">— Attributed to Gerald Ford</div>
+                </div>
+
+                <p>
+                    F.A. Hayek, in his book <em>The Road to Serfdom</em>, famously wrote "emergencies have always been
+                    the pretext on which the safeguards of individual liberty have been eroded."
+                    Each crisis—whether economic, social, or military—provides an opportunity for government to expand
+                    its powers. These "emergency" powers are rarely fully relinquished once the crisis passes; it's a
+                    ratchet effect. Over
+                    time, this ratchet effect leads to an ever-expanding state that intrudes into more and more areas of
+                    human life, reducing individual freedom and personal responsibility. A prime example of this was the
+                    mass surveillance which ensued in the United States after 9/11.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🔗 The Social Contract Reconsidered</h3>
+                <p>
+                    The traditional social contract theory, as proposed by Hobbes and Locke (and not to be confused with
+                    Rousseau's), suggests that people
+                    voluntarily surrender some of their natural
+                    rights to the State in exchange for protection and other benefits. However, this theory faces
+                    serious challenges when examined closely. Most people never explicitly consent to be governed—they
+                    are simply born into existing political systems and expected to comply with laws they had no role in
+                    creating.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>The Problem of Tacit Consent</h4>
+                    <p>
+                        Philosophers have tried to solve this problem by arguing for "tacit consent"—the idea that by
+                        remaining in a country and using its services, people implicitly agree to be governed. But this
+                        argument fails because it assumes people have meaningful alternatives. In reality, all habitable
+                        land is claimed by some State, and the costs of emigration are often prohibitive, if one can
+                        even ensure all the legal documentation required to live in another nation.
+                    </p>
+                </div>
+
+                <p>
+                    Furthermore, even if we accept that some form of social contract exists, it's unclear why this
+                    contract should bind future generations who never agreed to its terms. Each generation should have
+                    the right to reconsider and potentially reject the political arrangements they inherit.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🏴 Alternatives to State Authority</h3>
+                <p>
+                    Recognition of the problems with centralized state power has led many thinkers to explore
+                    alternatives. These range from radical decentralization and federalism to market-based governance
+                    systems and voluntary communities. The key insight is that many functions currently performed by the
+                    State could be provided more efficiently and ethically through voluntary cooperation and market
+                    mechanisms, which is something the likes of David D. Friedman have extensively written about.
+                </p>
+
+                <p>
+                    Historical examples of stateless societies—from medieval Iceland to the American
+                    frontier—demonstrate that complex social coordination can occur without centralized political
+                    authority. Modern technologies, particularly blockchain, cryptographic systems and artificial
+                    intelligence, may make such
+                    alternatives even more viable in the future.
+                </p>
+
+                <div class="political-quote">
+                    "The state is not something which can be destroyed by a revolution, but is a condition, a certain
+                    relationship between human beings, a mode of human behavior; we destroy it by contracting other
+                    relationships, by behaving differently."
+                    <div class="quote-author">— Gustav Landauer</div>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🎯 Conclusion: Reclaiming Individual Sovereignty</h3>
+                <p>
+                    The simulation above demonstrates a fundamental truth: political authority ultimately depends on the
+                    consent and cooperation of the governed. No matter how powerful a state appears, it cannot long
+                    survive without some degree of popular support. This gives individuals and communities more power
+                    than they often realize.
+                </p>
+
+                <p>
+                    The path forward lies not in reforming the State but in reducing our dependence on it. By building
+                    voluntary institutions, developing alternative technologies, and fostering a culture of individual
+                    responsibility and mutual aid, we can gradually reduce the State's role in our lives and reclaim our
+                    natural sovereignty.
+                </p>
+
+                <p>
+                    The goal is not chaos but a more natural and ethical form of social organization—one based on
+                    voluntary cooperation rather than coercion, on persuasion rather than force, and on the recognition
+                    that each individual is the ultimate authority over their own life.
+                </p>
+            </div>
         </div>
     </div>
 
     <script>
-        class AuthoritySimulation {
+        class PoliticalSystemSimulator {
             constructor() {
-                this.supportSlider = document.getElementById('supportSlider');
-                this.supportValue = document.getElementById('supportValue');
-                this.supportStatus = document.getElementById('supportStatus');
-                this.supportFoundation = document.getElementById('supportFoundation');
-                this.authorityBlock = document.getElementById('authorityBlock');
-                this.messagePanel = document.getElementById('messagePanel');
-                this.resetButton = document.getElementById('resetButton');
-
-                this.totalPillars = 12;
+                this.consentLevel = 85;
+                this.coercionLevel = 30;
+                this.freedomLevel = 70;
+                this.legitimacy = 85;
+                this.scenario = 'democracy';
                 this.isCollapsed = false;
-                this.shakeTimeout = null;
+
+                this.totalPillars = 15;
+                this.statusMessages = [];
 
                 this.init();
             }
 
             init() {
-                this.createSupportPillars();
-                this.updateVisualization(parseInt(this.supportSlider.value));
+                this.createConsentPillars();
                 this.bindEvents();
+                this.updateSystem();
             }
 
-            createSupportPillars() {
-                this.supportFoundation.innerHTML = '';
+            createConsentPillars() {
+                const foundation = document.getElementById('consentFoundation');
+                foundation.innerHTML = '';
+
                 for (let i = 0; i < this.totalPillars; i++) {
                     const pillar = document.createElement('div');
-                    pillar.className = 'support-pillar';
-                    pillar.style.height = `${60 + Math.random() * 40}px`; // Varied heights
-                    this.supportFoundation.appendChild(pillar);
+                    pillar.className = 'consent-pillar';
+                    pillar.style.height = `${80 + Math.random() * 60}px`;
+                    foundation.appendChild(pillar);
                 }
             }
 
-            updateVisualization(supportLevel) {
-                this.supportValue.textContent = `${supportLevel}%`;
+            updateSystem() {
+                if (this.isCollapsed) return;
 
-                // Update support status
-                this.updateSupportStatus(supportLevel);
+                // Calculate legitimacy based on consent, coercion, and freedom
+                this.legitimacy = this.calculateLegitimacy();
 
-                // Update pillars
-                this.updatePillars(supportLevel);
+                // Update visual elements
+                this.updateConsentPillars();
+                this.updateStateApparatus();
+                this.updateCoercionTools();
+                this.updateLegitimacyMeter();
+                this.updateStatus();
 
-                // Update authority state
-                this.updateAuthority(supportLevel);
-            }
-
-            updateSupportStatus(level) {
-                const status = this.supportStatus;
-                status.className = 'support-status';
-
-                if (level >= 70) {
-                    status.classList.add('status-stable');
-                    status.textContent = 'Stable';
-                } else if (level >= 40) {
-                    status.classList.add('status-unstable');
-                    status.textContent = 'Unstable';
-                } else if (level >= 15) {
-                    status.classList.add('status-critical');
-                    status.textContent = 'Critical';
-                } else {
-                    status.classList.add('status-collapsed');
-                    status.textContent = 'Collapsed';
+                // Check for collapse
+                if (this.legitimacy <= 15) {
+                    this.collapseState();
                 }
             }
 
-            updatePillars(supportLevel) {
-                const pillars = this.supportFoundation.querySelectorAll('.support-pillar');
-                const activePillars = Math.floor((supportLevel / 100) * this.totalPillars);
+            calculateLegitimacy() {
+                // Consent is the primary factor
+                let legitimacy = this.consentLevel * 0.6;
+
+                // High coercion reduces legitimacy
+                legitimacy -= (this.coercionLevel - 30) * 0.3;
+
+                // Economic freedom increases legitimacy
+                legitimacy += (this.freedomLevel - 50) * 0.2;
+
+                // Scenario modifiers
+                switch (this.scenario) {
+                    case 'democracy':
+                        legitimacy += 10;
+                        break;
+                    case 'authoritarian':
+                        legitimacy -= 20;
+                        break;
+                    case 'totalitarian':
+                        legitimacy -= 40;
+                        break;
+                    case 'anarchist':
+                        legitimacy = this.freedomLevel; // In anarchy, legitimacy = freedom
+                        break;
+                }
+
+                return Math.max(0, Math.min(100, legitimacy));
+            }
+
+            updateConsentPillars() {
+                const pillars = document.querySelectorAll('.consent-pillar');
+                const activePillars = Math.floor((this.consentLevel / 100) * this.totalPillars);
 
                 pillars.forEach((pillar, index) => {
-                    pillar.className = 'support-pillar';
+                    pillar.className = 'consent-pillar';
 
                     if (index < activePillars) {
                         // Active pillar
-                    } else if (index < activePillars + 2 && supportLevel > 0) {
-                        pillar.classList.add('fading');
+                    } else if (index < activePillars + 3 && this.consentLevel > 0) {
+                        pillar.classList.add('weakening');
                     } else {
-                        pillar.classList.add('hidden');
+                        pillar.classList.add('withdrawn');
                     }
                 });
             }
 
-            updateAuthority(supportLevel) {
-                if (supportLevel <= 10 && !this.isCollapsed) {
-                    this.collapseAuthority();
-                } else if (supportLevel <= 30 && !this.isCollapsed) {
-                    this.startShaking();
-                } else if (supportLevel > 30 && !this.isCollapsed) {
-                    this.stopShaking();
+            updateStateApparatus() {
+                const stateApparatus = document.getElementById('stateApparatus');
+
+                if (this.legitimacy <= 30 && !this.isCollapsed) {
+                    stateApparatus.classList.add('shaking');
+                } else {
+                    stateApparatus.classList.remove('shaking');
+                }
+
+                // Change color based on legitimacy
+                if (this.legitimacy <= 40) {
+                    stateApparatus.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
+                } else if (this.legitimacy <= 70) {
+                    stateApparatus.style.background = 'linear-gradient(135deg, #f39c12, #e67e22)';
+                } else {
+                    stateApparatus.style.background = 'linear-gradient(135deg, #27ae60, #229954)';
                 }
             }
 
-            startShaking() {
-                this.authorityBlock.classList.add('shaking');
+            updateCoercionTools() {
+                const tools = document.querySelectorAll('.coercion-tool');
+                const activeTools = Math.floor((this.coercionLevel / 100) * tools.length);
+
+                tools.forEach((tool, index) => {
+                    if (index < activeTools) {
+                        tool.classList.add('active');
+                    } else {
+                        tool.classList.remove('active');
+                    }
+                });
             }
 
-            stopShaking() {
-                this.authorityBlock.classList.remove('shaking');
+            updateLegitimacyMeter() {
+                const indicator = document.getElementById('legitimacyIndicator');
+                const value = document.getElementById('legitimacyValue');
+
+                indicator.style.left = `${this.legitimacy}%`;
+                value.textContent = `${Math.round(this.legitimacy)}%`;
+
+                // Color coding
+                if (this.legitimacy <= 30) {
+                    value.style.color = '#e74c3c';
+                } else if (this.legitimacy <= 60) {
+                    value.style.color = '#f39c12';
+                } else {
+                    value.style.color = '#27ae60';
+                }
             }
 
-            collapseAuthority() {
+            updateStatus() {
+                this.statusMessages = [];
+
+                if (this.legitimacy >= 80) {
+                    this.statusMessages.push("High political legitimacy - stable governance");
+                } else if (this.legitimacy >= 60) {
+                    this.statusMessages.push("Moderate legitimacy - some political tension");
+                } else if (this.legitimacy >= 40) {
+                    this.statusMessages.push("Low legitimacy - growing resistance");
+                } else if (this.legitimacy >= 20) {
+                    this.statusMessages.push("Legitimacy crisis - widespread opposition");
+                } else {
+                    this.statusMessages.push("Complete loss of legitimacy - revolution imminent");
+                }
+
+                if (this.coercionLevel >= 70) {
+                    this.statusMessages.push("High state coercion - authoritarian control");
+                    document.getElementById('resistanceIndicators').classList.add('active');
+                } else {
+                    document.getElementById('resistanceIndicators').classList.remove('active');
+                }
+
+                if (this.freedomLevel <= 30) {
+                    this.statusMessages.push("Severe economic restrictions - planned economy");
+                } else if (this.freedomLevel >= 80) {
+                    this.statusMessages.push("High economic freedom - free market system");
+                }
+
+                if (this.consentLevel <= 20) {
+                    this.statusMessages.push("Consent withdrawn - government lacks popular support");
+                }
+
+                // Update status display
+                const statusList = document.getElementById('statusList');
+                statusList.innerHTML = this.statusMessages.map(msg => `<li>${msg}</li>`).join('');
+            }
+
+            collapseState() {
+                if (this.isCollapsed) return;
+
                 this.isCollapsed = true;
-                this.authorityBlock.classList.add('falling');
-                this.supportSlider.disabled = true;
+                const stateApparatus = document.getElementById('stateApparatus');
+                const collapseMessage = document.getElementById('collapseMessage');
+
+                stateApparatus.classList.add('falling');
 
                 setTimeout(() => {
-                    this.messagePanel.classList.add('visible');
-                }, 800);
+                    collapseMessage.classList.add('visible');
+                }, 1000);
+
+                this.statusMessages = ["State authority has collapsed due to loss of legitimacy"];
+                this.updateStatus();
             }
 
-            resetSimulation() {
+            selectScenario(scenario) {
+                this.scenario = scenario;
+
+                // Update UI
+                document.querySelectorAll('.scenario-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.getElementById(scenario).classList.add('active');
+
+                // Set scenario-specific parameters
+                switch (scenario) {
+                    case 'democracy':
+                        this.consentLevel = 75;
+                        this.coercionLevel = 25;
+                        this.freedomLevel = 70;
+                        break;
+                    case 'authoritarian':
+                        this.consentLevel = 40;
+                        this.coercionLevel = 70;
+                        this.freedomLevel = 40;
+                        break;
+                    case 'totalitarian':
+                        this.consentLevel = 20;
+                        this.coercionLevel = 90;
+                        this.freedomLevel = 10;
+                        break;
+                    case 'anarchist':
+                        this.consentLevel = 90;
+                        this.coercionLevel = 0;
+                        this.freedomLevel = 95;
+                        break;
+                }
+
+                this.updateSliders();
+                this.updateSystem();
+            }
+
+            updateSliders() {
+                document.getElementById('consentSlider').value = this.consentLevel;
+                document.getElementById('coercionSlider').value = this.coercionLevel;
+                document.getElementById('freedomSlider').value = this.freedomLevel;
+            }
+
+            increaseCoercion(type) {
+                if (this.isCollapsed) return;
+
+                this.coercionLevel = Math.min(100, this.coercionLevel + 15);
+                this.consentLevel = Math.max(0, this.consentLevel - 10);
+
+                const actions = {
+                    surveillance: "Surveillance expanded - privacy reduced",
+                    taxation: "Taxes increased - economic burden grows",
+                    regulation: "New regulations imposed - freedom restricted",
+                    propaganda: "State propaganda increased - information controlled"
+                };
+
+                this.statusMessages.unshift(actions[type]);
+                this.updateSliders();
+                this.updateSystem();
+            }
+
+            resetSystem() {
                 this.isCollapsed = false;
-                this.authorityBlock.classList.remove('falling', 'shaking');
-                this.messagePanel.classList.remove('visible');
-                this.supportSlider.disabled = false;
-                this.supportSlider.value = 85;
-                this.updateVisualization(85);
+                this.consentLevel = 85;
+                this.coercionLevel = 30;
+                this.freedomLevel = 70;
+                this.scenario = 'democracy';
+
+                // Reset UI
+                document.getElementById('stateApparatus').classList.remove('falling', 'shaking');
+                document.getElementById('collapseMessage').classList.remove('visible');
+                document.querySelectorAll('.scenario-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.getElementById('democracy').classList.add('active');
+
+                this.updateSliders();
+                this.updateSystem();
             }
 
             bindEvents() {
-                this.supportSlider.addEventListener('input', (e) => {
+                document.getElementById('consentSlider').addEventListener('input', (e) => {
                     if (!this.isCollapsed) {
-                        this.updateVisualization(parseInt(e.target.value));
+                        this.consentLevel = parseInt(e.target.value);
+                        this.updateSystem();
                     }
                 });
 
-                this.resetButton.addEventListener('click', () => {
-                    this.resetSimulation();
+                document.getElementById('coercionSlider').addEventListener('input', (e) => {
+                    if (!this.isCollapsed) {
+                        this.coercionLevel = parseInt(e.target.value);
+                        this.updateSystem();
+                    }
                 });
 
-                // Prevent page scroll on mobile when using slider
-                this.supportSlider.addEventListener('touchmove', (e) => {
-                    e.stopPropagation();
+                document.getElementById('freedomSlider').addEventListener('input', (e) => {
+                    if (!this.isCollapsed) {
+                        this.freedomLevel = parseInt(e.target.value);
+                        this.updateSystem();
+                    }
                 });
             }
         }
 
-        // Initialize the simulation when the page loads
+        // Global functions for HTML onclick handlers
+        let simulator;
+
+        function selectScenario(scenario) {
+            simulator.selectScenario(scenario);
+        }
+
+        function increaseCoercion(type) {
+            simulator.increaseCoercion(type);
+        }
+
+        function resetSystem() {
+            simulator.resetSystem();
+        }
+
+        // Initialize when page loads
         document.addEventListener('DOMContentLoaded', () => {
-            new AuthoritySimulation();
+            simulator = new PoliticalSystemSimulator();
         });
     </script>
 </body>
