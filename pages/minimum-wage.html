@@ -4,414 +4,732 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💰 Comprehensive Minimum Wage Economics Explorer</title>
+    <title>💰 The Minimum Wage: Economic Reality vs. Political Fantasy</title>
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            font-family: sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
             color: #333;
+            overflow-x: hidden;
         }
 
-        .main-container {
-            max-width: 1200px;
+        .app-container {
+            max-width: 1800px;
             margin: 0 auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-            color: #0056b3;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-        }
-
-        h2 {
-            color: #0056b3;
-            border-bottom: 2px solid #0056b3;
-            padding-bottom: 10px;
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
-
-        .intro-section {
-            background-color: #e9ecef;
             padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            text-align: center;
         }
 
-        .section {
+        .header {
+            text-align: center;
+            color: white;
             margin-bottom: 40px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #fafafa;
+            padding: 40px 0;
         }
 
-        /* Car Wash Simulation Styles */
-        .status-display,
-        .automation-details,
-        .outcome,
-        .key-takeaway {
-            margin-bottom: 25px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #eef;
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            font-weight: 300;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .status-display p,
-        .automation-details p {
-            margin: 8px 0;
-        }
-
-        .status-display p strong,
-        .automation-details p strong {
-            display: inline-block;
-            width: 200px;
-        }
-
-        .controls,
-        .decision-point {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        button {
-            padding: 12px 20px;
-            margin: 5px;
-            font-size: 1em;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-
-        .message {
-            margin-top: 15px;
-            padding: 10px;
-            border-left: 4px solid #f0ad4e;
-            background-color: #fcf8e3;
-            color: #8a6d3b;
-            border-radius: 4px;
-        }
-
-        .outcome {
-            border-color: #d9534f;
-            background-color: #f2dede;
-            color: #a94442;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .outcome.success {
-            border-color: #5cb85c;
-            background-color: #dff0d8;
-            color: #3c763d;
-        }
-
-        .key-takeaway {
-            border-color: #5bc0de;
-            background-color: #d9edf7;
-            color: #31708f;
+        .header .subtitle {
+            font-size: 1.6em;
+            opacity: 0.9;
+            margin-bottom: 20px;
             font-style: italic;
+            color: #ecf0f1;
         }
 
-        /* Barrier Visualization Styles */
-        .barrier-controls {
-            margin-bottom: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .control-group {
-            width: 100%;
-            max-width: 400px;
-            text-align: left;
-        }
-
-        .control-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-
-        .control-group input[type="range"] {
-            width: calc(100% - 60px);
-            vertical-align: middle;
-        }
-
-        .control-group span {
-            display: inline-block;
-            width: 50px;
-            text-align: right;
-            font-weight: normal;
-            color: #333;
-            vertical-align: middle;
-        }
-
-        .visualization-area {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            height: 200px;
-            border: 1px solid #ccc;
-            margin: 20px auto;
-            overflow: hidden;
-            background-color: #e9e9e9;
-        }
-
-        .worker {
-            position: absolute;
-            bottom: 0;
-            left: 10px;
-            width: 30px;
-            height: 40px;
-            background-color: #007bff;
-            border-radius: 5px;
-            transition: left 1s ease-in-out;
-            z-index: 2;
-        }
-
-        .worker::after {
-            content: '';
-            display: block;
-            width: 15px;
-            height: 15px;
-            background-color: #007bff;
-            border-radius: 50%;
-            position: absolute;
-            top: -15px;
-            left: 7.5px;
-        }
-
-        .barrier-container {
-            position: absolute;
-            bottom: 0;
-            left: 45%;
-            width: 30px;
-            height: 100%;
-            display: flex;
-            flex-direction: column-reverse;
-            align-items: center;
-            z-index: 1;
-        }
-
-        .barrier {
-            width: 100%;
-            background-color: #dc3545;
-            transition: height 0.5s ease-out;
-        }
-
-        .barrier-label {
-            position: absolute;
-            top: -20px;
-            width: 100%;
-            text-align: center;
-            font-size: 0.8em;
-            color: #dc3545;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        .workplace {
-            position: absolute;
-            bottom: 0;
-            right: 10px;
-            width: 100px;
-            height: 180px;
-            background-color: #28a745;
-            opacity: 0.2;
-            border-radius: 5px;
-            z-index: 0;
-        }
-
-        .outcome-message {
-            margin-top: 20px;
+        .header p {
             font-size: 1.2em;
-            font-weight: bold;
-            min-height: 1.5em;
+            opacity: 0.8;
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .sowell-quote {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid #e74c3c;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 1100px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            color: white;
+            font-style: italic;
+            font-size: 1.3em;
+            line-height: 1.7;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .quote-attribution {
+            text-align: right;
+            margin-top: 20px;
+            font-size: 1.1em;
+            opacity: 0.9;
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 450px;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .simulation-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+        }
+
+        .controls-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(15px);
+            height: fit-content;
+        }
+
+        .section-title {
+            color: #1a1a2e;
+            font-size: 1.6em;
+            margin-bottom: 25px;
             text-align: center;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 15px;
+            font-weight: 600;
         }
 
-        .outcome-hired {
-            color: #28a745;
+        .economy-display {
+            background: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            height: 500px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 3px solid #1a1a2e;
+            box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.8s ease;
         }
 
-        .outcome-unemployed {
-            color: #dc3545;
-        }
-
-        /* Worker Profiles Styles */
-        .worker-profiles-section {
-            margin-top: 30px;
-        }
-
-        .wage-control-section {
-            margin-bottom: 30px;
-            padding: 15px;
-            background-color: #e9ecef;
-            border-radius: 5px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .wage-control-section label {
+        .market-status {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 20px;
             font-weight: bold;
-            margin-bottom: 10px;
+            backdrop-filter: blur(10px);
             font-size: 1.1em;
         }
 
-        .wage-control-section input[type="range"] {
-            width: 80%;
-            max-width: 400px;
-            margin-bottom: 10px;
-        }
-
-        #min-wage-display {
-            font-size: 1.2em;
+        .wage-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 12px 18px;
+            border-radius: 15px;
             font-weight: bold;
-            color: #007bff;
+            font-size: 1.1em;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
 
-        .explanation {
-            margin-bottom: 30px;
-            padding: 15px;
-            background-color: #d1ecf1;
-            border-radius: 5px;
-            border: 1px solid #bee5eb;
-            color: #0c5460;
+        .wage-natural {
+            background: rgba(46, 204, 113, 0.9);
+            color: white;
         }
 
-        .worker-profiles {
+        .wage-distorted {
+            background: rgba(241, 196, 15, 0.9);
+            color: #1a1a2e;
+        }
+
+        .wage-destructive {
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+            animation: wagePulse 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes wagePulse {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.05);
+            }
+        }
+
+        .supply-demand-chart {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            height: 300px;
+            transition: all 0.6s ease;
+        }
+
+        .chart-axis {
+            position: absolute;
+            background: #2c3e50;
+        }
+
+        .x-axis {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+        }
+
+        .y-axis {
+            bottom: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+        }
+
+        .supply-curve,
+        .demand-curve {
+            position: absolute;
+            width: 3px;
+            background: #3498db;
+            transform-origin: bottom left;
+            transition: all 0.5s ease;
+        }
+
+        .demand-curve {
+            background: #e74c3c;
+        }
+
+        .equilibrium-point {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #f39c12;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease;
+        }
+
+        .price-floor {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #e74c3c, transparent);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .price-floor.active {
+            opacity: 1;
+            animation: floorPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes floorPulse {
+
+            0%,
+            100% {
+                opacity: 0.7;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .unemployment-area {
+            position: absolute;
+            background: rgba(231, 76, 60, 0.2);
+            opacity: 0;
+            transition: all 0.5s ease;
+            border: 2px dashed #e74c3c;
+        }
+
+        .unemployment-area.visible {
+            opacity: 1;
+        }
+
+        .worker-icons {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
             display: flex;
-            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: flex-end;
+            transition: all 0.6s ease;
+        }
+
+        .worker-icon {
+            font-size: 2em;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .worker-icon.employed {
+            color: #27ae60;
+            animation: workBounce 2s ease-in-out infinite;
+        }
+
+        .worker-icon.unemployed {
+            color: #e74c3c;
+            opacity: 0.5;
+            filter: grayscale(100%);
+        }
+
+        .worker-icon.automated {
+            color: #95a5a6;
+            transform: scale(0.7);
+        }
+
+        @keyframes workBounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
-            justify-content: center;
+            margin-bottom: 25px;
         }
 
-        .worker-profile {
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
+        .metric-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
             padding: 20px;
-            flex: 1 1 280px;
-            max-width: 350px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #dee2e6;
+            transition: all 0.3s ease;
         }
 
-        .worker-profile h3 {
-            margin-top: 0;
-            color: #007bff;
-            border-bottom: 1px solid #007bff;
-            padding-bottom: 10px;
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .metric-change {
+            font-size: 0.8em;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .metric-change.positive {
+            background: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+
+        .metric-change.negative {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        .metric-change.neutral {
+            background: rgba(149, 165, 166, 0.2);
+            color: #7f8c8d;
+        }
+
+        .policy-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(231, 76, 60, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .policy-section h4 {
+            color: #c0392b;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .wage-slider-container {
+            margin: 20px 0;
+        }
+
+        .wage-slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        .wage-value {
+            background: #e74c3c;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 1em;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .wage-slider {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: #dee2e6;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .wage-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #e74c3c;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(231, 76, 60, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .wage-slider::-webkit-slider-thumb:hover {
+            background: #c0392b;
+            transform: scale(1.1);
+        }
+
+        .policy-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .policy-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .policy-option:hover {
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .policy-option input[type="checkbox"] {
+            margin-right: 12px;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        .policy-option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .policy-explanation {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .scenario-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .scenario-button {
+            padding: 12px 16px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .scenario-button.active {
+            border-color: #e74c3c;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .scenario-button:hover:not(.active) {
+            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .feedback-panel {
+            background: rgba(52, 73, 94, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .feedback-text {
+            color: #495057;
+            line-height: 1.6;
             margin-bottom: 15px;
         }
 
-        .worker-profile p {
-            margin-bottom: 10px;
+        .impact-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
-        .worker-profile p strong {
-            display: inline-block;
-            min-width: 150px;
-        }
-
-        .actual-wage.forced {
-            color: #dc3545;
+        .impact-tag {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
             font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .cost-effectiveness {
-            font-weight: bold;
-            color: #28a745;
+        .impact-tag.harmful {
+            background: rgba(231, 76, 60, 0.2);
+            color: #c0392b;
         }
 
-        .reflection {
+        .impact-tag.beneficial {
+            background: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+
+        .impact-tag.neutral {
+            background: rgba(149, 165, 166, 0.2);
+            color: #7f8c8d;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .control-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .reset-button {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        }
+
+        .crisis-button {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .free-market-button {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .analysis-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(15px);
             margin-top: 30px;
-            padding: 15px;
-            background-color: #fff3cd;
-            border-radius: 5px;
-            border: 1px solid #ffeeba;
-            color: #856404;
         }
 
-        /* Hidden elements */
-        .hidden {
-            display: none;
+        .analysis-section {
+            margin-bottom: 35px;
+        }
+
+        .analysis-section h3 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            border-left: 4px solid #e74c3c;
+            padding-left: 20px;
+        }
+
+        .analysis-section p {
+            color: #495057;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.05));
+            border: 2px solid rgba(231, 76, 60, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .highlight-box h4 {
+            color: #c0392b;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid #dee2e6;
+        }
+
+        .comparison-card h4 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .comparison-card .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .free-market {
+            border-color: #27ae60;
+        }
+
+        .regulated-market {
+            border-color: #e74c3c;
+        }
+
+        .free-market .icon {
+            color: #27ae60;
+        }
+
+        .regulated-market .icon {
+            color: #e74c3c;
+        }
+
+        .economics-quote {
+            background: rgba(26, 26, 46, 0.1);
+            border-left: 4px solid #1a1a2e;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-style: italic;
+            color: #495057;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+
+        .quote-author {
+            text-align: right;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #1a1a2e;
         }
 
         /* Responsive Design */
+        @media (max-width: 1400px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+        }
+
         @media (max-width: 768px) {
-            .main-container {
-                padding: 15px;
+            .header h1 {
+                font-size: 2.5em;
             }
 
-            h1 {
-                font-size: 2em;
+            .metrics-grid {
+                grid-template-columns: 1fr;
             }
 
-            .worker-profile {
-                flex-basis: 100%;
-                max-width: none;
+            .scenario-buttons {
+                grid-template-columns: 1fr;
             }
 
-            .control-group {
-                flex-direction: column;
-                align-items: flex-start;
+            .comparison-grid {
+                grid-template-columns: 1fr;
             }
 
-            .visualization-area {
-                height: 150px;
-            }
-
-            .worker {
-                width: 20px;
-                height: 30px;
-            }
-
-            .worker::after {
-                width: 10px;
-                height: 10px;
-                top: -10px;
-                left: 5px;
-            }
-
-            .barrier-container {
-                width: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            .workplace {
-                width: 80px;
-                height: 130px;
+            .supply-demand-chart {
+                width: 300px;
+                height: 200px;
             }
         }
 
@@ -445,11 +763,6 @@
             color: white;
         }
 
-        .return-home-button:focus {
-            outline: 2px solid rgba(255, 255, 255, 0.8);
-            outline-offset: 2px;
-        }
-
         .return-home-button .icon {
             font-size: 1.1em;
             transition: transform 0.3s ease;
@@ -458,485 +771,919 @@
         .return-home-button:hover .icon {
             transform: translateX(-2px);
         }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .return-home-button {
-                top: 15px;
-                left: 15px;
-                padding: 10px 16px;
-                font-size: 0.85em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .return-home-button {
-                position: relative;
-                top: 0;
-                left: 0;
-                margin: 15px;
-                display: inline-flex;
-            }
-        }
     </style>
 </head>
 
 <body>
     <a href="../index.html" class="return-home-button" aria-label="Return to Interactive Freedom Project homepage">
         <span class="icon">←</span>
-        <span>Home</span> </a>
+        <span>Home</span>
+    </a>
 
-    <div class="main-container">
-        <h1>Comprehensive Minimum Wage Economics Explorer</h1>
-
-        <div class="intro-section">
-            <p><strong>Explore the complex economics of minimum wage policy through three interactive
-                    simulations.</strong></p>
-            <p>Each section demonstrates different aspects of how minimum wage laws affect businesses, workers, and
-                employment decisions.</p>
-        </div>
-
-        <!-- Section 1: Car Wash Business Simulation -->
-        <div class="section">
-            <h2>1. Business Impact Simulation: Car Wash Economics</h2>
-            <p>Explore how changing labor costs impact a simple car wash business and the decisions owners must make.
+    <div class="app-container">
+        <div class="header">
+            <h1>The Minimum Wage</h1>
+            <div class="subtitle">Economic Reality vs. Political Fantasy</div>
+            <p>
+                Explore the complex economic dynamics of minimum wage laws and discover how well-intentioned
+                policies often create the very problems they claim to solve, while free markets naturally
+                coordinate to create opportunity and prosperity for all.
             </p>
+        </div>
 
-            <div class="status-display" id="status-display">
-                <h3>Current Business Status: <span id="business-model">Manual Hand Wash</span></h3>
-                <p><strong>Number of Employees:</strong> <span id="num-employees">10</span></p>
-                <p><strong>Hourly Wage per Employee:</strong> $<span id="hourly-wage">10.00</span></p>
-                <p><strong>Total Hourly Labor Cost:</strong> $<span id="total-labor-cost">100.00</span></p>
-                <p><strong>Other Hourly Operating Costs:</strong> $<span id="other-operating-costs">250.00</span></p>
-                <p><strong>Total Hourly Costs:</strong> $<span id="total-hourly-costs">350.00</span></p>
-                <p><strong>Hourly Revenue:</strong> $<span id="hourly-revenue">400.00</span></p>
-                <p><strong>Hourly Profit/Loss:</strong> $<span id="hourly-profit-loss">50.00</span></p>
+        <div class="sowell-quote">
+            "Unfortunately, the real minimum wage is always zero, regardless of the laws, and that is the wage that many
+            workers
+            receive in the wake of the creation or escalation of a government-mandated minimum wage, because they lose
+            their jobs or
+            fail to find jobs when they enter the labor force. Making it illegal to pay less than a given amount does
+            not make a
+            worker’s productivity worth that amount—and, if it is not, that worker is unlikely to be employed."
+            <div class="quote-attribution">— Thomas Sowell, <em>Basic Economics: A Citizen's Guide to the Economy</em>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="simulation-panel">
+                <h3 class="section-title">Labor Market Dynamics</h3>
+
+                <div class="economy-display" id="economyDisplay">
+                    <div class="market-status" id="marketStatus">Natural Market Equilibrium</div>
+                    <div class="wage-indicator" id="wageIndicator">Market Wage: $12.50</div>
+
+                    <div class="supply-demand-chart" id="supplyDemandChart">
+                        <div class="chart-axis x-axis"></div>
+                        <div class="chart-axis y-axis"></div>
+                        <div class="supply-curve" id="supplyCurve"></div>
+                        <div class="demand-curve" id="demandCurve"></div>
+                        <div class="equilibrium-point" id="equilibriumPoint"></div>
+                        <div class="price-floor" id="priceFloor"></div>
+                        <div class="unemployment-area" id="unemploymentArea"></div>
+                    </div>
+
+                    <div class="worker-icons" id="workerIcons">
+                        <!-- Worker icons will be generated here -->
+                    </div>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Employment Rate</div>
+                        <div class="metric-value" id="employmentValue">95%</div>
+                        <div class="metric-change" id="employmentChange">Stable</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Average Wage</div>
+                        <div class="metric-value" id="avgWageValue">$12.50</div>
+                        <div class="metric-change" id="wageChange">Market Rate</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Youth Employment</div>
+                        <div class="metric-value" id="youthEmploymentValue">78%</div>
+                        <div class="metric-change" id="youthChange">Stable</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Price Level</div>
+                        <div class="metric-value" id="priceValue">100</div>
+                        <div class="metric-change" id="priceChange">Stable</div>
+                    </div>
+                </div>
+
+                <div class="feedback-panel" id="feedbackPanel">
+                    <div class="feedback-title">Market Analysis</div>
+                    <div class="feedback-text">
+                        The labor market is operating at natural equilibrium. Supply and demand determine wages
+                        organically, creating maximum employment opportunities. Workers at all skill levels can
+                        find jobs and develop their human capital through experience.
+                    </div>
+                    <div class="impact-tags" id="impactTags">
+                        <div class="impact-tag beneficial">Natural Equilibrium</div>
+                        <div class="impact-tag beneficial">Full Employment</div>
+                    </div>
+                </div>
             </div>
 
-            <div class="messages" id="messages"></div>
+            <div class="controls-panel">
+                <h3 class="section-title">Policy Controls</h3>
 
-            <div class="controls" id="controls">
-                <button id="btn-wage-15">Government Increases Minimum Wage to $15/hour</button>
-                <button id="btn-wage-20" class="hidden">Increased Benefits/Unionization Drives Labor Cost to
-                    $20/hour</button>
-                <button id="btn-explore-automation" class="hidden">Explore Automation Option</button>
+                <div class="scenario-buttons">
+                    <div class="scenario-button active" id="freeMarket" onclick="selectScenario('freeMarket')">
+                        🏪 Free Market
+                    </div>
+                    <div class="scenario-button" id="moderate" onclick="selectScenario('moderate')">
+                        ⚖️ Moderate MW
+                    </div>
+                    <div class="scenario-button" id="aggressive" onclick="selectScenario('aggressive')">
+                        📈 High MW
+                    </div>
+                    <div class="scenario-button" id="extreme" onclick="selectScenario('extreme')">
+                        🚨 $25/hour
+                    </div>
+                </div>
+
+                <div class="policy-section">
+                    <h4>💰 Minimum Wage Policy</h4>
+                    <div class="wage-slider-container">
+                        <div class="wage-slider-label">
+                            <span>Minimum Wage Level</span>
+                            <span class="wage-value" id="wageValue">$7.25</span>
+                        </div>
+                        <input type="range" class="wage-slider" id="wageSlider" min="0" max="25" value="7.25"
+                            step="0.25">
+                        <div
+                            style="display: flex; justify-content: space-between; font-size: 0.9em; color: #7f8c8d; margin-top: 5px;">
+                            <span>No Minimum</span>
+                            <span>$25/hour</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="policy-section">
+                    <h4>📋 Additional Regulations</h4>
+                    <div class="policy-options">
+                        <div class="policy-option">
+                            <input type="checkbox" id="mandatoryBenefits">
+                            <label for="mandatoryBenefits">
+                                Mandatory Benefits Package
+                                <div class="policy-explanation">Requires health insurance, paid leave, etc.</div>
+                            </label>
+                        </div>
+                        <div class="policy-option">
+                            <input type="checkbox" id="overtimeRestrictions">
+                            <label for="overtimeRestrictions">
+                                Strict Overtime Restrictions
+                                <div class="policy-explanation">Limits hours and requires premium pay</div>
+                            </label>
+                        </div>
+                        <div class="policy-option">
+                            <input type="checkbox" id="unionization">
+                            <label for="unionization">
+                                Mandatory Unionization
+                                <div class="policy-explanation">Forces collective bargaining and higher wages</div>
+                            </label>
+                        </div>
+                        <div class="policy-option">
+                            <input type="checkbox" id="hiringQuotas">
+                            <label for="hiringQuotas">
+                                Hiring Quotas & Restrictions
+                                <div class="policy-explanation">Limits employer flexibility in hiring decisions</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="policy-section">
+                    <h4>🏭 Market Conditions</h4>
+                    <div class="policy-options">
+                        <div class="policy-option">
+                            <input type="checkbox" id="automationAvailable">
+                            <label for="automationAvailable">
+                                Automation Technology Available
+                                <div class="policy-explanation">Businesses can replace workers with machines</div>
+                            </label>
+                        </div>
+                        <div class="policy-option">
+                            <input type="checkbox" id="globalCompetition">
+                            <label for="globalCompetition">
+                                Global Competition
+                                <div class="policy-explanation">Jobs can move to lower-cost countries</div>
+                            </label>
+                        </div>
+                        <div class="policy-option">
+                            <input type="checkbox" id="economicDownturn">
+                            <label for="economicDownturn">
+                                Economic Recession
+                                <div class="policy-explanation">Reduced demand for goods and services</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-buttons">
+                    <button class="control-button reset-button" onclick="resetSimulation()">
+                        🔄 Reset
+                    </button>
+                    <button class="control-button crisis-button" onclick="createCrisis()">
+                        🚨 $25 Minimum
+                    </button>
+                    <button class="control-button free-market-button" onclick="freeMarket()">
+                        🏪 Free Market
+                    </button>
+                </div>
             </div>
+        </div>
 
-            <div class="automation-details hidden" id="automation-details">
-                <h3>Potential Automated Model Metrics:</h3>
-                <p><strong>Business Model:</strong> Automated Car Wash</p>
-                <p><strong>Number of Employees Required:</strong> 2</p>
-                <p><strong>Hourly Wage per Employee:</strong> $<span id="automation-wage">20.00</span></p>
-                <p><strong>Total Hourly Labor Cost (Automated):</strong> $<span id="automation-labor-cost">40.00</span>
+        <div class="analysis-panel">
+            <h3 class="section-title">The Economics of Minimum Wage Laws</h3>
+
+            <div class="analysis-section">
+                <h3>📊 Understanding Labor Market Dynamics</h3>
+                <p>
+                    Labor markets, like all markets, operate through the interaction of supply and demand. Workers
+                    supply labor, and employers demand it. The wage rate is simply the price of labor, determined by the
+                    same forces that set the price of any other good or service in a free market.
                 </p>
-                <p><strong>Hourly Automation Operating Cost:</strong> $<span
-                        id="automation-operating-cost">150.00</span></p>
-                <p><strong>Other Hourly Operating Costs:</strong> $<span id="automation-other-costs">250.00</span></p>
-                <p><strong>Total Hourly Costs (Automated):</strong> $<span id="automation-total-costs">440.00</span></p>
-                <p><strong>Hourly Revenue (Automated):</strong> $<span id="automation-revenue">500.00</span></p>
-                <p><strong>Hourly Profit/Loss (Automated):</strong> $<span id="automation-profit-loss">60.00</span></p>
-                <p style="font-weight: bold; margin-top: 15px;">Note: Switching requires a large upfront investment in
-                    machinery (not shown in hourly costs).</p>
-            </div>
 
-            <div class="decision-point hidden" id="decision-point">
-                <h3>Decision Time:</h3>
-                <p>The business is currently losing money operating manually. What do you do?</p>
-                <button id="btn-continue-manual">Continue with Manual (Unsustainable)</button>
-                <button id="btn-switch-automated">Switch to Automated (Requires Investment)</button>
-                <button id="btn-close-business">Close Business</button>
-            </div>
-
-            <div class="outcome hidden" id="outcome"></div>
-            <div class="key-takeaway hidden" id="key-takeaway"></div>
-        </div>
-
-        <!-- Section 2: Visual Barrier Simulation -->
-        <div class="section">
-            <h2>2. Visual Barrier Simulation: Employment Obstacles</h2>
-            <p>This visualization shows how minimum wage can act as a barrier between workers and employment
-                opportunities.</p>
-
-            <div class="barrier-controls">
-                <div class="control-group">
-                    <label for="productivity">Worker Productivity:</label>
-                    <input type="range" id="productivity" name="productivity" min="1" max="25" value="10" step="0.5">
-                    <span id="productivity-value">$10.0 / hr</span>
+                <div class="economics-quote">
+                    "The most significant fact about th[e [price] system is the economy of knowledge with which it
+                    operates, or
+                    how little the
+                    individual participants need to know in order to be able to take the right action. In abbreviated
+                    form, by a kind of
+                    symbol, only the most essential information is passed on, and passed on only to those concerned."
+                    <div class="quote-author">— F.A. Hayek, <em>The Price System as a Mechanism for Using Knowledge</em>
+                    </div>
                 </div>
 
-                <div class="control-group">
-                    <label for="minimum-wage">Minimum Wage:</label>
-                    <input type="range" id="minimum-wage" name="minimum-wage" min="0" max="20" value="15" step="0.5">
-                    <span id="minimum-wage-value">$15.0 / hr</span>
-                </div>
-            </div>
-
-            <div class="visualization-area">
-                <div class="worker" id="worker"></div>
-                <div class="barrier-container">
-                    <div class="barrier" id="barrier"></div>
-                    <div class="barrier-label" id="barrier-label">Minimum Wage</div>
-                </div>
-                <div class="workplace" id="workplace"></div>
-            </div>
-
-            <div class="outcome-message" id="outcome-message"></div>
-        </div>
-
-        <!-- Section 3: Worker Profile Analysis -->
-        <div class="section worker-profiles-section">
-            <h2>3. Worker Profile Analysis: Cost-Effectiveness Impact</h2>
-
-            <div class="explanation">
-                <p>Businesses make hiring decisions based on the cost of labor and the value (productivity) that workers
-                    provide. When a minimum wage is set by law, it creates a floor below which hourly wages cannot fall.
+                <p>
+                    When government imposes a minimum wage above the market-clearing price, it creates the same problems
+                    as any other price control: shortages. In this case, the shortage manifests as unemployment—people
+                    willing to work at the market wage but unable to find jobs at the artificially high minimum wage.
                 </p>
-                <p>The <strong>Actual Hourly Wage</strong> for a worker is the higher of their Hypothetical Market Wage
-                    and the Minimum Wage.</p>
-                <p><strong>Cost-Effectiveness</strong> is a simplified measure showing the value a worker brings to the
-                    business per dollar spent on their wage (Productivity Value / Actual Hourly Wage). A higher number
-                    indicates greater cost-effectiveness.</p>
+
+                <div class="highlight-box">
+                    <h4>The Price Floor Effect</h4>
+                    <p>
+                        A minimum wage is a price floor—a legal minimum price below which transactions cannot occur.
+                        When this floor is set above the equilibrium price, it prevents mutually beneficial exchanges
+                        between workers and employers, creating unemployment and reducing overall economic welfare.
+                    </p>
+                </div>
             </div>
 
-            <div class="wage-control-section">
-                <label for="minWageSlider">Set Minimum Hourly Wage:</label>
-                <input type="range" id="minWageSlider" min="0.00" max="25.00" value="7.25" step="0.01">
-                <div>Current Minimum Wage: $<span id="min-wage-display">7.25</span></div>
+            <div class="analysis-section">
+                <h3>👥 Who Gets Hurt by Minimum Wage Laws?</h3>
+                <p>
+                    Minimum wage laws don't hurt everyone equally. They primarily harm the most vulnerable workers—those
+                    with the least skills, experience, and education. These are precisely the people that minimum wage
+                    advocates claim to help.
+                </p>
+
+                <p>
+                    Young workers, minorities, immigrants, and those without college degrees are disproportionately
+                    affected because they're most likely to have productivity levels below the minimum wage. When
+                    employers can't legally pay these workers what their current productivity justifies, they simply
+                    don't hire them.
+                </p>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card free-market">
+                        <div class="icon">🎯</div>
+                        <h4>Free Market Outcomes</h4>
+                        <p><strong>Entry-level opportunities</strong> - Low-skill workers can get started</p>
+                        <p><strong>Skill development</strong> - Experience leads to higher wages</p>
+                        <p><strong>Flexible arrangements</strong> - Part-time, internships, apprenticeships</p>
+                        <p><strong>Natural wage growth</strong> - Productivity increases drive pay raises</p>
+                    </div>
+                    <div class="comparison-card regulated-market">
+                        <div class="icon">🚫</div>
+                        <h4>Minimum Wage Effects</h4>
+                        <p><strong>Blocked entry</strong> - Low-skill workers can't get hired</p>
+                        <p><strong>Lost opportunities</strong> - No chance to develop skills</p>
+                        <p><strong>Rigid employment</strong> - Fewer flexible work arrangements</p>
+                        <p><strong>Artificial barriers</strong> - Government prevents voluntary agreements</p>
+                    </div>
+                </div>
+
+                <div class="economics-quote">
+                    "Past studies by and large confirm the prediction that higher minimum wages reduce employment
+                    opportunities and raise
+                    unemployment, particularly among teenagers, minorities and other low-skilled workers."
+                    <div class="quote-author">— Masanori Hashimoto, <em>Minimum Wages and On-the-Job Training</em></div>
+                </div>
             </div>
 
-            <div class="worker-profiles" id="workerProfilesContainer"></div>
+            <div class="analysis-section">
+                <h3>🤖 The Automation Acceleration</h3>
+                <p>
+                    One of the most devastating unintended consequences of minimum wage laws is their acceleration of
+                    automation. When government artificially raises the cost of human labor, it makes machines
+                    relatively more attractive to employers.
+                </p>
 
-            <div class="reflection">
-                <p>Observe how changing the Minimum Wage affects the Actual Wage and Cost-Effectiveness of workers at
-                    different experience levels. Consider how this might influence a business's decisions about whom to
-                    hire, especially for entry-level positions.</p>
+                <p>
+                    This isn't just theoretical—we see it happening in real time. Fast-food restaurants install
+                    self-service kiosks, grocery stores add self-checkout lanes, and factories invest in robots. Each of
+                    these decisions eliminates jobs that could have provided valuable experience to entry-level workers.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>The Automation Tipping Point</h4>
+                    <p>
+                        Every job has an automation threshold—a wage level at which it becomes cheaper to replace the
+                        worker with a machine. Minimum wage laws push more jobs past this threshold, permanently
+                        eliminating opportunities for human workers.
+                    </p>
+                </div>
+
+                <p>
+                    The cruel irony is that automation often eliminates exactly the kinds of jobs that minimum wage laws
+                    were supposed to protect—simple, repetitive tasks that provide entry points into the workforce for
+                    inexperienced workers.
+                </p>
             </div>
-        </div>
 
-        <!-- Final Reflection -->
-        <div class="section">
-            <h2>Key Economic Insights</h2>
-            <div class="reflection">
-                <p><strong>These simulations illustrate several important economic concepts:</strong></p>
-                <ul>
-                    <li><strong>Unintended Consequences:</strong> Policies designed to help workers often lead to job
-                        losses or business closures.</li>
-                    <li><strong>Automation Incentives:</strong> Higher labor costs can accelerate the adoption of
-                        automation technologies, causing further job losses.</li>
-                    <li><strong>Employment Barriers:</strong> Minimum wage laws can prevent low-skilled workers from
-                        gaining employment and developing skills.</li>
-                    <li><strong>Cost-Effectiveness:</strong> Employers evaluate workers based on the value they provide
-                        relative to their cost.</li>
-                </ul>
-                <p>Recognizing these mechanisms is essential for understanding how free labor markets promote
-                    coordination, opportunity, and long-term prosperity.</p>
+            <div class="analysis-section">
+                <h3>💸 The Hidden Costs: Inflation and Reduced Benefits</h3>
+                <p>
+                    Minimum wage advocates often ignore the broader economic effects of their policies. When labor costs
+                    rise artificially, businesses must adjust in various ways that often harm the very workers the
+                    policy was meant to help.
+                </p>
+
+                <p>
+                    Businesses facing higher labor costs may raise prices (contributing to inflation), reduce hours, cut
+                    benefits, eliminate training programs, or reduce workplace amenities. These adjustments mean that
+                    even workers who keep their jobs may be worse off overall.
+                </p>
+
+                <div class="economics-quote">
+                    "There are no solutions, only trade-offs. And whatever the trade-offs, there are no guarantees that
+                    the particular trade-offs preferred by intellectuals will be preferred by those who actually pay the
+                    costs."
+                    <div class="quote-author">— Thomas Sowell, <em>A Conflict of Visions</em></div>
+                </div>
+
+                <p>
+                    The inflation effect is particularly harmful to low-income families, who spend a larger percentage
+                    of their income on basic necessities. A minimum wage increase that raises the price of food,
+                    housing, and other essentials can leave minimum wage workers worse off in real terms.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🎓 The Skills Development Trap</h3>
+                <p>
+                    Perhaps the most tragic long-term effect of minimum wage laws is how they prevent young and
+                    inexperienced workers from developing skills. Entry-level jobs aren't just about the immediate
+                    paycheck—they're about learning work habits, developing skills, and building a resume.
+                </p>
+
+                <p>
+                    When minimum wage laws price inexperienced workers out of the job market, they lose these crucial
+                    development opportunities. This creates a vicious cycle: without experience, they can't get jobs,
+                    and without jobs, they can't gain experience.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>The Human Capital Ladder</h4>
+                    <p>
+                        In a free market, workers naturally climb a "human capital ladder"—starting with low-skill jobs
+                        and gradually developing the skills and experience that justify higher wages. Minimum wage laws
+                        kick out the bottom rungs of this ladder, trapping people in unemployment or welfare dependency.
+                    </p>
+                </div>
+
+                <p>
+                    Studies consistently show that most minimum wage workers don't stay at minimum wage for long in a
+                    free market. They gain skills, prove their value, and earn raises. But this natural progression is
+                    disrupted when government prevents the initial hiring that starts the process.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🌍 International Evidence</h3>
+                <p>
+                    The negative effects of minimum wage laws aren't just theoretical—they're confirmed by real-world
+                    evidence from around the globe. Countries and regions with high minimum wages consistently show
+                    higher unemployment rates, especially among young and inexperienced workers.
+                </p>
+
+                <p>
+                    European countries with high minimum wages and rigid labor laws often have youth unemployment rates
+                    of 20-40%, while countries with more flexible labor markets maintain much lower unemployment. The
+                    pattern is clear and consistent across different cultures and economic systems.
+                </p>
+
+                <div class="economics-quote">
+                    "The most important single central fact about a free market is that no exchange takes place unless
+                    both parties benefit. The big difference between government coercion and private markets is that
+                    government can use coercion to make an
+                    exchange in which A benefits and B loses. But in the market, if A and B come to a voluntary
+                    agreement, it's because both
+                    of them are better off."
+                    <div class="quote-author">— Milton Friedman</div>
+                </div>
+
+                <p>
+                    Conversely, countries that have reduced or eliminated minimum wage laws often see rapid job creation
+                    and falling unemployment. The market's ability to coordinate voluntary exchanges between workers and
+                    employers proves far more effective than government mandates.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🏪 The Free Market Alternative</h3>
+                <p>
+                    The alternative to minimum wage laws isn't exploitation—it's freedom. In a free market, wages are
+                    determined by productivity, competition among employers for workers, and voluntary agreement between
+                    consenting adults.
+                </p>
+
+                <p>
+                    When employers compete for workers, wages naturally rise. When workers are free to develop skills
+                    and change jobs, they can pursue better opportunities. When government doesn't interfere with
+                    voluntary exchanges, both workers and employers benefit from arrangements that wouldn't be possible
+                    under rigid wage controls.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>Market-Driven Wage Growth</h4>
+                    <p>
+                        In free markets, wages rise naturally as workers become more productive and as employers compete
+                        for their services. This organic wage growth is sustainable because it's based on real value
+                        creation, not government mandates that ignore economic reality.
+                    </p>
+                </div>
+
+                <p>
+                    The solution to low wages isn't government price controls—it's removing barriers to job creation,
+                    entrepreneurship, and skill development. When people are free to work, learn, and improve their
+                    circumstances, prosperity follows naturally.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🎯 Conclusion: The Path Forward</h3>
+                <p>
+                    Minimum wage laws represent a classic example of how good intentions can lead to harmful outcomes
+                    when they ignore economic reality. The road to prosperity isn't paved with government mandates, but
+                    with freedom, opportunity, and voluntary cooperation.
+                </p>
+
+                <p>
+                    Instead of artificially raising wages through government force, we should focus on policies that
+                    increase productivity, expand opportunities, and remove barriers to employment. This means better
+                    education, fewer regulations on small businesses, and trust in the market's ability to coordinate
+                    human activity.
+                </p>
+
+                <p>
+                    The simulation above demonstrates these principles in action. When we allow markets to function
+                    freely, we see higher employment, better opportunities for skill development, and natural wage
+                    growth based on productivity. When we interfere with these natural processes, we create
+                    unemployment, reduce opportunities, and harm the very people we claim to help.
+                </p>
+
+                <div class="economics-quote">
+                    "The curious task of economics is to demonstrate to men how little they really know about what they
+                    imagine they can design."
+                    <div class="quote-author">— F.A. Hayek, The Fatal Conceit</div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Car Wash Simulation Variables
-        let businessModel = 'Manual Hand Wash';
-        let numEmployees = 10;
-        let hourlyWage = 10;
-        const otherOperatingCosts = 250;
-        const hourlyRevenueManual = 400;
-        const hourlyRevenueAutomated = 500;
-        const numEmployeesAutomated = 2;
-        const automationOperatingCost = 150;
+        class MinimumWageSimulator {
+            constructor() {
+                this.baseEmployment = 95;
+                this.baseWage = 12.50;
+                this.baseYouthEmployment = 78;
+                this.basePriceLevel = 100;
+                this.minimumWage = 7.25;
 
-        // Worker Profile Data
-        const workers = [
-            {
-                name: "Entry-Level Worker",
-                marketWage: 8.00,
-                productivity: 10.00
-            },
-            {
-                name: "Mid-Level Worker",
-                marketWage: 12.00,
-                productivity: 15.00
-            },
-            {
-                name: "Experienced Worker",
-                marketWage: 18.00,
-                productivity: 22.50
-            }
-        ];
+                this.previousMetrics = {
+                    employment: 95,
+                    wage: 12.50,
+                    youthEmployment: 78,
+                    priceLevel: 100
+                };
 
-        // Get UI Elements - Car Wash
-        const businessModelEl = document.getElementById('business-model');
-        const numEmployeesEl = document.getElementById('num-employees');
-        const hourlyWageEl = document.getElementById('hourly-wage');
-        const totalLaborCostEl = document.getElementById('total-labor-cost');
-        const otherOperatingCostsEl = document.getElementById('other-operating-costs');
-        const totalHourlyCostsEl = document.getElementById('total-hourly-costs');
-        const hourlyRevenueEl = document.getElementById('hourly-revenue');
-        const hourlyProfitLossEl = document.getElementById('hourly-profit-loss');
-        const messagesEl = document.getElementById('messages');
-        const controlsEl = document.getElementById('controls');
-        const btnWage15 = document.getElementById('btn-wage-15');
-        const btnWage20 = document.getElementById('btn-wage-20');
-        const btnExploreAutomation = document.getElementById('btn-explore-automation');
-        const automationDetailsEl = document.getElementById('automation-details');
-        const decisionPointEl = document.getElementById('decision-point');
-        const btnContinueManual = document.getElementById('btn-continue-manual');
-        const btnSwitchAutomated = document.getElementById('btn-switch-automated');
-        const btnCloseBusiness = document.getElementById('btn-close-business');
-        const outcomeEl = document.getElementById('outcome');
-        const keyTakeawayEl = document.getElementById('key-takeaway');
+                this.policies = {
+                    mandatoryBenefits: false,
+                    overtimeRestrictions: false,
+                    unionization: false,
+                    hiringQuotas: false,
+                    automationAvailable: true,
+                    globalCompetition: true,
+                    economicDownturn: false
+                };
 
-        // Get UI Elements - Barrier Simulation
-        const productivitySlider = document.getElementById('productivity');
-        const minimumWageSlider = document.getElementById('minimum-wage');
-        const productivityValueSpan = document.getElementById('productivity-value');
-        const minimumWageValueSpan = document.getElementById('minimum-wage-value');
-        const workerElement = document.getElementById('worker');
-        const barrierElement = document.getElementById('barrier');
-        const barrierLabelElement = document.getElementById('barrier-label');
-        const workplaceElement = document.getElementById('workplace');
-        const outcomeMessageElement = document.getElementById('outcome-message');
-        const visualizationArea = document.querySelector('.visualization-area');
-
-        // Get UI Elements - Worker Profiles
-        const minWageSlider = document.getElementById('minWageSlider');
-        const minWageDisplay = document.getElementById('min-wage-display');
-        const workerProfilesContainer = document.getElementById('workerProfilesContainer');
-
-        // Car Wash Simulation Functions
-        function updateCarWashStatus() {
-            const currentRevenue = (businessModel === 'Manual Hand Wash') ? hourlyRevenueManual : hourlyRevenueAutomated;
-            const currentNumEmployees = (businessModel === 'Manual Hand Wash') ? numEmployees : numEmployeesAutomated;
-            const currentAutomationCost = (businessModel === 'Automated Car Wash') ? automationOperatingCost : 0;
-
-            const totalLaborCost = currentNumEmployees * hourlyWage;
-            const totalHourlyCosts = totalLaborCost + otherOperatingCosts + currentAutomationCost;
-            const hourlyProfitLoss = currentRevenue - totalHourlyCosts;
-
-            businessModelEl.textContent = businessModel;
-            numEmployeesEl.textContent = currentNumEmployees;
-            hourlyWageEl.textContent = hourlyWage.toFixed(2);
-            totalLaborCostEl.textContent = totalLaborCost.toFixed(2);
-            otherOperatingCostsEl.textContent = otherOperatingCosts.toFixed(2);
-            totalHourlyCostsEl.textContent = totalHourlyCosts.toFixed(2);
-            hourlyRevenueEl.textContent = currentRevenue.toFixed(2);
-            hourlyProfitLossEl.textContent = hourlyProfitLoss.toFixed(2);
-
-            if (hourlyProfitLoss > 0) {
-                hourlyProfitLossEl.style.color = 'green';
-            } else if (hourlyProfitLoss < 0) {
-                hourlyProfitLossEl.style.color = 'red';
-            } else {
-                hourlyProfitLossEl.style.color = '#333';
-            }
-        }
-
-        function displayMessage(text) {
-            messagesEl.innerHTML = `<div class="message">${text}</div>`;
-        }
-
-        function displayAutomationDetails() {
-            const potentialLaborCost = numEmployeesAutomated * hourlyWage;
-            const potentialTotalCosts = potentialLaborCost + otherOperatingCosts + automationOperatingCost;
-            const potentialProfitLoss = hourlyRevenueAutomated - potentialTotalCosts;
-
-            document.getElementById('automation-wage').textContent = hourlyWage.toFixed(2);
-            document.getElementById('automation-labor-cost').textContent = potentialLaborCost.toFixed(2);
-            document.getElementById('automation-operating-cost').textContent = automationOperatingCost.toFixed(2);
-            document.getElementById('automation-other-costs').textContent = otherOperatingCosts.toFixed(2);
-            document.getElementById('automation-total-costs').textContent = potentialTotalCosts.toFixed(2);
-            document.getElementById('automation-revenue').textContent = hourlyRevenueAutomated.toFixed(2);
-            document.getElementById('automation-profit-loss').textContent = potentialProfitLoss.toFixed(2);
-
-            const automationProfitLossEl = document.getElementById('automation-profit-loss');
-            if (potentialProfitLoss > 0) {
-                automationProfitLossEl.style.color = 'green';
-            } else if (potentialProfitLoss < 0) {
-                automationProfitLossEl.style.color = 'red';
-            } else {
-                automationProfitLossEl.style.color = '#333';
+                this.scenario = 'freeMarket';
+                this.init();
             }
 
-            automationDetailsEl.classList.remove('hidden');
-        }
-
-        function displayOutcome(message, isSuccess = false) {
-            outcomeEl.innerHTML = message;
-            outcomeEl.classList.remove('hidden');
-            if (isSuccess) {
-                outcomeEl.classList.add('success');
-            } else {
-                outcomeEl.classList.remove('success');
+            init() {
+                this.bindEvents();
+                this.updateSimulation();
+                this.generateWorkerIcons();
+                this.setupSupplyDemandChart();
             }
-        }
 
-        function displayKeyTakeaway(message) {
-            keyTakeawayEl.textContent = message;
-            keyTakeawayEl.classList.remove('hidden');
-        }
+            bindEvents() {
+                // Wage slider
+                document.getElementById('wageSlider').addEventListener('input', (e) => {
+                    this.minimumWage = parseFloat(e.target.value);
+                    document.getElementById('wageValue').textContent = `$${this.minimumWage.toFixed(2)}`;
+                    this.updateSimulation();
+                });
 
-        // Barrier Simulation Functions
-        const maxBarrierHeight = 0.85 * 200; // 80% of visualization area height
-        const minBarrierHeight = 5;
+                // Policy checkboxes
+                Object.keys(this.policies).forEach(policy => {
+                    const checkbox = document.getElementById(policy);
+                    if (checkbox) {
+                        checkbox.addEventListener('change', () => {
+                            this.policies[policy] = checkbox.checked;
+                            this.updateSimulation();
+                        });
+                    }
+                });
+            }
 
-        function updateBarrierSimulation() {
-            const productivity = parseFloat(productivitySlider.value);
-            const minimumWage = parseFloat(minimumWageSlider.value);
+            calculateMetrics() {
+                let employmentRate = this.baseEmployment;
+                let avgWage = Math.max(this.baseWage, this.minimumWage);
+                let youthEmployment = this.baseYouthEmployment;
+                let priceLevel = this.basePriceLevel;
 
-            productivityValueSpan.textContent = `$${productivity.toFixed(1)} / hr`;
-            minimumWageValueSpan.textContent = `$${minimumWage.toFixed(1)} / hr`;
-            barrierLabelElement.textContent = `Min Wage: $${minimumWage.toFixed(1)}`;
+                // Minimum wage effects (non-linear)
+                if (this.minimumWage > this.baseWage) {
+                    const wageIncrease = this.minimumWage - this.baseWage;
+                    const elasticity = 0.3; // Employment elasticity of demand
 
-            const wageRange = parseFloat(minimumWageSlider.max) - parseFloat(minimumWageSlider.min);
-            const heightRange = maxBarrierHeight - minBarrierHeight;
-            const scaledHeight = minBarrierHeight + ((minimumWage - parseFloat(minimumWageSlider.min)) / wageRange) * heightRange;
-            barrierElement.style.height = `${scaledHeight}px`;
+                    // Employment reduction (exponential for high wages)
+                    const employmentReduction = Math.min(50, wageIncrease * elasticity * 10 * (1 + wageIncrease / 10));
+                    employmentRate = Math.max(45, this.baseEmployment - employmentReduction);
 
-            const isHired = productivity >= minimumWage;
-            animateWorker(isHired, productivity, minimumWage);
-        }
+                    // Youth employment hit harder
+                    const youthReduction = employmentReduction * 1.8;
+                    youthEmployment = Math.max(20, this.baseYouthEmployment - youthReduction);
 
-        function animateWorker(isHired, productivity, minimumWage) {
-            workerElement.style.transition = 'none';
-            workerElement.style.left = '10px';
-
-            setTimeout(() => {
-                workerElement.style.transition = 'left 1s ease-in-out';
-
-                if (isHired) {
-                    workerElement.style.left = '520px';
-                    outcomeMessageElement.textContent = "Hired!";
-                    outcomeMessageElement.className = 'outcome-message outcome-hired';
-                } else {
-                    workerElement.style.left = '240px';
-                    outcomeMessageElement.textContent = `Unemployed (Productivity $${productivity.toFixed(1)} < Wage $${minimumWage.toFixed(1)})`;
-                    outcomeMessageElement.className = 'outcome-message outcome-unemployed';
+                    // Price inflation from higher labor costs
+                    const inflationEffect = wageIncrease * 0.8;
+                    priceLevel = this.basePriceLevel + inflationEffect;
                 }
-            }, 50);
-        }
 
-        // Worker Profile Functions
-        function createWorkerProfileHTML(worker) {
-            return `
-                <div class="worker-profile" data-market-wage="${worker.marketWage}" data-productivity="${worker.productivity}">
-                    <h3>${worker.name}</h3>
-                    <p><strong>Hypothetical Market Wage:</strong> $${worker.marketWage.toFixed(2)}/hr</p>
-                    <p><strong>Hypothetical Productivity Value:</strong> $${worker.productivity.toFixed(2)}/hr</p>
-                    <p><strong>Actual Wage:</strong> $<span class="actual-wage"></span>/hr</p>
-                    <p><strong>Cost-Effectiveness:</strong> <span class="cost-effectiveness"></span></p>
-                </div>
-            `;
-        }
+                // Additional policy effects
+                if (this.policies.mandatoryBenefits) {
+                    employmentRate *= 0.92;
+                    youthEmployment *= 0.85;
+                    priceLevel *= 1.03;
+                }
 
-        function updateWorkerProfile(profileElement, currentMinWage) {
-            const marketWage = parseFloat(profileElement.dataset.marketWage);
-            const productivity = parseFloat(profileElement.dataset.productivity);
+                if (this.policies.overtimeRestrictions) {
+                    employmentRate *= 0.95;
+                    youthEmployment *= 0.90;
+                }
 
-            const actualWage = Math.max(marketWage, currentMinWage);
-            const costEffectiveness = productivity / actualWage;
+                if (this.policies.unionization) {
+                    employmentRate *= 0.88;
+                    avgWage *= 1.15;
+                    priceLevel *= 1.05;
+                }
 
-            const actualWageSpan = profileElement.querySelector('.actual-wage');
-            const costEffectivenessSpan = profileElement.querySelector('.cost-effectiveness');
+                if (this.policies.hiringQuotas) {
+                    employmentRate *= 0.93;
+                    youthEmployment *= 0.82;
+                }
 
-            actualWageSpan.textContent = actualWage.toFixed(2);
-            costEffectivenessSpan.textContent = costEffectiveness.toFixed(3);
+                // Market condition effects
+                if (this.policies.automationAvailable && this.minimumWage > 15) {
+                    const automationEffect = (this.minimumWage - 15) * 0.02;
+                    employmentRate *= (1 - automationEffect);
+                    youthEmployment *= (1 - automationEffect * 1.5);
+                }
 
-            if (currentMinWage > marketWage) {
-                actualWageSpan.classList.add('forced');
-            } else {
-                actualWageSpan.classList.remove('forced');
+                if (this.policies.globalCompetition && this.minimumWage > 12) {
+                    const outsourcingEffect = (this.minimumWage - 12) * 0.015;
+                    employmentRate *= (1 - outsourcingEffect);
+                }
+
+                if (this.policies.economicDownturn) {
+                    employmentRate *= 0.85;
+                    youthEmployment *= 0.75;
+                    avgWage *= 0.95;
+                }
+
+                return {
+                    employment: Math.max(20, Math.round(employmentRate)),
+                    wage: Math.round(avgWage * 100) / 100,
+                    youthEmployment: Math.max(10, Math.round(youthEmployment)),
+                    priceLevel: Math.round(priceLevel),
+                    unemploymentRate: 100 - Math.max(20, Math.round(employmentRate))
+                };
+            }
+
+            updateSimulation() {
+                const metrics = this.calculateMetrics();
+
+                // Update metric displays
+                document.getElementById('employmentValue').textContent = `${metrics.employment}%`;
+                document.getElementById('avgWageValue').textContent = `$${metrics.wage.toFixed(2)}`;
+                document.getElementById('youthEmploymentValue').textContent = `${metrics.youthEmployment}%`;
+                document.getElementById('priceValue').textContent = metrics.priceLevel;
+
+                // Update change indicators
+                this.updateChangeIndicators(metrics);
+
+                // Update visual elements
+                this.updateMarketDisplay(metrics);
+                this.updateSupplyDemandChart(metrics);
+                this.updateWorkerIcons(metrics);
+                this.updateFeedback(metrics);
+
+                // Store previous metrics
+                this.previousMetrics = {
+                    employment: metrics.employment,
+                    wage: metrics.wage,
+                    youthEmployment: metrics.youthEmployment,
+                    priceLevel: metrics.priceLevel
+                };
+            }
+
+            updateChangeIndicators(metrics) {
+                const changes = {
+                    employment: metrics.employment - this.previousMetrics.employment,
+                    wage: metrics.wage - this.previousMetrics.wage,
+                    youthEmployment: metrics.youthEmployment - this.previousMetrics.youthEmployment,
+                    priceLevel: metrics.priceLevel - this.previousMetrics.priceLevel
+                };
+
+                this.updateChangeElement('employmentChange', changes.employment, '%');
+                this.updateChangeElement('wageChange', changes.wage, '$');
+                this.updateChangeElement('youthChange', changes.youthEmployment, '%');
+                this.updateChangeElement('priceChange', changes.priceLevel, '');
+            }
+
+            updateChangeElement(elementId, change, unit) {
+                const element = document.getElementById(elementId);
+                if (Math.abs(change) < 0.1) {
+                    element.textContent = 'Stable';
+                    element.className = 'metric-change neutral';
+                } else {
+                    const sign = change > 0 ? '+' : '';
+                    element.textContent = `${sign}${change.toFixed(1)}${unit}`;
+
+                    // For employment, positive is good; for prices, negative is good
+                    let isGood = false;
+                    if (elementId === 'employmentChange' || elementId === 'youthChange') {
+                        isGood = change > 0;
+                    } else if (elementId === 'priceChange') {
+                        isGood = change <= 0;
+                    } else if (elementId === 'wageChange') {
+                        isGood = change > 0 && this.minimumWage <= this.baseWage;
+                    }
+
+                    element.className = `metric-change ${isGood ? 'positive' : 'negative'}`;
+                }
+            }
+
+            updateMarketDisplay(metrics) {
+                // Update market status
+                let status = 'Natural Market Equilibrium';
+                if (this.minimumWage > this.baseWage * 1.5) {
+                    status = 'Severe Market Distortion';
+                } else if (this.minimumWage > this.baseWage * 1.2) {
+                    status = 'Significant Unemployment';
+                } else if (this.minimumWage > this.baseWage) {
+                    status = 'Price Floor Active';
+                }
+                document.getElementById('marketStatus').textContent = status;
+
+                // Update wage indicator
+                const wageIndicator = document.getElementById('wageIndicator');
+                if (this.minimumWage > this.baseWage * 1.5) {
+                    wageIndicator.textContent = `Destructive: $${this.minimumWage.toFixed(2)}`;
+                    wageIndicator.className = 'wage-indicator wage-destructive';
+                } else if (this.minimumWage > this.baseWage) {
+                    wageIndicator.textContent = `Distorted: $${this.minimumWage.toFixed(2)}`;
+                    wageIndicator.className = 'wage-indicator wage-distorted';
+                } else {
+                    wageIndicator.textContent = `Market Wage: $${metrics.wage.toFixed(2)}`;
+                    wageIndicator.className = 'wage-indicator wage-natural';
+                }
+            }
+
+            setupSupplyDemandChart() {
+                const chart = document.getElementById('supplyDemandChart');
+                const supplyCurve = document.getElementById('supplyCurve');
+                const demandCurve = document.getElementById('demandCurve');
+
+                // Set up supply curve (upward sloping)
+                supplyCurve.style.height = '250px';
+                supplyCurve.style.transform = 'rotate(60deg)';
+                supplyCurve.style.left = '50px';
+                supplyCurve.style.bottom = '0px';
+
+                // Set up demand curve (downward sloping)
+                demandCurve.style.height = '250px';
+                demandCurve.style.transform = 'rotate(-60deg)';
+                demandCurve.style.right = '50px';
+                demandCurve.style.bottom = '0px';
+            }
+
+            updateSupplyDemandChart(metrics) {
+                const equilibriumPoint = document.getElementById('equilibriumPoint');
+                const priceFloor = document.getElementById('priceFloor');
+                const unemploymentArea = document.getElementById('unemploymentArea');
+
+                // Position equilibrium point
+                equilibriumPoint.style.left = '190px';
+                equilibriumPoint.style.bottom = '120px';
+
+                if (this.minimumWage > this.baseWage) {
+                    // Show price floor
+                    const floorHeight = 120 + (this.minimumWage - this.baseWage) * 8;
+                    priceFloor.style.bottom = `${floorHeight}px`;
+                    priceFloor.classList.add('active');
+
+                    // Show unemployment area
+                    unemploymentArea.style.left = '100px';
+                    unemploymentArea.style.bottom = '0px';
+                    unemploymentArea.style.width = '180px';
+                    unemploymentArea.style.height = `${floorHeight}px`;
+                    unemploymentArea.classList.add('visible');
+                } else {
+                    priceFloor.classList.remove('active');
+                    unemploymentArea.classList.remove('visible');
+                }
+            }
+
+            generateWorkerIcons() {
+                const container = document.getElementById('workerIcons');
+                container.innerHTML = '';
+
+                for (let i = 0; i < 20; i++) {
+                    const worker = document.createElement('div');
+                    worker.className = 'worker-icon';
+                    worker.textContent = '👷';
+                    container.appendChild(worker);
+                }
+            }
+
+            updateWorkerIcons(metrics) {
+                const workers = document.querySelectorAll('.worker-icon');
+                const employedCount = Math.floor(workers.length * metrics.employment / 100);
+                const automatedCount = this.policies.automationAvailable && this.minimumWage > 15 ?
+                    Math.floor(workers.length * 0.1) : 0;
+
+                workers.forEach((worker, index) => {
+                    worker.className = 'worker-icon';
+
+                    if (index < employedCount - automatedCount) {
+                        worker.classList.add('employed');
+                        worker.textContent = '👷';
+                    } else if (index < employedCount) {
+                        worker.classList.add('automated');
+                        worker.textContent = '🤖';
+                    } else {
+                        worker.classList.add('unemployed');
+                        worker.textContent = '😞';
+                    }
+                });
+            }
+
+            updateFeedback(metrics) {
+                const feedbackPanel = document.getElementById('feedbackPanel');
+                let title = 'Market Analysis';
+                let text = '';
+                const tags = [];
+
+                if (this.minimumWage <= this.baseWage) {
+                    title = 'Natural Market Equilibrium';
+                    text = 'The labor market operates freely, allowing supply and demand to determine wages. Workers at all skill levels can find employment and develop their human capital through experience.';
+                    tags.push({ text: 'Natural Equilibrium', type: 'beneficial' });
+                    tags.push({ text: 'Full Employment', type: 'beneficial' });
+                } else if (metrics.employment >= 85) {
+                    title = 'Mild Market Distortion';
+                    text = 'The minimum wage is creating some unemployment, particularly among young and inexperienced workers. Entry-level opportunities are becoming scarcer.';
+                    tags.push({ text: 'Price Floor Active', type: 'neutral' });
+                    tags.push({ text: 'Youth Impact', type: 'harmful' });
+                } else if (metrics.employment >= 70) {
+                    title = 'Significant Unemployment';
+                    text = 'The minimum wage is pricing many workers out of the job market. Businesses are reducing hours, cutting benefits, and considering automation to manage higher labor costs.';
+                    tags.push({ text: 'Rising Unemployment', type: 'harmful' });
+                    tags.push({ text: 'Reduced Opportunities', type: 'harmful' });
+                } else {
+                    title = 'Economic Crisis';
+                    text = 'The artificially high minimum wage has created massive unemployment. Many businesses have closed or automated, eliminating entry-level jobs permanently. The very workers the policy aimed to help are now unemployed.';
+                    tags.push({ text: 'Mass Unemployment', type: 'harmful' });
+                    tags.push({ text: 'Economic Destruction', type: 'harmful' });
+                }
+
+                // Add specific policy impacts
+                if (this.policies.automationAvailable && this.minimumWage > 15) {
+                    tags.push({ text: 'Automation Acceleration', type: 'harmful' });
+                }
+                if (this.policies.mandatoryBenefits) {
+                    tags.push({ text: 'Benefit Mandates', type: 'harmful' });
+                }
+                if (metrics.priceLevel > 105) {
+                    tags.push({ text: 'Inflation Pressure', type: 'harmful' });
+                }
+
+                feedbackPanel.innerHTML = `
+                    <div class="feedback-title">${title}</div>
+                    <div class="feedback-text">${text}</div>
+                    <div class="impact-tags">
+                        ${tags.map(tag => `<div class="impact-tag ${tag.type}">${tag.text}</div>`).join('')}
+                    </div>
+                `;
+            }
+
+            selectScenario(scenario) {
+                this.scenario = scenario;
+
+                // Update UI
+                document.querySelectorAll('.scenario-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.getElementById(scenario).classList.add('active');
+
+                // Set scenario-specific parameters
+                switch (scenario) {
+                    case 'freeMarket':
+                        this.minimumWage = 0;
+                        this.resetPolicies();
+                        break;
+                    case 'moderate':
+                        this.minimumWage = 15;
+                        this.resetPolicies();
+                        this.policies.mandatoryBenefits = true;
+                        break;
+                    case 'aggressive':
+                        this.minimumWage = 20;
+                        this.resetPolicies();
+                        this.policies.mandatoryBenefits = true;
+                        this.policies.overtimeRestrictions = true;
+                        break;
+                    case 'extreme':
+                        this.minimumWage = 25;
+                        this.resetPolicies();
+                        this.policies.mandatoryBenefits = true;
+                        this.policies.overtimeRestrictions = true;
+                        this.policies.unionization = true;
+                        this.policies.hiringQuotas = true;
+                        break;
+                }
+
+                this.updateSliders();
+                this.updateCheckboxes();
+                this.updateSimulation();
+            }
+
+            resetPolicies() {
+                Object.keys(this.policies).forEach(key => {
+                    this.policies[key] = false;
+                });
+                // Keep these realistic defaults
+                this.policies.automationAvailable = true;
+                this.policies.globalCompetition = true;
+            }
+
+            updateSliders() {
+                document.getElementById('wageSlider').value = this.minimumWage;
+                document.getElementById('wageValue').textContent = `$${this.minimumWage.toFixed(2)}`;
+            }
+
+            updateCheckboxes() {
+                Object.keys(this.policies).forEach(key => {
+                    const checkbox = document.getElementById(key);
+                    if (checkbox) checkbox.checked = this.policies[key];
+                });
+            }
+
+            resetSimulation() {
+                this.selectScenario('freeMarket');
+            }
+
+            createCrisis() {
+                this.selectScenario('extreme');
+            }
+
+            freeMarket() {
+                this.selectScenario('freeMarket');
             }
         }
 
-        function updateAllWorkerProfiles() {
-            const currentMinWage = parseFloat(minWageSlider.value);
-            minWageDisplay.textContent = currentMinWage.toFixed(2);
+        // Global functions for HTML onclick handlers
+        let simulator;
 
-            const profileElements = workerProfilesContainer.querySelectorAll('.worker-profile');
-            profileElements.forEach(profileElement => {
-                updateWorkerProfile(profileElement, currentMinWage);
-            });
+        function selectScenario(scenario) {
+            simulator.selectScenario(scenario);
         }
 
-        // Event Listeners - Car Wash
-        btnWage15.addEventListener('click', () => {
-            hourlyWage = 15;
-            updateCarWashStatus();
-            displayMessage('Profitability has decreased significantly due to higher labor costs.');
-            btnWage15.classList.add('hidden');
-            btnWage20.classList.remove('hidden');
-        });
-
-        btnWage20.addEventListener('click', () => {
-            hourlyWage = 20;
-            updateCarWashStatus();
-            displayMessage('The business is now operating at a loss. Difficult decisions may be needed.');
-            btnWage20.classList.add('hidden');
-            btnExploreAutomation.classList.remove('hidden');
-        });
-
-        btnExploreAutomation.addEventListener('click', () => {
-            controlsEl.classList.add('hidden');
-            displayAutomationDetails();
-            decisionPointEl.classList.remove('hidden');
-        });
-
-        btnContinueManual.addEventListener('click', () => {
-            decisionPointEl.classList.add('hidden');
-            displayOutcome('Operating manually at a loss is unsustainable. <strong>Business Closed</strong>');
-            displayKeyTakeaway('Raising labor costs can make manual labor too expensive for some businesses, incentivizing automation or leading to closures. While aiming to improve wages, such policies can unintentionally reduce the total number of jobs available, particularly for low-skilled workers.');
-            businessModelEl.textContent = 'Closed';
-            numEmployeesEl.textContent = 0;
-            ['hourly-wage', 'total-labor-cost', 'total-hourly-costs', 'hourly-revenue', 'hourly-profit-loss'].forEach(id => {
-                document.getElementById(id).textContent = '-';
-            });
-        });
-
-        btnSwitchAutomated.addEventListener('click', () => {
-            businessModel = 'Automated Car Wash';
-            numEmployees = numEmployeesAutomated;
-            decisionPointEl.classList.add('hidden');
-            updateCarWashStatus();
-            displayOutcome(`Sparkle Clean invests in automation. The business is now profitable ($${document.getElementById('hourly-profit-loss').textContent}/hour). However, only ${numEmployees} employees are needed. ${10 - numEmployees} jobs were lost. <strong>Automated Operations</strong>`, true);
-            displayKeyTakeaway('Raising labor costs can make manual labor too expensive for some businesses, incentivizing automation or leading to closures. While aiming to improve wages, such policies can unintentionally reduce the total number of jobs available, particularly for low-skilled workers.');
-            automationDetailsEl.classList.add('hidden');
-        });
-
-        btnCloseBusiness.addEventListener('click', () => {
-            decisionPointEl.classList.add('hidden');
-            displayOutcome('The owner decides to close Sparkle Clean. <strong>Business Closed</strong>');
-            displayKeyTakeaway('Raising labor costs can make manual labor too expensive for some businesses, incentivizing automation or leading to closures. While aiming to improve wages, such policies can unintentionally reduce the total number of jobs available, particularly for low-skilled workers.');
-            businessModelEl.textContent = 'Closed';
-            numEmployeesEl.textContent = 0;
-            ['hourly-wage', 'total-labor-cost', 'total-hourly-costs', 'hourly-revenue', 'hourly-profit-loss'].forEach(id => {
-                document.getElementById(id).textContent = '-';
-            });
-        });
-
-        // Event Listeners - Barrier Simulation
-        productivitySlider.addEventListener('input', updateBarrierSimulation);
-        minimumWageSlider.addEventListener('input', updateBarrierSimulation);
-
-        // Event Listeners - Worker Profiles
-        minWageSlider.addEventListener('input', updateAllWorkerProfiles);
-
-        // Initialize all simulations
-        function initializeAll() {
-            // Car Wash
-            updateCarWashStatus();
-
-            // Barrier Simulation
-            updateBarrierSimulation();
-
-            // Worker Profiles
-            workers.forEach(worker => {
-                workerProfilesContainer.innerHTML += createWorkerProfileHTML(worker);
-            });
-            updateAllWorkerProfiles();
+        function resetSimulation() {
+            simulator.resetSimulation();
         }
 
-        // Initialize on page load
-        initializeAll();
+        function resetSimulation() {
+            simulator.resetSimulation();
+        }
+
+        function createCrisis() {
+            simulator.createCrisis();
+        }
+
+        function freeMarket() {
+            simulator.freeMarket();
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            simulator = new MinimumWageSimulator();
+        });
     </script>
 </body>
 
