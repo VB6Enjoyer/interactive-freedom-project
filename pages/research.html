@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔬 Research Funding Models: Government vs Private Innovation</title>
+    <title>🔬 The Innovation Imperative: Private Research vs. Government Science</title>
     <style>
         * {
             margin: 0;
@@ -14,14 +14,14 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             color: #333;
             overflow-x: hidden;
         }
 
         .app-container {
-            max-width: 1400px;
+            max-width: 1800px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -29,22 +29,59 @@
         .header {
             text-align: center;
             color: white;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            padding: 40px 0;
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 3.5em;
+            margin-bottom: 15px;
             font-weight: 300;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 1.6em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #ecf0f1;
         }
 
         .header p {
+            font-size: 1.2em;
+            opacity: 0.8;
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .hayek-quote {
+            background: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid #3498db;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 1100px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            color: white;
+            font-style: italic;
+            font-size: 1.3em;
+            line-height: 1.7;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .quote-attribution {
+            text-align: right;
+            margin-top: 20px;
             font-size: 1.1em;
             opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.6;
+            color: #3498db;
+            font-weight: 600;
         }
 
         .stats-bar {
@@ -182,12 +219,12 @@
         }
 
         .gov-zone {
-            background: linear-gradient(135deg, #3498db, #2980b9);
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
             color: white;
         }
 
         .private-zone {
-            background: linear-gradient(135deg, #e67e22, #d35400);
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
             color: white;
         }
 
@@ -353,9 +390,9 @@
         }
 
         .gov-paper.breakthrough {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            background: linear-gradient(135deg, #f39c12, #e67e22);
             color: white;
-            border-color: #229954;
+            border-color: #d68910;
         }
 
         .gov-paper.problem {
@@ -382,10 +419,10 @@
         }
 
         .private-innovation {
-            background: linear-gradient(135deg, #f1c40f, #f39c12);
-            color: #2c3e50;
-            border: 2px solid #e67e22;
-            font-size: 1.5em;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border: 2px solid #229954;
+            font-size: 1.1em;
         }
 
         .private-innovation.major {
@@ -393,6 +430,7 @@
             color: white;
             border-color: #7d3c98;
             animation: glow 2s ease-in-out infinite alternate;
+            font-size: 1.3em;
         }
 
         @keyframes glow {
@@ -410,6 +448,7 @@
             justify-content: center;
             gap: 15px;
             margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .control-button {
@@ -439,6 +478,15 @@
             box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
         }
 
+        .control-button.success {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .control-button.success:hover {
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+        }
+
         .notification {
             position: fixed;
             top: 20px;
@@ -450,6 +498,7 @@
             z-index: 1000;
             transform: translateX(400px);
             transition: transform 0.3s ease;
+            max-width: 300px;
         }
 
         .notification.show {
@@ -466,6 +515,135 @@
 
         .notification.error {
             background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .analysis-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(15px);
+            margin-top: 30px;
+        }
+
+        .analysis-section {
+            margin-bottom: 35px;
+        }
+
+        .analysis-section h3 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            border-left: 4px solid #3498db;
+            padding-left: 20px;
+        }
+
+        .analysis-section p {
+            color: #495057;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(41, 128, 185, 0.05));
+            border: 2px solid rgba(52, 152, 219, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .highlight-box h4 {
+            color: #2980b9;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid #dee2e6;
+        }
+
+        .comparison-card h4 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .comparison-card .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .private-research {
+            border-color: #27ae60;
+        }
+
+        .government-research {
+            border-color: #e74c3c;
+        }
+
+        .private-research .icon {
+            color: #27ae60;
+        }
+
+        .government-research .icon {
+            color: #e74c3c;
+        }
+
+        .research-quote {
+            background: rgba(26, 26, 46, 0.1);
+            border-left: 4px solid #1a1a2e;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-style: italic;
+            color: #495057;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+
+        .quote-author {
+            text-align: right;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #1a1a2e;
+        }
+
+        .lysenkoism-box {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.05));
+            border: 2px solid rgba(231, 76, 60, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .lysenkoism-box h4 {
+            color: #c0392b;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .section-title {
+            color: #1a1a2e;
+            font-size: 1.6em;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            font-weight: 600;
         }
 
         /* Responsive Design */
@@ -493,6 +671,15 @@
                 width: 50px;
                 height: 50px;
                 font-size: 1em;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
             }
         }
 
@@ -526,11 +713,6 @@
             color: white;
         }
 
-        .return-home-button:focus {
-            outline: 2px solid rgba(255, 255, 255, 0.8);
-            outline-offset: 2px;
-        }
-
         .return-home-button .icon {
             font-size: 1.1em;
             transition: transform 0.3s ease;
@@ -539,39 +721,31 @@
         .return-home-button:hover .icon {
             transform: translateX(-2px);
         }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .return-home-button {
-                top: 15px;
-                left: 15px;
-                padding: 10px 16px;
-                font-size: 0.85em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .return-home-button {
-                position: relative;
-                top: 0;
-                left: 0;
-                margin: 15px;
-                display: inline-flex;
-            }
-        }
     </style>
 </head>
 
 <body>
     <a href="../index.html" class="return-home-button" aria-label="Return to Interactive Freedom Project homepage">
         <span class="icon">←</span>
-        <span>Home</span> </a>
+        <span>Home</span>
+    </a>
 
     <div class="app-container">
         <div class="header">
-            <h1>Research Funding Models</h1>
-            <p>Explore how government and private research approaches lead to different innovation outcomes.
-                Select ideas and assign them to different research models to see the results.</p>
+            <h1>The Innovation Imperative</h1>
+            <div class="subtitle">Private Research vs. Government Science</div>
+            <p>
+                Explore how competitive markets drive scientific breakthroughs while government monopolization
+                of research leads to stagnation, ideological corruption, and anti-science disasters like
+                Soviet Lysenkoism. Discover why decentralized innovation outperforms centralized planning.
+            </p>
+        </div>
+
+        <div class="hayek-quote">
+            "To the naive mind that can conceive of order only as the product of deliberate arrangement,
+            it may seem absurd that in complex conditions order, and adaptation to the unknown, can be achieved more
+            effectively by decentralizing decisions."
+            <div class="quote-attribution">— F.A. Hayek, <em>The Fatal Conceit</em></div>
         </div>
 
         <div class="stats-bar">
@@ -595,7 +769,7 @@
 
         <div class="main-content">
             <div class="section idea-pool">
-                <h2>Research Ideas Pool</h2>
+                <h2>🧠 Research Ideas Pool</h2>
                 <div class="pool-controls">
                     <div class="pool-status">
                         <span class="pool-capacity" id="poolCapacity">0/8</span> ideas available
@@ -611,8 +785,8 @@
                 <div class="zone-header">
                     <h2>🏛️ Government Research</h2>
                     <div class="zone-description">
-                        Systematic, peer-reviewed research with focus on publication and knowledge sharing.
-                        Lower risk but may face bureaucratic challenges.
+                        Centralized, bureaucratic research subject to political pressures, funding cycles,
+                        and ideological constraints. Risk-averse with slow adaptation to new evidence.
                     </div>
                 </div>
                 <div class="zone-stats">
@@ -637,8 +811,8 @@
                 <div class="zone-header">
                     <h2>🏢 Private Research</h2>
                     <div class="zone-description">
-                        Market-driven innovation with higher risk and reward.
-                        Focus on practical applications and commercial viability.
+                        Market-driven innovation with profit incentives, competitive pressure,
+                        and rapid adaptation. Risk-taking entrepreneurs pursue breakthrough discoveries.
                     </div>
                 </div>
                 <div class="zone-stats">
@@ -661,16 +835,384 @@
         </div>
 
         <div class="controls">
-            <button class="control-button" id="resetSimulation">Reset Simulation</button>
-            <button class="control-button" id="autoAssign">Auto-Assign Mode</button>
-            <button class="control-button danger" id="clearOutputs">Clear Outputs</button>
+            <button class="control-button" id="resetSimulation">🔄 Reset Simulation</button>
+            <button class="control-button" id="autoAssign">⚡ Auto-Assign Mode</button>
+            <button class="control-button success" id="showLysenkoism">📚 Lysenkoism Example</button>
+            <button class="control-button danger" id="clearOutputs">🗑️ Clear Outputs</button>
+        </div>
+
+        <div class="analysis-panel">
+            <h3 class="section-title">The Science of Innovation</h3>
+
+            <div class="analysis-section">
+                <h3>🏆 Why Private Research Outperforms Government Science</h3>
+                <p>
+                    The superiority of private research over government-controlled science isn't just theoretical—it's
+                    demonstrated by centuries of innovation history. Private research operates under fundamentally
+                    different incentives that naturally align with scientific progress and human welfare.
+                </p>
+
+                <div class="research-quote">
+                    "Almost always the men who achieve these fundamental inventions of a new paradigm have been either
+                    very young or very new
+                    to the field whose paradigm they change... these are the men who, being little committed by prior
+                    practice to the
+                    traditional rules of normal science, are particularly likely to see that those rules no longer
+                    define a playable game
+                    and to conceive another set that can replace them."
+                    <div class="quote-author">— Thomas Kuhn, <em>The Structure of Scientific Revolutions</em></div>
+                </div>
+
+                <p>
+                    Private research thrives because it operates under competitive pressure, profit incentives, and
+                    decentralized decision-making. Researchers and entrepreneurs who make breakthrough discoveries are
+                    rewarded directly, while those who pursue dead ends face immediate feedback from the market. This
+                    creates a powerful selection mechanism that government research lacks.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>The Competitive Advantage</h4>
+                    <p>
+                        Competition drives innovation by rewarding success and punishing failure. Private researchers
+                        must convince investors and customers that their work has value, creating natural quality
+                        control. Government researchers only need to convince bureaucrats and politicians, leading to
+                        very different outcomes.
+                    </p>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>💰 The Power of Profit Motives</h3>
+                <p>
+                    Critics often dismiss profit motives as corrupting to science, but this misunderstands how markets
+                    actually work. Profit is simply the market's way of signaling that resources are being used to
+                    create value for other people. The pursuit of profit aligns private interests with public benefit.
+                </p>
+
+                <p>
+                    When pharmaceutical companies develop new drugs, biotech firms create medical devices, or tech
+                    companies build better computers, they profit only by solving real problems that people face. This
+                    creates a powerful incentive to focus research on areas where breakthroughs will have the greatest
+                    human impact.
+                </p>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card private-research">
+                        <div class="icon">💡</div>
+                        <h4>Private Research Incentives</h4>
+                        <p><strong>Profit from success</strong> - Direct rewards for breakthrough discoveries</p>
+                        <p><strong>Loss from failure</strong> - Immediate feedback prevents waste</p>
+                        <p><strong>Customer focus</strong> - Must solve real problems people face</p>
+                        <p><strong>Speed to market</strong> - First-mover advantages reward rapid innovation</p>
+                    </div>
+                    <div class="comparison-card government-research">
+                        <div class="icon">🏛️</div>
+                        <h4>Government Research Incentives</h4>
+                        <p><strong>Funding regardless</strong> - Budgets often increase after failures</p>
+                        <p><strong>No personal stakes</strong> - Researchers don't bear costs of mistakes</p>
+                        <p><strong>Political focus</strong> - Must satisfy politicians, not customers</p>
+                        <p><strong>Bureaucratic delays</strong> - Slow approval processes stifle innovation</p>
+                    </div>
+                </div>
+
+                <div class="research-quote">
+                    "It is not from the benevolence of the butcher, the brewer, or the baker that we expect our dinner,
+                    but from their regard to their own interest."
+                    <div class="quote-author">— Adam Smith, <em>The Wealth of Nations</em></div>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🌐 Decentralized Decision-Making and Knowledge</h3>
+                <p>
+                    One of the most profound advantages of private research is its decentralized nature. Instead of a
+                    single government agency deciding which research directions to pursue, thousands of independent
+                    researchers, entrepreneurs, and investors make their own bets about promising areas of
+                    investigation.
+                </p>
+
+                <p>
+                    This decentralization is crucial because scientific breakthroughs are inherently unpredictable. No
+                    central authority can know in advance which research directions will prove fruitful. By allowing
+                    many different approaches to compete, private research maximizes the chances that someone will
+                    discover the unexpected breakthrough.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>The Knowledge Problem in Science</h4>
+                    <p>
+                        F.A. Hayek's insights about the knowledge problem apply directly to scientific research. The
+                        information needed to make good research decisions is dispersed among millions of researchers,
+                        entrepreneurs, and potential users. No central planner can aggregate this knowledge effectively.
+                    </p>
+                </div>
+
+                <p>
+                    Private research also benefits from what economists call "local knowledge"—detailed understanding of
+                    specific problems, technologies, and market opportunities that only people close to the situation
+                    can possess. A government bureaucrat in Washington D.C., London or Paris cannot know what a biotech
+                    researcher in San
+                    Diego, Oxford or Osaka knows about promising drug targets, or what a materials scientist in Silicon
+                    Valley knows
+                    about semiconductor innovations.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>⚡ Risk-Taking and Entrepreneurial Discovery</h3>
+                <p>
+                    Scientific progress requires risk-taking—the willingness to pursue ideas that might fail but could
+                    lead to revolutionary breakthroughs. Private research excels at this because entrepreneurs and
+                    investors can capture the full upside of successful risks while bearing the full downside of
+                    failures.
+                </p>
+
+                <p>
+                    Government research, by contrast, is inherently risk-averse. Politicians and bureaucrats face severe
+                    penalties for visible failures but receive little credit for successes. This creates a systematic
+                    bias toward safe, incremental research that rarely produces breakthrough innovations.
+                </p>
+
+                <div class="research-quote">
+                    "The function of entrepreneurs is to reform or revolutionize the pattern of production by exploiting
+                    an invention or,
+                    more generally, an untried technological possibility for producing a new commodity or producing an
+                    old one in a new way,
+                    by opening up a new source of supply of materials or a new outlet for products, by reorganizing an
+                    industry and so on."
+                    <div class="quote-author">— Joseph A. Schumpeter, <em>Capitalism, Socialism and Democracy</em></div>
+                </div>
+
+                <p>
+                    Consider the development of personal computers, the internet, biotechnology, or renewable energy. In
+                    each case, the most important breakthroughs came from private entrepreneurs willing to risk their
+                    own money on unproven ideas. Government research contributed to the basic science, but private
+                    innovation transformed that science into products that changed the world.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>📈 Rapid Dissemination and Scaling</h3>
+                <p>
+                    Private research doesn't just discover new knowledge—it rapidly disseminates and scales successful
+                    innovations. When a private company makes a breakthrough, it has strong incentives to bring that
+                    innovation to market quickly and efficiently. Competitors then have incentives to improve upon it,
+                    creating a virtuous cycle of innovation.
+                </p>
+
+                <p>
+                    Government research, even when successful, often struggles with the "valley of death"—the gap
+                    between laboratory discovery and practical application. Without market incentives to guide
+                    development and scaling, many government discoveries remain trapped in academic papers rather than
+                    becoming useful products.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>The Innovation Ecosystem</h4>
+                    <p>
+                        Private research creates entire ecosystems of innovation—networks of researchers, entrepreneurs,
+                        investors, and customers who collaborate to turn scientific discoveries into practical
+                        solutions. These ecosystems are self-organizing and self-improving in ways that government
+                        programs cannot replicate.
+                    </p>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🚫 The Lysenkoism Disaster: When Government Controls Science</h3>
+                <p>
+                    The most devastating example of government-controlled science is the Lysenkoism disaster in the
+                    Soviet Union. Trofim Lysenko, a Soviet biologist, promoted pseudoscientific theories about genetics
+                    that aligned with Marxist ideology but contradicted established scientific evidence.
+                </p>
+
+                <div class="lysenkoism-box">
+                    <h4>The Lysenkoism Catastrophe (1930s-1960s)</h4>
+                    <p>
+                        <strong>The Theory:</strong> Lysenko claimed that acquired characteristics could be inherited
+                        and that genetics was a "bourgeois pseudoscience." He promoted the idea that plants and animals
+                        could be transformed through environmental manipulation alone.
+                    </p>
+                    <p>
+                        <strong>Government Support:</strong> Stalin and the Communist Party endorsed Lysenko's theories
+                        because they aligned with Marxist beliefs about human nature and social transformation.
+                    </p>
+                    <p>
+                        <strong>The Consequences:</strong> Legitimate geneticists were imprisoned or executed.
+                        Agricultural policies based on Lysenko's theories contributed to famines that killed millions.
+                        Soviet biology fell decades behind Western science.
+                    </p>
+                    <p>
+                        <strong>The Lesson:</strong> When government controls science, political ideology can override
+                        empirical evidence, leading to catastrophic results.
+                    </p>
+                </div>
+
+                <p>
+                    Lysenkoism wasn't an accident—it was the inevitable result of centralizing scientific authority in
+                    government hands. When politicians control research funding and career advancement, scientists face
+                    powerful incentives to produce results that please their political masters rather than pursue
+                    objective truth.
+                </p>
+
+                <div class="research-quote">
+                    "To counterbalance the genuine science, an agricultural science of a different style was being
+                    created, one which
+                    cynically used the weapon of promise and deceit, an opportunistic science which accepted the
+                    paragraphs of countless
+                    decrees as axioms of its logical structure, a science which recognized, in the first place, not the
+                    laws of nature or
+                    production, but the laws and decisions made by government organs."
+                    <div class="quote-author">— Zhores A. Medvedev, <em>The Rise and Fall of T.D. Lysenko</em></div>
+                </div>
+
+                <p>
+                    While Western democracies haven't experienced disasters as severe as Lysenkoism, the same underlying
+                    problems exist whenever government controls scientific research. Political considerations influence
+                    funding decisions, ideological conformity is rewarded, and dissenting voices are marginalized.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🔬 Modern Examples of Government Science Failures</h3>
+                <p>
+                    Contemporary examples of government science problems include the replication crisis in psychology
+                    and social sciences, where government-funded researchers have produced thousands of studies that
+                    cannot be replicated. The incentive structure of academic research—publish or perish, regardless of
+                    whether results are true—has created a systematic bias toward false positives.
+                </p>
+
+                <p>
+                    Climate science provides another example where political considerations have influenced research
+                    priorities and conclusions. While climate change is real, the politicization of climate research has
+                    made it difficult to have honest scientific discussions about uncertainties, costs, and benefits of
+                    different policy responses.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>The Peer Review Problem</h4>
+                    <p>
+                        Government-funded research relies heavily on peer review, which sounds objective but often
+                        becomes a mechanism for enforcing conformity. Reviewers have incentives to reject papers that
+                        challenge established paradigms or threaten their own research programs, slowing scientific
+                        progress.
+                    </p>
+                </div>
+
+                <p>
+                    Private research faces different quality control mechanisms—market testing, customer feedback, and
+                    competitive pressure—that often prove more effective at separating good ideas from bad ones than
+                    academic peer review.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🌟 The Free Market Innovation Success Stories</h3>
+                <p>
+                    The history of technological progress is largely a history of private innovation. From the steam
+                    engine to the smartphone, most breakthrough technologies emerged from private research driven by
+                    market incentives rather than government planning.
+                </p>
+
+                <p>
+                    Consider the pharmaceutical industry, where private companies have developed virtually every major
+                    drug breakthrough of the past century. Despite heavy government regulation, the profit motive has
+                    driven companies to invest billions in research and development, producing treatments for diseases
+                    that were once death sentences.
+                </p>
+
+                <div class="research-quote">
+                    "The greatest advances of civilization, whether in architecture or painting, in science and
+                    literature, in industry or
+                    agriculture, have never come from centralized government."
+                    <div class="quote-author">— Milton Friedman, <em>Capitalism and Freedom</em></div>
+                </div>
+
+                <p>
+                    The computer revolution exemplifies private innovation at its best. Government research contributed
+                    to early computer development, but private companies like Intel, Microsoft, Apple, and Google
+                    transformed computers from room-sized machines used by specialists into powerful tools that billions
+                    of people carry in their pockets.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🎯 Policy Implications: Unleashing Innovation</h3>
+                <p>
+                    Understanding the superiority of private research has important policy implications. Instead of
+                    expanding government research programs, policymakers should focus on creating conditions that allow
+                    private innovation to flourish.
+                </p>
+
+                <p>
+                    This means protecting intellectual property rights so innovators can capture the value of their
+                    discoveries, reducing regulatory barriers that slow innovation, and maintaining competitive markets
+                    that reward breakthrough discoveries. It also means resisting the temptation to direct research
+                    toward politically favored goals.
+                </p>
+
+                <div class="highlight-box">
+                    <h4>The Innovation Policy Framework</h4>
+                    <p>
+                        <strong>Protect Property Rights:</strong> Strong patents and trade secrets encourage investment
+                        in research<br>
+                        <strong>Reduce Regulations:</strong> Streamline approval processes for new technologies<br>
+                        <strong>Maintain Competition:</strong> Prevent monopolies that reduce innovation incentives<br>
+                        <strong>Allow Failure:</strong> Don't bail out failed research projects or companies<br>
+                        <strong>Stay Neutral:</strong> Avoid picking winners and losers in technology races
+                    </p>
+                </div>
+
+                <p>
+                    The goal should be to create what economists call "innovation ecosystems"—networks of researchers,
+                    entrepreneurs, investors, and customers who collaborate spontaneously to solve problems and create
+                    value. These ecosystems emerge naturally in free markets but are difficult or impossible to create
+                    through government planning.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🔮 The Future of Innovation</h3>
+                <p>
+                    As we face challenges like climate change, aging populations, and emerging diseases, the need for
+                    rapid innovation has never been greater. The question is whether we'll rely on the proven track
+                    record of private research or repeat the mistakes of centralized science planning.
+                </p>
+
+                <p>
+                    The COVID-19 pandemic provided a natural experiment in research approaches. The most successful
+                    vaccine development came from private companies like Pfizer-BioNTech and Moderna, which used market
+                    incentives and competitive pressure to develop effective vaccines in record time. Government
+                    research programs, while contributing to basic science, were slower and less effective at
+                    translating discoveries into practical solutions.
+                </p>
+
+                <div class="research-quote">
+                    "The best way to predict the future is to create it."
+                    <div class="quote-author">— Peter Drucker</div>
+                </div>
+
+                <p>
+                    The simulation above demonstrates these principles in action. When research ideas are assigned to
+                    private research, they're more likely to produce breakthrough innovations because of competitive
+                    pressure, profit incentives, and decentralized decision-making. Government research, while sometimes
+                    successful, is hampered by bureaucratic constraints and political considerations that reduce its
+                    effectiveness.
+                </p>
+
+                <p>
+                    The choice is clear: if we want rapid scientific progress that improves human welfare, we should
+                    trust the proven power of free markets rather than the failed promises of government planning. The
+                    future belongs to those societies that unleash the creative potential of private innovation.
+                </p>
+            </div>
         </div>
     </div>
 
     <script>
         class ResearchSimulator {
             constructor() {
-                this.maxIdeas = 8; // Limit simultaneous ideas
+                this.maxIdeas = 9;
                 this.currentIdeas = [];
                 this.selectedIdea = null;
                 this.generationPaused = false;
@@ -716,6 +1258,7 @@
                 document.getElementById('autoAssign').addEventListener('click', () => this.toggleAutoAssign());
                 document.getElementById('clearOutputs').addEventListener('click', () => this.clearOutputs());
                 document.getElementById('pauseGeneration').addEventListener('click', () => this.toggleGeneration());
+                document.getElementById('showLysenkoism').addEventListener('click', () => this.showLysenkoisExample());
             }
 
             generateIdea() {
@@ -822,11 +1365,11 @@
                     if (success) {
                         this.stats.govSuccesses++;
                         this.createGovernmentOutput(idea, true);
-                        this.showNotification(`Government breakthrough in ${idea.name}!`, 'success');
+                        this.showNotification(`Government research breakthrough in ${idea.name}`, 'success');
                     } else {
                         this.stats.govFailures++;
                         this.createGovernmentOutput(idea, false);
-                        this.showNotification(`Government research encountered issues in ${idea.name}`, 'error');
+                        this.showNotification(`Government research stalled in ${idea.name} due to bureaucratic constraints`, 'error');
                     }
                 } else {
                     this.stats.privateProjects++;
@@ -834,12 +1377,12 @@
 
                     if (success) {
                         this.stats.privateSuccesses++;
-                        const isMajor = Math.random() < 0.3; // 30% chance of major innovation
+                        const isMajor = Math.random() < 0.3;
                         this.createPrivateOutput(idea, isMajor);
-                        this.showNotification(`Private innovation in ${idea.name}!`, 'success');
+                        this.showNotification(`Private innovation breakthrough in ${idea.name}!`, 'success');
                     } else {
                         this.stats.privateFailures++;
-                        this.showNotification(`Private research failed in ${idea.name}`, 'error');
+                        this.showNotification(`Private research failed in ${idea.name} - market feedback received`, 'error');
                     }
                 }
             }
@@ -850,10 +1393,10 @@
                 output.innerHTML = `
                     <div>${idea.icon}</div>
                     <div style="font-size: 0.8em; margin-top: 5px;">
-                        ${isSuccess ? 'Breakthrough' : 'Issues Found'}
+                        ${isSuccess ? 'Paper Published' : 'Bureaucratic Issues'}
                     </div>
                 `;
-                output.title = `${idea.name} - ${isSuccess ? 'Successful research with peer review' : 'Problems identified in research'}`;
+                output.title = `${idea.name} - ${isSuccess ? 'Research paper published after peer review' : 'Project delayed by bureaucratic constraints and political considerations'}`;
 
                 document.getElementById('govOutput').appendChild(output);
             }
@@ -864,10 +1407,10 @@
                 output.innerHTML = `
                     <div>${idea.icon}</div>
                     <div style="font-size: 0.8em; margin-top: 5px;">
-                        ${isMajor ? 'Major Innovation' : 'Innovation'}
+                        ${isMajor ? 'Market Revolution' : 'Commercial Success'}
                     </div>
                 `;
-                output.title = `${idea.name} - ${isMajor ? 'Major commercial breakthrough' : 'Successful commercial application'}`;
+                output.title = `${idea.name} - ${isMajor ? 'Revolutionary breakthrough with massive market impact' : 'Successful commercial application solving real problems'}`;
 
                 document.getElementById('privateOutput').appendChild(output);
             }
@@ -883,7 +1426,27 @@
                 setTimeout(() => {
                     notification.classList.remove('show');
                     setTimeout(() => notification.remove(), 300);
-                }, 3000);
+                }, 4000);
+            }
+
+            showLysenkoisExample() {
+                this.showNotification('Lysenkoism: Soviet government control of genetics led to scientific disaster and millions of deaths from failed agricultural policies', 'error');
+
+                // Add some "failed" government outputs to illustrate
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        const output = document.createElement('div');
+                        output.className = 'output-item gov-paper problem';
+                        output.innerHTML = `
+                            <div>🧬</div>
+                            <div style="font-size: 0.8em; margin-top: 5px;">
+                                Ideological "Science"
+                            </div>
+                        `;
+                        output.title = 'Lysenkoism - Pseudoscience promoted for political reasons, leading to agricultural disasters';
+                        document.getElementById('govOutput').appendChild(output);
+                    }, i * 500);
+                }
             }
 
             updateUI() {
@@ -910,7 +1473,7 @@
             startIdeaGeneration() {
                 this.generationInterval = setInterval(() => {
                     this.generateIdea();
-                }, 3000); // Generate every 3 seconds
+                }, 3000);
             }
 
             toggleGeneration() {
@@ -925,13 +1488,13 @@
             toggleAutoAssign() {
                 const button = document.getElementById('autoAssign');
                 this.autoAssignMode = !this.autoAssignMode;
-                button.textContent = this.autoAssignMode ? 'Manual Mode' : 'Auto-Assign Mode';
+                button.textContent = this.autoAssignMode ? '🔄 Manual Mode' : '⚡ Auto-Assign Mode';
                 button.style.background = this.autoAssignMode ?
                     'linear-gradient(135deg, #e74c3c, #c0392b)' :
                     'linear-gradient(135deg, #3498db, #2980b9)';
 
                 this.showNotification(
-                    this.autoAssignMode ? 'Auto-assign mode enabled' : 'Manual mode enabled',
+                    this.autoAssignMode ? 'Auto-assign mode: Ideas will be randomly distributed' : 'Manual mode: Click ideas and zones to assign',
                     'success'
                 );
             }
@@ -939,7 +1502,7 @@
             clearOutputs() {
                 document.getElementById('govOutput').innerHTML = '';
                 document.getElementById('privateOutput').innerHTML = '';
-                this.showNotification('All outputs cleared', 'success');
+                this.showNotification('All research outputs cleared', 'success');
             }
 
             resetSimulation() {
@@ -969,7 +1532,7 @@
                 document.getElementById('govZone').classList.remove('can-drop');
                 document.getElementById('privateZone').classList.remove('can-drop');
 
-                this.showNotification('Simulation reset', 'success');
+                this.showNotification('Simulation reset - ready for new research assignments', 'success');
             }
         }
 
