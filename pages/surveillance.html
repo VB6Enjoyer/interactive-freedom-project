@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Privacy: The Battle for Individual Liberty in the Surveillance Age</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2d1b69 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            font-weight: 300;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 1.6em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #ecf0f1;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.8;
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .orwell-quote {
+            background: rgba(255, 107, 107, 0.1);
+            border-left: 4px solid #ff6b6b;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 1100px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            color: white;
+            font-style: italic;
+            font-size: 1.3em;
+            line-height: 1.7;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .quote-attribution {
+            text-align: right;
+            margin-top: 20px;
+            font-size: 1.1em;
+            opacity: 0.9;
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .simulation-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+        }
+
+        .controls-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(15px);
+            height: fit-content;
+        }
+
+        .section-title {
+            color: #0f0f23;
+            font-size: 1.6em;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 3px solid #ff6b6b;
+            padding-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .privacy-network {
+            background: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 3px solid #0f0f23;
+            box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .privacy-status {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 20px;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+            font-size: 1.1em;
+            z-index: 10;
+        }
+
+        .threat-level {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 12px 18px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 1.1em;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .threat-low {
+            background: rgba(46, 204, 113, 0.9);
+            color: white;
+        }
+
+        .threat-medium {
+            background: rgba(241, 196, 15, 0.9);
+            color: #0f0f23;
+        }
+
+        .threat-high {
+            background: rgba(230, 126, 34, 0.9);
+            color: white;
+        }
+
+        .threat-extreme {
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+            animation: threatPulse 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes threatPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        .network-nodes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 20px;
+            padding: 80px 40px 40px;
+            align-items: center;
+            justify-items: center;
+        }
+
+        .network-node {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.9em;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .network-node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .node-user {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        .node-device {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .node-service {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            grid-column: 3;
+            grid-row: 1;
+        }
+
+        .node-isp {
+            background: linear-gradient(135deg, #16a085, #1abc9c);
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .node-government {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        .node-surveillance {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            animation: surveillancePulse 2s ease-in-out infinite;
+            grid-column: 3;
+            grid-row: 2;
+            display: none;
+        }
+
+        @keyframes surveillancePulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .data-connection {
+            position: absolute;
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 1;
+        }
+
+        .surveillance-connection {
+            position: absolute;
+            height: 3px;
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 1;
+            animation: surveillanceFlow 2s linear infinite;
+        }
+
+        @keyframes surveillanceFlow {
+            0% { box-shadow: 0 0 0 rgba(231, 76, 60, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(231, 76, 60, 0.8); }
+            100% { box-shadow: 0 0 0 rgba(231, 76, 60, 0.5); }
+        }
+
+        .connection-active {
+            opacity: 1 !important;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #dee2e6;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #0f0f23;
+            margin-bottom: 8px;
+        }
+
+        .metric-status {
+            font-size: 0.8em;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .status-secure { background: rgba(46, 204, 113, 0.2); color: #27ae60; }
+        .status-vulnerable { background: rgba(231, 76, 60, 0.2); color: #e74c3c; }
+        .status-monitored { background: rgba(241, 196, 15, 0.2); color: #f39c12; }
+
+        .scenario-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255, 107, 107, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .scenario-section h4 {
+            color: #c0392b;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scenario-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .scenario-button {
+            padding: 12px 16px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .scenario-button.active {
+            border-color: #ff6b6b;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+        }
+
+        .scenario-button:hover:not(.active) {
+            border-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .privacy-controls {
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #0f0f23;
+        }
+
+        .control-value {
+            background: #ff6b6b;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #dee2e6;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #ff6b6b;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(255, 107, 107, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            background: #ee5a24;
+            transform: scale(1.1);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #ff6b6b;
+            cursor: pointer;
+            border: none;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #ff6b6b;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .feedback-panel {
+            background: rgba(15, 15, 35, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            color: #0f0f23;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .feedback-text {
+            color: #495057;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .impact-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .impact-tag {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .impact-tag.secure { background: rgba(46, 204, 113, 0.2); color: #27ae60; }
+        .impact-tag.vulnerable { background: rgba(231, 76, 60, 0.2); color: #c0392b; }
+        .impact-tag.monitored { background: rgba(241, 196, 15, 0.2); color: #f39c12; }
+
+        .control-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .control-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .reset-button {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        }
+
+        .surveillance-button {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .privacy-button {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .analysis-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(15px);
+            margin-top: 30px;
+        }
+
+        .analysis-section {
+            margin-bottom: 35px;
+        }
+
+        .analysis-section h3 {
+            color: #0f0f23;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            border-left: 4px solid #ff6b6b;
+            padding-left: 20px;
+        }
+
+        .analysis-section p {
+            color: #495057;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(238, 90, 36, 0.05));
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .highlight-box h4 {
+            color: #c0392b;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid #dee2e6;
+        }
+
+        .comparison-card h4 {
+            color: #0f0f23;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .comparison-card .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .privacy-protected { border-color: #27ae60; }
+        .privacy-violated { border-color: #e74c3c; }
+
+        .privacy-protected .icon { color: #27ae60; }
+        .privacy-violated .icon { color: #e74c3c; }
+
+        .privacy-quote {
+            background: rgba(15, 15, 35, 0.1);
+            border-left: 4px solid #0f0f23;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-style: italic;
+            color: #495057;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+
+        .quote-author {
+            text-align: right;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #0f0f23;
+        }
+
+        .snowden-box {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(41, 128, 185, 0.05));
+            border: 2px solid rgba(52, 152, 219, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .snowden-box h4 {
+            color: #2980b9;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1400px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .control-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .network-nodes {
+                padding: 60px 20px 20px;
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(3, 1fr);
+            }
+
+            .network-node {
+                width: 80px;
+                height: 80px;
+                font-size: 0.8em;
+            }
+
+            .node-surveillance {
+                grid-column: 1;
+                grid-row: 3;
+            }
+
+            .node-government {
+                grid-column: 2;
+                grid-row: 3;
+            }
+        }
+
+        /* Return button */
+        .return-home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .return-home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        .return-home-button .icon {
+            font-size: 1.1em;
+            transition: transform 0.3s ease;
+        }
+
+        .return-home-button:hover .icon {
+            transform: translateX(-2px);
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="return-home-button" aria-label="Return to Interactive Freedom Project homepage">
+        <span class="icon">←</span>
+        <span>Home</span>
+    </a>
+
+    <div class="app-container">
+        <div class="header">
+            <h1>Digital Privacy</h1>
+            <div class="subtitle">The Battle for Individual Liberty in the Surveillance Age</div>
+            <p>
+                Explore the complex landscape of digital privacy, government surveillance, and individual liberty. 
+                Discover how mass surveillance programs threaten fundamental freedoms and why privacy is essential 
+                for human dignity, democracy, and the pursuit of happiness in the digital age.
+            </p>
+        </div>
+
+        <div class="orwell-quote">
+            "Big Brother is watching you. The thought police would get him just the same. He had committed—would have committed, even if he had never set pen to paper—the essential crime that contained all others in itself. Thoughtcrime, they called it."
+            <div class="quote-attribution">— George Orwell, 1984</div>
+        </div>
+
+        <div class="main-content">
+            <div class="simulation-panel">
+                <h3 class="section-title">Privacy Network Simulation</h3>
+                
+                <div class="privacy-network" id="privacyNetwork">
+                    <div class="privacy-status" id="privacyStatus">Baseline Privacy</div>
+                    <div class="threat-level" id="threatLevel">Low Risk</div>
+                    
+                    <div class="network-nodes" id="networkNodes">
+                        <div class="network-node node-user" data-type="user" title="Individual User - You and your digital identity">
+                            👤<br>You
+                        </div>
+                        <div class="network-node node-device" data-type="device" title="Personal Devices - Smartphones, computers, IoT devices">
+                            📱<br>Device
+                        </div>
+                        <div class="network-node node-service" data-type="service" title="Online Services - Social media, email, cloud storage">
+                            🌐<br>Services
+                        </div>
+                        <div class="network-node node-isp" data-type="isp" title="Internet Service Provider - Your gateway to the internet">
+                            📡<br>ISP
+                        </div>
+                        <div class="network-node node-government" data-type="government" title="Government Agencies - Law enforcement, intelligence services">
+                            🏛️<br>Gov
+                        </div>
+                        <div class="network-node node-surveillance" data-type="surveillance" title="Mass Surveillance - NSA, GCHQ, and other intelligence agencies">
+                            👁️<br>NSA
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Privacy Level</div>
+                        <div class="metric-value" id="privacyValue">75%</div>
+                        <div class="metric-status" id="privacyMetricStatus">Moderate</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Data Exposure</div>
+                        <div class="metric-value" id="exposureValue">25%</div>
+                        <div class="metric-status" id="exposureStatus">Limited</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Encryption Status</div>
+                        <div class="metric-value" id="encryptionValue">60%</div>
+                        <div class="metric-status" id="encryptionStatus">Partial</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Surveillance Risk</div>
+                        <div class="metric-value" id="surveillanceValue">30%</div>
+                        <div class="metric-status" id="surveillanceStatus">Moderate</div>
+                    </div>
+                </div>
+
+                <div class="feedback-panel" id="feedbackPanel">
+                    <div class="feedback-title">Privacy Analysis</div>
+                    <div class="feedback-text">
+                        Your digital privacy is currently at a moderate level. While some basic protections are in place, 
+                        significant vulnerabilities remain. Government surveillance capabilities and corporate data collection 
+                        pose ongoing threats to your personal liberty and autonomy.
+                    </div>
+                    <div class="impact-tags" id="impactTags">
+                        <div class="impact-tag monitored">Baseline Monitoring</div>
+                        <div class="impact-tag vulnerable">Data Collection</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <h3 class="section-title">Privacy Scenarios</h3>
+                
+                <div class="scenario-section">
+                    <h4>🌍 Global Privacy Scenarios</h4>
+                    <div class="scenario-buttons">
+                        <div class="scenario-button active" id="baseline" onclick="selectScenario('baseline')">
+                            🏠 Baseline Privacy
+                        </div>
+                        <div class="scenario-button" id="snowden" onclick="selectScenario('snowden')">
+                            🕵️ Post-Snowden Reality
+                        </div>
+                        <div class="scenario-button" id="china" onclick="selectScenario('china')">
+                            🇨🇳 Chinese Social Credit
+                        </div>
+                        <div class="scenario-button" id="europe" onclick="selectScenario('europe')">
+                            🇪🇺 GDPR Protection
+                        </div>
+                        <div class="scenario-button" id="authoritarian" onclick="selectScenario('authoritarian')">
+                            🚨 Authoritarian State
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scenario-section">
+                    <h4>🔧 Privacy Controls</h4>
+                    <div class="privacy-controls">
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Encryption Level</span>
+                                <span class="control-value" id="encryptionLevel">60%</span>
+                            </div>
+                            <input type="range" class="slider" id="encryptionSlider" min="0" max="100" value="60">
+                        </div>
+                        
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Government Surveillance</span>
+                                <span class="control-value" id="surveillanceLevel">30%</span>
+                            </div>
+                            <input type="range" class="slider" id="surveillanceSlider" min="0" max="100" value="30">
+                        </div>
+                        
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Corporate Data Mining</span>
+                                <span class="control-value" id="corporateLevel">50%</span>
+                            </div>
+                            <input type="range" class="slider" id="corporateSlider" min="0" max="100" value="50">
+                        </div>
+                        
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Biometric Collection</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="biometricToggle">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Mass Data Retention</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="retentionToggle">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-buttons">
+                    <button class="control-button reset-button" onclick="resetSimulation()">
+                        🔄 Reset
+                    </button>
+                    <button class="control-button surveillance-button" onclick="maxSurveillance()">
+                        👁️ Max Surveillance
+                    </button>
+                    <button class="control-button privacy-button" onclick="maxPrivacy()">
+                        🔒 Max Privacy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-panel">
+            <h3 class="section-title">The Libertarian Case for Digital Privacy</h3>
+            
+            <div class="analysis-section">
+                <h3>🗽 Privacy as a Fundamental Right</h3>
+                <p>
+                    From a libertarian perspective, privacy is not a privilege granted by government—it's a fundamental human right that exists prior to and independent of state authority. Just as your physical person and property are protected from unreasonable search and seizure, your digital life deserves the same protection.
+                </p>
+                
+                <div class="privacy-quote">
+                    "Privacy is not about hiding something. It's about protecting everything that makes you human: your thoughts, your relationships, your personal growth, and your freedom to be yourself without fear of judgment or persecution."
+                    <div class="quote-author">— Edward Snowden</div>
+                </div>
+                
+                <p>
+                    The digital age has created unprecedented opportunities for both liberation and oppression. Technology can empower individuals with access to information, communication tools, and economic opportunities. But the same technology can be weaponized by governments to monitor, control, and suppress their citizens.
+                </p>
+                
+                <div class="highlight-box">
+                    <h4>The Privacy Paradox</h4>
+                    <p>
+                        We live in an age where we voluntarily share intimate details of our lives on social media, yet we're outraged when governments collect the same information without our consent. This paradox highlights a crucial distinction: voluntary disclosure versus coercive surveillance. The former is an exercise of freedom; the latter is a violation of it.
+                    </p>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🕵️ The Snowden Revelations: A Watershed Moment</h3>
+                <p>
+                    Edward Snowden's 2013 revelations about NSA surveillance programs fundamentally changed our understanding of government surveillance capabilities. The leaked documents revealed a vast apparatus of mass surveillance that collected data on millions of innocent people without warrants or probable cause.
+                </p>
+                
+                <div class="snowden-box">
+                    <h4>Key Snowden Revelations</h4>
+                    <p>
+                        <strong>PRISM Program:</strong> Direct access to user data from major tech companies including Google, Facebook, Apple, and Microsoft.
+                    </p>
+                    <p>
+                        <strong>XKeyscore:</strong> A system allowing analysts to search through vast databases of emails, online chats, and browsing histories without prior authorization.
+                    </p>
+                    <p>
+                        <strong>Bulk Metadata Collection:</strong> The NSA collected phone metadata on virtually every American, creating detailed maps of social networks and communication patterns.
+                    </p>
+                    <p>
+                        <strong>International Surveillance:</strong> Extensive spying on foreign leaders, citizens, and international organizations, often in violation of international law.
+                    </p>
+                </div>
+                
+                <p>
+                    The Snowden revelations demonstrated that the "nothing to hide" argument is fundamentally flawed. Even if you have nothing to hide from your current government, you might have something to hide from a future government. History shows that surveillance powers, once granted, are rarely relinquished and often expanded.
+                </p>
+                
+                <div class="privacy-quote">
+                    "Arguing that you don't care about the right to privacy because you have nothing to hide is no different than saying you don't care about free speech because you have nothing to say."
+                    <div class="quote-author">— Edward Snowden</div>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🌐 Global Surveillance: A Worldwide Phenomenon</h3>
+                <p>
+                    Mass surveillance is not unique to any single country. Governments around the world have implemented extensive surveillance programs, often justified by national security concerns but frequently used for political control and social monitoring.
+                </p>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card privacy-violated">
+                        <div class="icon">🇨🇳</div>
+                        <h4>China's Social Credit System</h4>
+                        <p><strong>Comprehensive monitoring</strong> - Facial recognition, internet activity, financial transactions</p>
+                        <p><strong>Behavioral scoring</strong> - Citizens rated based on "trustworthiness"</p>
+                        <p><strong>Punishment system</strong> - Low scores restrict travel, employment, education</p>
+                        <p><strong>Social control</strong> - Dissent and non-conformity actively discouraged</p>
+                    </div>
+                    <div class="comparison-card privacy-violated">
+                        <div class="icon">🇷🇺</div>
+                        <h4>Russia's SORM System</h4>
+                        <p><strong>Deep packet inspection</strong> - All internet traffic monitored and stored</p>
+                        <p><strong>Mandatory cooperation</strong> - ISPs required to install government monitoring equipment</p>
+                        <p><strong>Political targeting</strong> - Opposition activists and journalists routinely surveilled</p>
+                        <p><strong>Legal immunity</strong> - Security services operate with minimal oversight</p>
+                    </div>
+                </div>
+                
+                <p>
+                    Even democratic countries have implemented extensive surveillance programs. The UK's Investigatory Powers Act, often called the "Snooper's Charter," grants broad surveillance powers to government agencies. Australia's metadata retention laws require ISPs to store customer data for two years. France expanded surveillance powers after terrorist attacks, often with minimal judicial oversight.
+                </p>
+                
+                <div class="highlight-box">
+                    <h4>The Five Eyes Alliance</h4>
+                    <p>
+                        The intelligence-sharing agreement between the US, UK, Canada, Australia, and New Zealand creates a global surveillance network. By sharing intelligence, these countries can circumvent domestic restrictions on spying on their own citizens—a practice that effectively nullifies constitutional protections.
+                    </p>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🏢 Corporate Surveillance and Government Compulsion</h3>
+                <p>
+                    Private companies collect vast amounts of personal data, often with user consent (however uninformed). But governments increasingly compel these companies to share user data through legal mandates, national security letters, and court orders—often with gag orders preventing companies from informing users.
+                </p>
+                
+                <p>
+                    This creates a dangerous convergence between corporate data collection and government surveillance. Companies become unwilling agents of the surveillance state, forced to betray their customers' trust and privacy. The result is a surveillance ecosystem where privacy violations are normalized and institutionalized.
+                </p>
+                
+                <div class="privacy-quote">
+                    "When governments can compel private companies to hand over user data without meaningful oversight, the distinction between voluntary and coercive surveillance disappears. We all become subjects of a surveillance state, whether we consented to it or not."
+                    <div class="quote-author">— Electronic Frontier Foundation</div>
+                </div>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card privacy-violated">
+                        <div class="icon">📧</div>
+                        <h4>Data Requests and Warrants</h4>
+                        <p><strong>Legal compulsion</strong> - Courts order companies to provide user data</p>
+                        <p><strong>National security letters</strong> - FBI demands data without warrants</p>
+                        <p><strong>Gag orders</strong> - Companies forbidden from notifying users</p>
+                        <p><strong>Bulk requests</strong> - Entire databases demanded, not just specific users</p>
+                    </div>
+                    <div class="comparison-card privacy-violated">
+                        <div class="icon">🔓</div>
+                        <h4>Backdoors and Vulnerabilities</h4>
+                        <p><strong>Encryption backdoors</strong> - Governments demand access to encrypted communications</p>
+                        <p><strong>Zero-day exploits</strong> - Intelligence agencies hoard software vulnerabilities</p>
+                        <p><strong>Hardware implants</strong> - Physical devices compromised during manufacturing</p>
+                        <p><strong>Supply chain attacks</strong> - Software and hardware compromised before delivery</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🔐 The Crucial Role of Encryption</h3>
+                <p>
+                    Encryption is the mathematical foundation of digital privacy. It transforms readable information into unreadable code that can only be deciphered with the correct key. Strong encryption makes mass surveillance technically difficult and economically expensive, forcing governments to target their surveillance efforts rather than collecting everything.
+                </p>
+                
+                <p>
+                    Governments often argue that encryption helps criminals and terrorists "go dark," but this argument ignores the fundamental reality that privacy and security are not zero-sum. Strong encryption protects everyone—dissidents from authoritarian governments, businesses from industrial espionage, and ordinary citizens from identity theft and financial fraud.
+                </p>
+                
+                <div class="highlight-box">
+                    <h4>The Crypto Wars</h4>
+                    <p>
+                        The ongoing battle over encryption—dubbed the "Crypto Wars"—represents a fundamental conflict between individual liberty and government power. Governments want backdoors and key escrow systems that would allow them to decrypt communications. Privacy advocates argue that any backdoor can be exploited by malicious actors, making everyone less secure.
+                    </p>
+                </div>
+                
+                <p>
+                    The libertarian position is clear: individuals have the right to use strong encryption to protect their communications and data. Any government attempt to weaken encryption or mandate backdoors is an attack on fundamental privacy rights and digital security.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🧬 Biometric Surveillance: The Ultimate Identifier</h3>
+                <p>
+                    Biometric data—fingerprints, facial recognition, iris scans, DNA profiles—represents the most invasive form of surveillance because it's based on immutable physical characteristics. Unlike passwords or encryption keys, you can't change your face or fingerprints if they're compromised.
+                </p>
+                
+                <p>
+                    Governments around the world are rapidly expanding biometric collection programs. India's Aadhaar system has collected biometric data on over a billion people. China uses facial recognition to track Uyghurs and other minorities. The US collects biometric data from visa applicants and increasingly uses facial recognition at airports and border crossings.
+                </p>
+                
+                <div class="privacy-quote">
+                    "Biometric surveillance represents the ultimate form of identification and tracking. Once your biometric data is in government databases, you can never truly be anonymous again."
+                    <div class="quote-author">— Privacy International</div>
+                </div>
+                
+                <p>
+                    The proliferation of biometric surveillance creates a world where anonymity becomes impossible. Every public space becomes a potential checkpoint where your identity can be verified and your movements tracked. This has profound implications for freedom of association, political dissent, and personal autonomy.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>⚖️ Legal Frameworks: Protecting or Enabling Surveillance?</h3>
+                <p>
+                    Legal frameworks around digital privacy vary dramatically worldwide, reflecting different cultural values and political systems. Some laws genuinely protect privacy rights, while others provide legal cover for extensive surveillance programs.
+                </p>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card privacy-protected">
+                        <div class="icon">🇪🇺</div>
+                        <h4>GDPR (European Union)</h4>
+                        <p><strong>Strong consent requirements</strong> - Users must explicitly agree to data collection</p>
+                        <p><strong>Right to deletion</strong> - Users can demand their data be erased</p>
+                        <p><strong>Data portability</strong> - Users can transfer data between services</p>
+                        <p><strong>Heavy penalties</strong> - Fines up to 4% of global revenue</p>
+                    </div>
+                    <div class="comparison-card privacy-violated">
+                        <div class="icon">🇺🇸</div>
+                        <h4>FISA (United States)</h4>
+                        <p><strong>Secret courts</strong> - Surveillance warrants approved in secret</p>
+                        <p><strong>Broad authorities</strong> - Extensive powers for intelligence agencies</p>
+                        <p><strong>Minimal oversight</strong> - Limited judicial and congressional review</p>
+                        <p><strong>National security exception</strong> - Constitutional protections often waived</p>
+                    </div>
+                </div>
+                
+                <p>
+                    The European Union's General Data Protection Regulation (GDPR) represents one of the strongest privacy protection frameworks globally, emphasizing user consent, data minimization, and individual rights. However, even GDPR contains exceptions for national security and law enforcement that can undermine its protections.
+                </p>
+                
+                <p>
+                    In contrast, many countries have laws that explicitly enable surveillance. The US FISA Amendments Act allows warrantless surveillance of international communications. The UK's Investigatory Powers Act grants broad surveillance powers with minimal judicial oversight. These laws often operate in secret, making it difficult for citizens to understand or challenge surveillance programs.
+                </p>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🗣️ Impact on Fundamental Rights</h3>
+                <p>
+                    Digital surveillance doesn't just violate privacy—it undermines the entire foundation of democratic society by chilling the exercise of fundamental rights. When people know they're being watched, they modify their behavior, self-censor their thoughts, and avoid associations that might be deemed suspicious.
+                </p>
+                
+                <div class="highlight-box">
+                    <h4>The Chilling Effect</h4>
+                    <p>
+                        Research shows that awareness of surveillance significantly changes behavior. People are less likely to search for information on sensitive topics, visit websites associated with controversial causes, or communicate with people who might be under surveillance. This self-censorship occurs even when the surveillance is legal and the behavior is perfectly innocent.
+                    </p>
+                </div>
+                
+                <p>
+                    <strong>Freedom of Speech:</strong> Surveillance creates a chilling effect on free expression. People self-censor online communications, avoid controversial topics, and refrain from expressing dissenting views. This is particularly dangerous for journalists, activists, and political dissidents who rely on confidential communications.
+                </p>
+                
+                <p>
+                    <strong>Freedom of Association:</strong> Mass surveillance makes it difficult to maintain confidential associations. Political organizations, religious groups, and social movements all suffer when members fear that their participation will be monitored and potentially used against them.
+                </p>
+                
+                <p>
+                    <strong>Freedom of Thought:</strong> Perhaps most insidiously, surveillance affects our inner mental lives. When we know our searches, communications, and digital activities are monitored, we begin to internalize the surveillance and modify our thoughts and curiosity accordingly.
+                </p>
+                
+                <div class="privacy-quote">
+                    "A society under surveillance is not a free society. When citizens must constantly consider whether their actions, associations, or even thoughts might be monitored and judged by the state, they are no longer truly free."
+                    <div class="quote-author">— American Civil Liberties Union</div>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>🛡️ Defending Digital Liberty</h3>
+                <p>
+                    Protecting digital privacy requires both individual action and systemic change. Individuals can use privacy tools, support privacy-focused companies, and advocate for stronger legal protections. But ultimately, defending digital liberty requires limiting government surveillance powers and holding both governments and corporations accountable for privacy violations.
+                </p>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card privacy-protected">
+                        <div class="icon">🔧</div>
+                        <h4>Individual Actions</h4>
+                        <p><strong>Use encryption</strong> - Encrypt communications and data storage</p>
+                        <p><strong>Privacy tools</strong> - VPNs, Tor browser, secure messaging apps</p>
+                        <p><strong>Data minimization</strong> - Share less personal information online</p>
+                        <p><strong>Privacy-focused services</strong> - Choose companies that respect privacy</p>
+                    </div>
+                    <div class="comparison-card privacy-protected">
+                        <div class="icon">⚖️</div>
+                        <h4>Systemic Solutions</h4>
+                        <p><strong>Legal reform</strong> - Strengthen privacy laws and constitutional protections</p>
+                        <p><strong>Judicial oversight</strong> - Require warrants for surveillance activities</p>
+                        <p><strong>Transparency</strong> - Mandate disclosure of surveillance programs</p>
+                        <p><strong>International cooperation</strong> - Global privacy standards and enforcement</p>
+                    </div>
+                </div>
+                
+                <p>
+                    The libertarian approach to digital privacy emphasizes both individual responsibility and strict limits on government power. Individuals should take steps to protect their own privacy, but they shouldn't have to become cybersecurity experts just to maintain basic human dignity and autonomy.
+                </p>
+                
+                <div class="highlight-box">
+                    <h4>The Path Forward</h4>
+                    <p>
+                        Defending digital liberty requires recognizing that privacy is not about hiding wrongdoing—it's about preserving the space for human flourishing. In a free society, individuals must be able to think, communicate, and associate without fear of government surveillance. This is not a luxury or convenience; it's a fundamental requirement for human dignity and democratic governance.
+                    </p>
+                </div>
+                
+                <p>
+                    The simulation above demonstrates how different policy choices and technological implementations affect individual privacy and liberty. By understanding these trade-offs, we can make informed decisions about the kind of digital society we want to live in—one that empowers individuals or one that empowers surveillance states.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class PrivacySimulator {
+            constructor() {
+                this.basePrivacy = 75;
+                this.baseExposure = 25;
+                this.baseEncryption = 60;
+                this.baseSurveillance = 30;
+                
+                this.currentScenario = 'baseline';
+                this.encryptionLevel = 60;
+                this.surveillanceLevel = 30;
+                this.corporateLevel = 50;
+                this.biometricEnabled = false;
+                this.retentionEnabled = false;
+                
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.updateSimulation();
+                this.createNetworkConnections();
+            }
+
+            bindEvents() {
+                // Sliders
+                document.getElementById('encryptionSlider').addEventListener('input', (e) => {
+                    this.encryptionLevel = parseInt(e.target.value);
+                    document.getElementById('encryptionLevel').textContent = `${this.encryptionLevel}%`;
+                    this.updateSimulation();
+                });
+
+                document.getElementById('surveillanceSlider').addEventListener('input', (e) => {
+                    this.surveillanceLevel = parseInt(e.target.value);
+                    document.getElementById('surveillanceLevel').textContent = `${this.surveillanceLevel}%`;
+                    this.updateSimulation();
+                });
+
+                document.getElementById('corporateSlider').addEventListener('input', (e) => {
+                    this.corporateLevel = parseInt(e.target.value);
+                    document.getElementById('corporateLevel').textContent = `${this.corporateLevel}%`;
+                    this.updateSimulation();
+                });
+
+                // Toggles
+                document.getElementById('biometricToggle').addEventListener('change', (e) => {
+                    this.biometricEnabled = e.target.checked;
+                    this.updateSimulation();
+                });
+
+                document.getElementById('retentionToggle').addEventListener('change', (e) => {
+                    this.retentionEnabled = e.target.checked;
+                    this.updateSimulation();
+                });
+
+                // Network nodes
+                document.querySelectorAll('.network-node').forEach(node => {
+                    node.addEventListener('click', () => {
+                        this.showNodeInfo(node.dataset.type);
+                    });
+                });
+            }
+
+            createNetworkConnections() {
+                const network = document.getElementById('privacyNetwork');
+                
+                // Create data connections
+                const connections = [
+                    { from: 'user', to: 'device', type: 'data' },
+                    { from: 'device', to: 'service', type: 'data' },
+                    { from: 'device', to: 'isp', type: 'data' },
+                    { from: 'service', to: 'government', type: 'surveillance' },
+                    { from: 'isp', to: 'government', type: 'surveillance' },
+                    { from: 'government', to: 'surveillance', type: 'surveillance' }
+                ];
+
+                connections.forEach((conn, index) => {
+                    const connection = document.createElement('div');
+                    connection.className = `${conn.type}-connection`;
+                    connection.id = `connection-${index}`;
+                    network.appendChild(connection);
+                });
+            }
+
+            updateNetworkConnections() {
+                const connections = document.querySelectorAll('.data-connection, .surveillance-connection');
+                
+                connections.forEach(conn => {
+                    conn.classList.remove('connection-active');
+                });
+
+                // Show surveillance connections based on surveillance level
+                if (this.surveillanceLevel > 40) {
+                    document.querySelectorAll('.surveillance-connection').forEach(conn => {
+                        conn.classList.add('connection-active');
+                    });
+                }
+
+                // Always show data connections
+                document.querySelectorAll('.data-connection').forEach(conn => {
+                    conn.classList.add('connection-active');
+                });
+            }
+
+            calculateMetrics() {
+                let privacy = this.basePrivacy;
+                let exposure = this.baseExposure;
+                let encryption = this.encryptionLevel;
+                let surveillance = this.surveillanceLevel;
+
+                // Encryption improves privacy
+                privacy += (encryption - 60) * 0.3;
+                exposure -= (encryption - 60) * 0.2;
+
+                // Surveillance reduces privacy
+                privacy -= (surveillance - 30) * 0.5;
+                exposure += (surveillance - 30) * 0.4;
+
+                // Corporate data mining affects exposure
+                exposure += (this.corporateLevel - 50) * 0.3;
+                privacy -= (this.corporateLevel - 50) * 0.2;
+
+                // Biometric collection significantly impacts privacy
+                if (this.biometricEnabled) {
+                    privacy -= 15;
+                    exposure += 20;
+                    surveillance += 10;
+                }
+
+                // Data retention affects surveillance capability
+                if (this.retentionEnabled) {
+                    privacy -= 10;
+                    exposure += 15;
+                    surveillance += 5;
+                }
+
+                // Scenario-specific adjustments
+                switch (this.currentScenario) {
+                    case 'snowden':
+                        privacy -= 20;
+                        exposure += 25;
+                        surveillance += 30;
+                        break;
+                    case 'china':
+                        privacy -= 40;
+                        exposure += 50;
+                        surveillance += 60;
+                        break;
+                    case 'europe':
+                        privacy += 15;
+                        exposure -= 20;
+                        surveillance -= 15;
+                        break;
+                    case 'authoritarian':
+                        privacy -= 60;
+                        exposure += 70;
+                        surveillance += 80;
+                        break;
+                }
+
+                return {
+                    privacy: Math.max(0, Math.min(100, Math.round(privacy))),
+                    exposure: Math.max(0, Math.min(100, Math.round(exposure))),
+                    encryption: Math.max(0, Math.min(100, encryption)),
+                    surveillance: Math.max(0, Math.min(100, Math.round(surveillance)))
+                };
+            }
+
+            updateSimulation() {
+                const metrics = this.calculateMetrics();
+
+                // Update metric displays
+                document.getElementById('privacyValue').textContent = `${metrics.privacy}%`;
+                document.getElementById('exposureValue').textContent = `${metrics.exposure}%`;
+                document.getElementById('encryptionValue').textContent = `${metrics.encryption}%`;
+                document.getElementById('surveillanceValue').textContent = `${metrics.surveillance}%`;
+
+                // Update metric statuses
+                this.updateMetricStatus('privacyMetricStatus', metrics.privacy, 
+                    [[70, 'Secure'], [40, 'Vulnerable'], [0, 'Compromised']]);
+                this.updateMetricStatus('exposureStatus', metrics.exposure, 
+                    [[30, 'Limited'], [60, 'Moderate'], [100, 'Extensive']], true);
+                this.updateMetricStatus('encryptionStatus', metrics.encryption, 
+                    [[80, 'Strong'], [50, 'Partial'], [0, 'Weak']]);
+                this.updateMetricStatus('surveillanceStatus', metrics.surveillance, 
+                    [[30, 'Low'], [60, 'Moderate'], [100, 'Extreme']], true);
+
+                // Update visual elements
+                this.updatePrivacyStatus(metrics);
+                this.updateThreatLevel(metrics);
+                this.updateNetworkVisualization(metrics);
+                this.updateNetworkConnections();
+                this.updateFeedback(metrics);
+            }
+
+            updateMetricStatus(elementId, value, thresholds, reverse = false) {
+                const element = document.getElementById(elementId);
+                element.className = 'metric-status';
+                
+                for (let [threshold, label] of thresholds) {
+                    if (reverse ? value >= threshold : value >= threshold) {
+                        element.textContent = label;
+                        if (label === 'Secure' || label === 'Limited' || label === 'Strong' || label === 'Low') {
+                            element.classList.add('status-secure');
+                        } else if (label === 'Vulnerable' || label === 'Moderate' || label === 'Partial') {
+                            element.classList.add('status-monitored');
+                        } else {
+                            element.classList.add('status-vulnerable');
+                        }
+                        break;
+                    }
+                }
+            }
+
+            updatePrivacyStatus(metrics) {
+                const statusElement = document.getElementById('privacyStatus');
+                if (metrics.privacy >= 70) {
+                    statusElement.textContent = 'Strong Privacy Protection';
+                } else if (metrics.privacy >= 40) {
+                    statusElement.textContent = 'Moderate Privacy Risk';
+                } else {
+                    statusElement.textContent = 'Privacy Compromised';
+                }
+            }
+
+            updateThreatLevel(metrics) {
+                const threatElement = document.getElementById('threatLevel');
+                const combinedThreat = (metrics.surveillance + metrics.exposure) / 2;
+                
+                threatElement.className = 'threat-level';
+                if (combinedThreat <= 30) {
+                    threatElement.textContent = 'Low Risk';
+                    threatElement.classList.add('threat-low');
+                } else if (combinedThreat <= 50) {
+                    threatElement.textContent = 'Medium Risk';
+                    threatElement.classList.add('threat-medium');
+                } else if (combinedThreat <= 75) {
+                    threatElement.textContent = 'High Risk';
+                    threatElement.classList.add('threat-high');
+                } else {
+                    threatElement.textContent = 'Extreme Risk';
+                    threatElement.classList.add('threat-extreme');
+                }
+            }
+
+            updateNetworkVisualization(metrics) {
+                const surveillanceNode = document.querySelector('[data-type="surveillance"]');
+                
+                if (metrics.surveillance > 50) {
+                    surveillanceNode.style.display = 'flex';
+                } else {
+                    surveillanceNode.style.display = 'none';
+                }
+
+                // Update node colors based on threat level
+                const nodes = document.querySelectorAll('.network-node');
+                nodes.forEach(node => {
+                    if (metrics.surveillance > 70) {
+                        node.style.filter = 'hue-rotate(320deg) saturate(1.5)';
+                    } else if (metrics.surveillance > 40) {
+                        node.style.filter = 'hue-rotate(30deg) saturate(1.2)';
+                    } else {
+                        node.style.filter = 'none';
+                    }
+                });
+            }
+
+            updateFeedback(metrics) {
+                const feedbackPanel = document.getElementById('feedbackPanel');
+                let title = 'Privacy Analysis';
+                let text = '';
+                const tags = [];
+
+                if (metrics.privacy >= 70) {
+                    title = 'Strong Privacy Protection';
+                    text = 'Your digital privacy is well-protected through strong encryption, limited surveillance, and robust privacy practices. You maintain significant control over your personal information and digital autonomy.';
+                    tags.push({ text: 'Privacy Protected', type: 'secure' });
+                    tags.push({ text: 'Digital Freedom', type: 'secure' });
+                } else if (metrics.privacy >= 40) {
+                    title = 'Moderate Privacy Risk';
+                    text = 'Your privacy faces moderate threats from surveillance programs and data collection. While some protections exist, significant vulnerabilities remain that could compromise your personal liberty and autonomy.';
+                    tags.push({ text: 'Privacy at Risk', type: 'monitored' });
+                    tags.push({ text: 'Surveillance Active', type: 'monitored' });
+                } else {
+                    title = 'Privacy Severely Compromised';
+                    text = 'Your digital privacy is severely compromised by extensive surveillance, weak encryption, and pervasive data collection. Your personal liberty, freedom of thought, and right to privacy are under serious threat.';
+                    tags.push({ text: 'Privacy Violated', type: 'vulnerable' });
+                    tags.push({ text: 'Surveillance State', type: 'vulnerable' });
+                }
+
+                // Add scenario-specific tags
+                if (this.biometricEnabled) {
+                    tags.push({ text: 'Biometric Tracking', type: 'vulnerable' });
+                }
+                if (this.retentionEnabled) {
+                    tags.push({ text: 'Data Retention', type: 'vulnerable' });
+                }
+                if (metrics.encryption >= 80) {
+                    tags.push({ text: 'Strong Encryption', type: 'secure' });
+                }
+
+                feedbackPanel.innerHTML = `
+                    <div class="feedback-title">${title}</div>
+                    <div class="feedback-text">${text}</div>
+                    <div class="impact-tags">
+                        ${tags.map(tag => `<div class="impact-tag ${tag.type}">${tag.text}</div>`).join('')}
+                    </div>
+                `;
+            }
+
+            selectScenario(scenario) {
+                this.currentScenario = scenario;
+
+                // Update UI
+                document.querySelectorAll('.scenario-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.getElementById(scenario).classList.add('active');
+
+                // Set scenario-specific parameters
+                switch(scenario) {
+                    case 'baseline':
+                        this.encryptionLevel = 60;
+                        this.surveillanceLevel = 30;
+                        this.corporateLevel = 50;
+                        this.biometricEnabled = false;
+                        this.retentionEnabled = false;
+                        break;
+                    case 'snowden':
+                        this.encryptionLevel = 40;
+                        this.surveillanceLevel = 70;
+                        this.corporateLevel = 60;
+                        this.biometricEnabled = false;
+                        this.retentionEnabled = true;
+                        break;
+                    case 'china':
+                        this.encryptionLevel = 20;
+                        this.surveillanceLevel = 95;
+                        this.corporateLevel = 80;
+                        this.biometricEnabled = true;
+                        this.retentionEnabled = true;
+                        break;
+                    case 'europe':
+                        this.encryptionLevel = 80;
+                        this.surveillanceLevel = 15;
+                        this.corporateLevel = 30;
+                        this.biometricEnabled = false;
+                        this.retentionEnabled = false;
+                        break;
+                    case 'authoritarian':
+                        this.encryptionLevel = 10;
+                        this.surveillanceLevel = 100;
+                        this.corporateLevel = 90;
+                        this.biometricEnabled = true;
+                        this.retentionEnabled = true;
+                        break;
+                }
+
+                this.updateSliders();
+                this.updateCheckboxes();
+                this.updateSimulation();
+            }
+
+            updateSliders() {
+                document.getElementById('encryptionSlider').value = this.encryptionLevel;
+                document.getElementById('encryptionLevel').textContent = `${this.encryptionLevel}%`;
+                
+                document.getElementById('surveillanceSlider').value = this.surveillanceLevel;
+                document.getElementById('surveillanceLevel').textContent = `${this.surveillanceLevel}%`;
+                
+                document.getElementById('corporateSlider').value = this.corporateLevel;
+                document.getElementById('corporateLevel').textContent = `${this.corporateLevel}%`;
+            }
+
+            updateCheckboxes() {
+                document.getElementById('biometricToggle').checked = this.biometricEnabled;
+                document.getElementById('retentionToggle').checked = this.retentionEnabled;
+            }
+
+            showNodeInfo(nodeType) {
+                const infoTexts = {
+                    user: 'You are the center of your digital privacy network. Every action you take online creates data that can be collected, analyzed, and potentially used against you.',
+                    device: 'Your devices are the primary collection points for personal data. Smartphones, computers, and IoT devices constantly generate information about your location, activities, and preferences.',
+                    service: 'Online services collect vast amounts of data about your behavior, preferences, and social connections. This data is often shared with governments through legal compulsion.',
+                    isp: 'Your Internet Service Provider sees all your unencrypted traffic and can be compelled to retain this data for government access. ISPs are often the weakest link in privacy protection.',
+                    government: 'Government agencies use legal authorities to collect data from companies and ISPs. They also operate their own surveillance programs to monitor communications and internet activity.',
+                    surveillance: 'Mass surveillance programs like those revealed by Edward Snowden collect data on millions of people without individual warrants or probable cause.'
+                };
+
+                alert(infoTexts[nodeType] || 'Click on network nodes to learn more about their role in digital privacy.');
+            }
+
+            resetSimulation() {
+                this.selectScenario('baseline');
+            }
+
+            maxSurveillance() {
+                this.selectScenario('authoritarian');
+            }
+
+            maxPrivacy() {
+                this.selectScenario('europe');
+            }
+        }
+
+        // Global functions for HTML onclick handlers
+        let simulator;
+
+        function selectScenario(scenario) {
+            simulator.selectScenario(scenario);
+        }
+
+        function resetSimulation() {
+            simulator.resetSimulation();
+        }
+
+        function maxSurveillance() {
+            simulator.maxSurveillance();
+        }
+
+        function maxPrivacy() {
+            simulator.maxPrivacy();
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            simulator = new PrivacySimulator();
+        });
+    </script>
+</body>
+</html>
