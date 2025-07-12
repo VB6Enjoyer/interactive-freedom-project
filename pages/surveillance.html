@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -177,8 +178,13 @@
         }
 
         @keyframes threatPulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.05);
+            }
         }
 
         .network-nodes {
@@ -259,8 +265,15 @@
         }
 
         @keyframes surveillancePulse {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
+
+            0%,
+            100% {
+                opacity: 0.7;
+            }
+
+            50% {
+                opacity: 1;
+            }
         }
 
         .data-connection {
@@ -283,9 +296,17 @@
         }
 
         @keyframes surveillanceFlow {
-            0% { box-shadow: 0 0 0 rgba(231, 76, 60, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(231, 76, 60, 0.8); }
-            100% { box-shadow: 0 0 0 rgba(231, 76, 60, 0.5); }
+            0% {
+                box-shadow: 0 0 0 rgba(231, 76, 60, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 20px rgba(231, 76, 60, 0.8);
+            }
+
+            100% {
+                box-shadow: 0 0 0 rgba(231, 76, 60, 0.5);
+            }
         }
 
         .connection-active {
@@ -334,9 +355,20 @@
             font-weight: bold;
         }
 
-        .status-secure { background: rgba(46, 204, 113, 0.2); color: #27ae60; }
-        .status-vulnerable { background: rgba(231, 76, 60, 0.2); color: #e74c3c; }
-        .status-monitored { background: rgba(241, 196, 15, 0.2); color: #f39c12; }
+        .status-secure {
+            background: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+
+        .status-vulnerable {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        .status-monitored {
+            background: rgba(241, 196, 15, 0.2);
+            color: #f39c12;
+        }
 
         .scenario-section {
             margin-bottom: 25px;
@@ -485,11 +517,11 @@
             border-radius: 50%;
         }
 
-        input:checked + .toggle-slider {
+        input:checked+.toggle-slider {
             background-color: #ff6b6b;
         }
 
-        input:checked + .toggle-slider:before {
+        input:checked+.toggle-slider:before {
             transform: translateX(26px);
         }
 
@@ -529,9 +561,20 @@
             letter-spacing: 0.5px;
         }
 
-        .impact-tag.secure { background: rgba(46, 204, 113, 0.2); color: #27ae60; }
-        .impact-tag.vulnerable { background: rgba(231, 76, 60, 0.2); color: #c0392b; }
-        .impact-tag.monitored { background: rgba(241, 196, 15, 0.2); color: #f39c12; }
+        .impact-tag.secure {
+            background: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+
+        .impact-tag.vulnerable {
+            background: rgba(231, 76, 60, 0.2);
+            color: #c0392b;
+        }
+
+        .impact-tag.monitored {
+            background: rgba(241, 196, 15, 0.2);
+            color: #f39c12;
+        }
 
         .control-buttons {
             display: flex;
@@ -639,11 +682,21 @@
             display: block;
         }
 
-        .privacy-protected { border-color: #27ae60; }
-        .privacy-violated { border-color: #e74c3c; }
+        .privacy-protected {
+            border-color: #27ae60;
+        }
 
-        .privacy-protected .icon { color: #27ae60; }
-        .privacy-violated .icon { color: #e74c3c; }
+        .privacy-violated {
+            border-color: #e74c3c;
+        }
+
+        .privacy-protected .icon {
+            color: #27ae60;
+        }
+
+        .privacy-violated .icon {
+            color: #e74c3c;
+        }
 
         .privacy-quote {
             background: rgba(15, 15, 35, 0.1);
@@ -690,11 +743,11 @@
             .header h1 {
                 font-size: 2.5em;
             }
-            
+
             .metrics-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .comparison-grid {
                 grid-template-columns: 1fr;
             }
@@ -767,6 +820,7 @@
         }
     </style>
 </head>
+
 <body>
     <a href="../index.html" class="return-home-button" aria-label="Return to Interactive Freedom Project homepage">
         <span class="icon">←</span>
@@ -778,42 +832,50 @@
             <h1>Digital Privacy</h1>
             <div class="subtitle">The Battle for Individual Liberty in the Surveillance Age</div>
             <p>
-                Explore the complex landscape of digital privacy, government surveillance, and individual liberty. 
-                Discover how mass surveillance programs threaten fundamental freedoms and why privacy is essential 
+                Explore the complex landscape of digital privacy, government surveillance, and individual liberty.
+                Discover how mass surveillance programs threaten fundamental freedoms and why privacy is essential
                 for human dignity, democracy, and the pursuit of happiness in the digital age.
             </p>
         </div>
 
         <div class="orwell-quote">
-            "Big Brother is watching you. The thought police would get him just the same. He had committed—would have committed, even if he had never set pen to paper—the essential crime that contained all others in itself. Thoughtcrime, they called it."
+            "Big Brother is watching you. The thought police would get him just the same. He had committed—would have
+            committed, even if he had never set pen to paper—the essential crime that contained all others in itself.
+            Thoughtcrime, they called it."
             <div class="quote-attribution">— George Orwell, 1984</div>
         </div>
 
         <div class="main-content">
             <div class="simulation-panel">
                 <h3 class="section-title">Privacy Network Simulation</h3>
-                
+
                 <div class="privacy-network" id="privacyNetwork">
                     <div class="privacy-status" id="privacyStatus">Baseline Privacy</div>
                     <div class="threat-level" id="threatLevel">Low Risk</div>
-                    
+
                     <div class="network-nodes" id="networkNodes">
-                        <div class="network-node node-user" data-type="user" title="Individual User - You and your digital identity">
+                        <div class="network-node node-user" data-type="user"
+                            title="Individual User - You and your digital identity">
                             👤<br>You
                         </div>
-                        <div class="network-node node-device" data-type="device" title="Personal Devices - Smartphones, computers, IoT devices">
+                        <div class="network-node node-device" data-type="device"
+                            title="Personal Devices - Smartphones, computers, IoT devices">
                             📱<br>Device
                         </div>
-                        <div class="network-node node-service" data-type="service" title="Online Services - Social media, email, cloud storage">
+                        <div class="network-node node-service" data-type="service"
+                            title="Online Services - Social media, email, cloud storage">
                             🌐<br>Services
                         </div>
-                        <div class="network-node node-isp" data-type="isp" title="Internet Service Provider - Your gateway to the internet">
+                        <div class="network-node node-isp" data-type="isp"
+                            title="Internet Service Provider - Your gateway to the internet">
                             📡<br>ISP
                         </div>
-                        <div class="network-node node-government" data-type="government" title="Government Agencies - Law enforcement, intelligence services">
+                        <div class="network-node node-government" data-type="government"
+                            title="Government Agencies - Law enforcement, intelligence services">
                             🏛️<br>Gov
                         </div>
-                        <div class="network-node node-surveillance" data-type="surveillance" title="Mass Surveillance - NSA, GCHQ, and other intelligence agencies">
+                        <div class="network-node node-surveillance" data-type="surveillance"
+                            title="Mass Surveillance - NSA, GCHQ, and other intelligence agencies">
                             👁️<br>NSA
                         </div>
                     </div>
@@ -845,8 +907,10 @@
                 <div class="feedback-panel" id="feedbackPanel">
                     <div class="feedback-title">Privacy Analysis</div>
                     <div class="feedback-text">
-                        Your digital privacy is currently at a moderate level. While some basic protections are in place, 
-                        significant vulnerabilities remain. Government surveillance capabilities and corporate data collection 
+                        Your digital privacy is currently at a moderate level. While some basic protections are in
+                        place,
+                        significant vulnerabilities remain. Government surveillance capabilities and corporate data
+                        collection
                         pose ongoing threats to your personal liberty and autonomy.
                     </div>
                     <div class="impact-tags" id="impactTags">
@@ -858,7 +922,7 @@
 
             <div class="controls-panel">
                 <h3 class="section-title">Privacy Scenarios</h3>
-                
+
                 <div class="scenario-section">
                     <h4>🌍 Global Privacy Scenarios</h4>
                     <div class="scenario-buttons">
@@ -872,7 +936,7 @@
                             🇨🇳 Chinese Social Credit
                         </div>
                         <div class="scenario-button" id="europe" onclick="selectScenario('europe')">
-                            🇪🇺 GDPR Protection
+                            🔐 Advanced Encryption
                         </div>
                         <div class="scenario-button" id="authoritarian" onclick="selectScenario('authoritarian')">
                             🚨 Authoritarian State
@@ -890,7 +954,7 @@
                             </div>
                             <input type="range" class="slider" id="encryptionSlider" min="0" max="100" value="60">
                         </div>
-                        
+
                         <div class="control-group">
                             <div class="control-label">
                                 <span>Government Surveillance</span>
@@ -898,7 +962,7 @@
                             </div>
                             <input type="range" class="slider" id="surveillanceSlider" min="0" max="100" value="30">
                         </div>
-                        
+
                         <div class="control-group">
                             <div class="control-label">
                                 <span>Corporate Data Mining</span>
@@ -906,7 +970,7 @@
                             </div>
                             <input type="range" class="slider" id="corporateSlider" min="0" max="100" value="50">
                         </div>
-                        
+
                         <div class="control-group">
                             <div class="control-label">
                                 <span>Biometric Collection</span>
@@ -916,7 +980,7 @@
                                 </label>
                             </div>
                         </div>
-                        
+
                         <div class="control-group">
                             <div class="control-label">
                                 <span>Mass Data Retention</span>
@@ -945,26 +1009,37 @@
 
         <div class="analysis-panel">
             <h3 class="section-title">The Libertarian Case for Digital Privacy</h3>
-            
+
             <div class="analysis-section">
                 <h3>🗽 Privacy as a Fundamental Right</h3>
                 <p>
-                    From a libertarian perspective, privacy is not a privilege granted by government—it's a fundamental human right that exists prior to and independent of state authority. Just as your physical person and property are protected from unreasonable search and seizure, your digital life deserves the same protection.
+                    From a libertarian perspective, privacy is not a privilege granted by government—it's a fundamental
+                    human right that exists prior to and independent of state authority. Just as your physical person
+                    and property are protected from unreasonable search and seizure, your digital life deserves the same
+                    protection.
                 </p>
-                
+
                 <div class="privacy-quote">
-                    "Privacy is not about hiding something. It's about protecting everything that makes you human: your thoughts, your relationships, your personal growth, and your freedom to be yourself without fear of judgment or persecution."
+                    "Privacy is not about hiding something. It's about protecting everything that makes you human: your
+                    thoughts, your relationships, your personal growth, and your freedom to be yourself without fear of
+                    judgment or persecution."
                     <div class="quote-author">— Edward Snowden</div>
                 </div>
-                
+
                 <p>
-                    The digital age has created unprecedented opportunities for both liberation and oppression. Technology can empower individuals with access to information, communication tools, and economic opportunities. But the same technology can be weaponized by governments to monitor, control, and suppress their citizens.
+                    The digital age has created unprecedented opportunities for both liberation and oppression.
+                    Technology can empower individuals with access to information, communication tools, and economic
+                    opportunities. But the same technology can be weaponized by governments to monitor, control, and
+                    suppress their citizens.
                 </p>
-                
+
                 <div class="highlight-box">
                     <h4>The Privacy Paradox</h4>
                     <p>
-                        We live in an age where we voluntarily share intimate details of our lives on social media, yet we're outraged when governments collect the same information without our consent. This paradox highlights a crucial distinction: voluntary disclosure versus coercive surveillance. The former is an exercise of freedom; the latter is a violation of it.
+                        We live in an age where we voluntarily share intimate details of our lives on social media, yet
+                        we're outraged when governments collect the same information without our consent. This paradox
+                        highlights a crucial distinction: voluntary disclosure versus coercive surveillance. The former
+                        is an exercise of freedom; the latter is a violation of it.
                     </p>
                 </div>
             </div>
@@ -972,31 +1047,42 @@
             <div class="analysis-section">
                 <h3>🕵️ The Snowden Revelations: A Watershed Moment</h3>
                 <p>
-                    Edward Snowden's 2013 revelations about NSA surveillance programs fundamentally changed our understanding of government surveillance capabilities. The leaked documents revealed a vast apparatus of mass surveillance that collected data on millions of innocent people without warrants or probable cause.
+                    Edward Snowden's 2013 revelations about NSA surveillance programs fundamentally changed our
+                    understanding of government surveillance capabilities. The leaked documents revealed a vast
+                    apparatus of mass surveillance that collected data on millions of innocent people without warrants
+                    or probable cause.
                 </p>
-                
+
                 <div class="snowden-box">
                     <h4>Key Snowden Revelations</h4>
                     <p>
-                        <strong>PRISM Program:</strong> Direct access to user data from major tech companies including Google, Facebook, Apple, and Microsoft.
+                        <strong>PRISM Program:</strong> Direct access to user data from major tech companies including
+                        Google, Facebook, Apple, and Microsoft.
                     </p>
                     <p>
-                        <strong>XKeyscore:</strong> A system allowing analysts to search through vast databases of emails, online chats, and browsing histories without prior authorization.
+                        <strong>XKeyscore:</strong> A system allowing analysts to search through vast databases of
+                        emails, online chats, and browsing histories without prior authorization.
                     </p>
                     <p>
-                        <strong>Bulk Metadata Collection:</strong> The NSA collected phone metadata on virtually every American, creating detailed maps of social networks and communication patterns.
+                        <strong>Bulk Metadata Collection:</strong> The NSA collected phone metadata on virtually every
+                        American, creating detailed maps of social networks and communication patterns.
                     </p>
                     <p>
-                        <strong>International Surveillance:</strong> Extensive spying on foreign leaders, citizens, and international organizations, often in violation of international law.
+                        <strong>International Surveillance:</strong> Extensive spying on foreign leaders, citizens, and
+                        international organizations, often in violation of international law.
                     </p>
                 </div>
-                
+
                 <p>
-                    The Snowden revelations demonstrated that the "nothing to hide" argument is fundamentally flawed. Even if you have nothing to hide from your current government, you might have something to hide from a future government. History shows that surveillance powers, once granted, are rarely relinquished and often expanded.
+                    The Snowden revelations demonstrated that the "nothing to hide" argument is fundamentally flawed.
+                    Even if you have nothing to hide from your current government, you might have something to hide from
+                    a future government. History shows that surveillance powers, once granted, are rarely relinquished
+                    and often expanded.
                 </p>
-                
+
                 <div class="privacy-quote">
-                    "Arguing that you don't care about the right to privacy because you have nothing to hide is no different than saying you don't care about free speech because you have nothing to say."
+                    "Arguing that you don't care about the right to privacy because you have nothing to hide is no
+                    different than saying you don't care about free speech because you have nothing to say."
                     <div class="quote-author">— Edward Snowden</div>
                 </div>
             </div>
@@ -1004,14 +1090,17 @@
             <div class="analysis-section">
                 <h3>🌐 Global Surveillance: A Worldwide Phenomenon</h3>
                 <p>
-                    Mass surveillance is not unique to any single country. Governments around the world have implemented extensive surveillance programs, often justified by national security concerns but frequently used for political control and social monitoring.
+                    Mass surveillance is not unique to any single country. Governments around the world have implemented
+                    extensive surveillance programs, often justified by national security concerns but frequently used
+                    for political control and social monitoring.
                 </p>
-                
+
                 <div class="comparison-grid">
                     <div class="comparison-card privacy-violated">
                         <div class="icon">🇨🇳</div>
                         <h4>China's Social Credit System</h4>
-                        <p><strong>Comprehensive monitoring</strong> - Facial recognition, internet activity, financial transactions</p>
+                        <p><strong>Comprehensive monitoring</strong> - Facial recognition, internet activity, financial
+                            transactions</p>
                         <p><strong>Behavioral scoring</strong> - Citizens rated based on "trustworthiness"</p>
                         <p><strong>Punishment system</strong> - Low scores restrict travel, employment, education</p>
                         <p><strong>Social control</strong> - Dissent and non-conformity actively discouraged</p>
@@ -1020,20 +1109,28 @@
                         <div class="icon">🇷🇺</div>
                         <h4>Russia's SORM System</h4>
                         <p><strong>Deep packet inspection</strong> - All internet traffic monitored and stored</p>
-                        <p><strong>Mandatory cooperation</strong> - ISPs required to install government monitoring equipment</p>
-                        <p><strong>Political targeting</strong> - Opposition activists and journalists routinely surveilled</p>
+                        <p><strong>Mandatory cooperation</strong> - ISPs required to install government monitoring
+                            equipment</p>
+                        <p><strong>Political targeting</strong> - Opposition activists and journalists routinely
+                            surveilled</p>
                         <p><strong>Legal immunity</strong> - Security services operate with minimal oversight</p>
                     </div>
                 </div>
-                
+
                 <p>
-                    Even democratic countries have implemented extensive surveillance programs. The UK's Investigatory Powers Act, often called the "Snooper's Charter," grants broad surveillance powers to government agencies. Australia's metadata retention laws require ISPs to store customer data for two years. France expanded surveillance powers after terrorist attacks, often with minimal judicial oversight.
+                    Even democratic countries have implemented extensive surveillance programs. The UK's Investigatory
+                    Powers Act, often called the "Snooper's Charter," grants broad surveillance powers to government
+                    agencies. Australia's metadata retention laws require ISPs to store customer data for two years.
+                    France expanded surveillance powers after terrorist attacks, often with minimal judicial oversight.
                 </p>
-                
+
                 <div class="highlight-box">
                     <h4>The Five Eyes Alliance</h4>
                     <p>
-                        The intelligence-sharing agreement between the US, UK, Canada, Australia, and New Zealand creates a global surveillance network. By sharing intelligence, these countries can circumvent domestic restrictions on spying on their own citizens—a practice that effectively nullifies constitutional protections.
+                        The intelligence-sharing agreement between the US, UK, Canada, Australia, and New Zealand
+                        creates a global surveillance network. By sharing intelligence, these countries can circumvent
+                        domestic restrictions on spying on their own citizens—a practice that effectively nullifies
+                        constitutional protections.
                     </p>
                 </div>
             </div>
@@ -1041,18 +1138,26 @@
             <div class="analysis-section">
                 <h3>🏢 Corporate Surveillance and Government Compulsion</h3>
                 <p>
-                    Private companies collect vast amounts of personal data, often with user consent (however uninformed). But governments increasingly compel these companies to share user data through legal mandates, national security letters, and court orders—often with gag orders preventing companies from informing users.
+                    Private companies collect vast amounts of personal data, often with user consent (however
+                    uninformed). But governments increasingly compel these companies to share user data through legal
+                    mandates, national security letters, and court orders—often with gag orders preventing companies
+                    from informing users.
                 </p>
-                
+
                 <p>
-                    This creates a dangerous convergence between corporate data collection and government surveillance. Companies become unwilling agents of the surveillance state, forced to betray their customers' trust and privacy. The result is a surveillance ecosystem where privacy violations are normalized and institutionalized.
+                    This creates a dangerous convergence between corporate data collection and government surveillance.
+                    Companies become unwilling agents of the surveillance state, forced to betray their customers' trust
+                    and privacy. The result is a surveillance ecosystem where privacy violations are normalized and
+                    institutionalized.
                 </p>
-                
+
                 <div class="privacy-quote">
-                    "When governments can compel private companies to hand over user data without meaningful oversight, the distinction between voluntary and coercive surveillance disappears. We all become subjects of a surveillance state, whether we consented to it or not."
+                    "When governments can compel private companies to hand over user data without meaningful oversight,
+                    the distinction between voluntary and coercive surveillance disappears. We all become subjects of a
+                    surveillance state, whether we consented to it or not."
                     <div class="quote-author">— Electronic Frontier Foundation</div>
                 </div>
-                
+
                 <div class="comparison-grid">
                     <div class="comparison-card privacy-violated">
                         <div class="icon">📧</div>
@@ -1065,7 +1170,8 @@
                     <div class="comparison-card privacy-violated">
                         <div class="icon">🔓</div>
                         <h4>Backdoors and Vulnerabilities</h4>
-                        <p><strong>Encryption backdoors</strong> - Governments demand access to encrypted communications</p>
+                        <p><strong>Encryption backdoors</strong> - Governments demand access to encrypted communications
+                        </p>
                         <p><strong>Zero-day exploits</strong> - Intelligence agencies hoard software vulnerabilities</p>
                         <p><strong>Hardware implants</strong> - Physical devices compromised during manufacturing</p>
                         <p><strong>Supply chain attacks</strong> - Software and hardware compromised before delivery</p>
@@ -1076,56 +1182,79 @@
             <div class="analysis-section">
                 <h3>🔐 The Crucial Role of Encryption</h3>
                 <p>
-                    Encryption is the mathematical foundation of digital privacy. It transforms readable information into unreadable code that can only be deciphered with the correct key. Strong encryption makes mass surveillance technically difficult and economically expensive, forcing governments to target their surveillance efforts rather than collecting everything.
+                    Encryption is the mathematical foundation of digital privacy. It transforms readable information
+                    into unreadable code that can only be deciphered with the correct key. Strong encryption makes mass
+                    surveillance technically difficult and economically expensive, forcing governments to target their
+                    surveillance efforts rather than collecting everything.
                 </p>
-                
+
                 <p>
-                    Governments often argue that encryption helps criminals and terrorists "go dark," but this argument ignores the fundamental reality that privacy and security are not zero-sum. Strong encryption protects everyone—dissidents from authoritarian governments, businesses from industrial espionage, and ordinary citizens from identity theft and financial fraud.
+                    Governments often argue that encryption helps criminals and terrorists "go dark," but this argument
+                    ignores the fundamental reality that privacy and security are not zero-sum. Strong encryption
+                    protects everyone—dissidents from authoritarian governments, businesses from industrial espionage,
+                    and ordinary citizens from identity theft and financial fraud.
                 </p>
-                
+
                 <div class="highlight-box">
                     <h4>The Crypto Wars</h4>
                     <p>
-                        The ongoing battle over encryption—dubbed the "Crypto Wars"—represents a fundamental conflict between individual liberty and government power. Governments want backdoors and key escrow systems that would allow them to decrypt communications. Privacy advocates argue that any backdoor can be exploited by malicious actors, making everyone less secure.
+                        The ongoing battle over encryption—dubbed the "Crypto Wars"—represents a fundamental conflict
+                        between individual liberty and government power. Governments want backdoors and key escrow
+                        systems that would allow them to decrypt communications. Privacy advocates argue that any
+                        backdoor can be exploited by malicious actors, making everyone less secure.
                     </p>
                 </div>
-                
+
                 <p>
-                    The libertarian position is clear: individuals have the right to use strong encryption to protect their communications and data. Any government attempt to weaken encryption or mandate backdoors is an attack on fundamental privacy rights and digital security.
+                    The libertarian position is clear: individuals have the right to use strong encryption to protect
+                    their communications and data. Any government attempt to weaken encryption or mandate backdoors is
+                    an attack on fundamental privacy rights and digital security.
                 </p>
             </div>
 
             <div class="analysis-section">
                 <h3>🧬 Biometric Surveillance: The Ultimate Identifier</h3>
                 <p>
-                    Biometric data—fingerprints, facial recognition, iris scans, DNA profiles—represents the most invasive form of surveillance because it's based on immutable physical characteristics. Unlike passwords or encryption keys, you can't change your face or fingerprints if they're compromised.
+                    Biometric data—fingerprints, facial recognition, iris scans, DNA profiles—represents the most
+                    invasive form of surveillance because it's based on immutable physical characteristics. Unlike
+                    passwords or encryption keys, you can't change your face or fingerprints if they're compromised.
                 </p>
-                
+
                 <p>
-                    Governments around the world are rapidly expanding biometric collection programs. India's Aadhaar system has collected biometric data on over a billion people. China uses facial recognition to track Uyghurs and other minorities. The US collects biometric data from visa applicants and increasingly uses facial recognition at airports and border crossings.
+                    Governments around the world are rapidly expanding biometric collection programs. India's Aadhaar
+                    system has collected biometric data on over a billion people. China uses facial recognition to track
+                    Uyghurs and other minorities. The US collects biometric data from visa applicants and increasingly
+                    uses facial recognition at airports and border crossings.
                 </p>
-                
+
                 <div class="privacy-quote">
-                    "Biometric surveillance represents the ultimate form of identification and tracking. Once your biometric data is in government databases, you can never truly be anonymous again."
+                    "Biometric surveillance represents the ultimate form of identification and tracking. Once your
+                    biometric data is in government databases, you can never truly be anonymous again."
                     <div class="quote-author">— Privacy International</div>
                 </div>
-                
+
                 <p>
-                    The proliferation of biometric surveillance creates a world where anonymity becomes impossible. Every public space becomes a potential checkpoint where your identity can be verified and your movements tracked. This has profound implications for freedom of association, political dissent, and personal autonomy.
+                    The proliferation of biometric surveillance creates a world where anonymity becomes impossible.
+                    Every public space becomes a potential checkpoint where your identity can be verified and your
+                    movements tracked. This has profound implications for freedom of association, political dissent, and
+                    personal autonomy.
                 </p>
             </div>
 
             <div class="analysis-section">
                 <h3>⚖️ Legal Frameworks: Protecting or Enabling Surveillance?</h3>
                 <p>
-                    Legal frameworks around digital privacy vary dramatically worldwide, reflecting different cultural values and political systems. Some laws genuinely protect privacy rights, while others provide legal cover for extensive surveillance programs.
+                    Legal frameworks around digital privacy vary dramatically worldwide, reflecting different cultural
+                    values and political systems. Some laws genuinely protect privacy rights, while others provide legal
+                    cover for extensive surveillance programs.
                 </p>
-                
+
                 <div class="comparison-grid">
                     <div class="comparison-card privacy-protected">
                         <div class="icon">🇪🇺</div>
                         <h4>GDPR (European Union)</h4>
-                        <p><strong>Strong consent requirements</strong> - Users must explicitly agree to data collection</p>
+                        <p><strong>Strong consent requirements</strong> - Users must explicitly agree to data collection
+                        </p>
                         <p><strong>Right to deletion</strong> - Users can demand their data be erased</p>
                         <p><strong>Data portability</strong> - Users can transfer data between services</p>
                         <p><strong>Heavy penalties</strong> - Fines up to 4% of global revenue</p>
@@ -1139,43 +1268,66 @@
                         <p><strong>National security exception</strong> - Constitutional protections often waived</p>
                     </div>
                 </div>
-                
+
                 <p>
-                    The European Union's General Data Protection Regulation (GDPR) represents one of the strongest privacy protection frameworks globally, emphasizing user consent, data minimization, and individual rights. However, even GDPR contains exceptions for national security and law enforcement that can undermine its protections.
+                    The European Union's General Data Protection Regulation (GDPR) represents one of the strongest
+                    privacy protection frameworks globally, emphasizing user consent, data minimization, and individual
+                    rights. However, even GDPR contains exceptions for national security and law enforcement that can
+                    undermine its protections.
                 </p>
-                
+
                 <p>
-                    In contrast, many countries have laws that explicitly enable surveillance. The US FISA Amendments Act allows warrantless surveillance of international communications. The UK's Investigatory Powers Act grants broad surveillance powers with minimal judicial oversight. These laws often operate in secret, making it difficult for citizens to understand or challenge surveillance programs.
+                    In contrast, many countries have laws that explicitly enable surveillance. The US FISA Amendments
+                    Act allows warrantless surveillance of international communications. The UK's Investigatory Powers
+                    Act grants broad surveillance powers with minimal judicial oversight. These laws often operate in
+                    secret, making it difficult for citizens to understand or challenge surveillance programs.
                 </p>
             </div>
 
             <div class="analysis-section">
                 <h3>🗣️ Impact on Fundamental Rights</h3>
                 <p>
-                    Digital surveillance doesn't just violate privacy—it undermines the entire foundation of democratic society by chilling the exercise of fundamental rights. When people know they're being watched, they modify their behavior, self-censor their thoughts, and avoid associations that might be deemed suspicious.
+                    Digital surveillance doesn't just violate privacy—it undermines the entire foundation of democratic
+                    society by chilling the exercise of fundamental rights. When people know they're being watched, they
+                    modify their behavior, self-censor their thoughts, and avoid associations that might be deemed
+                    suspicious.
                 </p>
-                
+
                 <div class="highlight-box">
                     <h4>The Chilling Effect</h4>
                     <p>
-                        Research shows that awareness of surveillance significantly changes behavior. People are less likely to search for information on sensitive topics, visit websites associated with controversial causes, or communicate with people who might be under surveillance. This self-censorship occurs even when the surveillance is legal and the behavior is perfectly innocent.
+                        Research shows that awareness of surveillance significantly changes behavior. People are less
+                        likely to search for information on sensitive topics, visit websites associated with
+                        controversial causes, or communicate with people who might be under surveillance. This
+                        self-censorship occurs even when the surveillance is legal and the behavior is perfectly
+                        innocent.
                     </p>
                 </div>
-                
+
                 <p>
-                    <strong>Freedom of Speech:</strong> Surveillance creates a chilling effect on free expression. People self-censor online communications, avoid controversial topics, and refrain from expressing dissenting views. This is particularly dangerous for journalists, activists, and political dissidents who rely on confidential communications.
+                    <strong>Freedom of Speech:</strong> Surveillance creates a chilling effect on free expression.
+                    People self-censor online communications, avoid controversial topics, and refrain from expressing
+                    dissenting views. This is particularly dangerous for journalists, activists, and political
+                    dissidents who rely on confidential communications.
                 </p>
-                
+
                 <p>
-                    <strong>Freedom of Association:</strong> Mass surveillance makes it difficult to maintain confidential associations. Political organizations, religious groups, and social movements all suffer when members fear that their participation will be monitored and potentially used against them.
+                    <strong>Freedom of Association:</strong> Mass surveillance makes it difficult to maintain
+                    confidential associations. Political organizations, religious groups, and social movements all
+                    suffer when members fear that their participation will be monitored and potentially used against
+                    them.
                 </p>
-                
+
                 <p>
-                    <strong>Freedom of Thought:</strong> Perhaps most insidiously, surveillance affects our inner mental lives. When we know our searches, communications, and digital activities are monitored, we begin to internalize the surveillance and modify our thoughts and curiosity accordingly.
+                    <strong>Freedom of Thought:</strong> Perhaps most insidiously, surveillance affects our inner mental
+                    lives. When we know our searches, communications, and digital activities are monitored, we begin to
+                    internalize the surveillance and modify our thoughts and curiosity accordingly.
                 </p>
-                
+
                 <div class="privacy-quote">
-                    "A society under surveillance is not a free society. When citizens must constantly consider whether their actions, associations, or even thoughts might be monitored and judged by the state, they are no longer truly free."
+                    "A society under surveillance is not a free society. When citizens must constantly consider whether
+                    their actions, associations, or even thoughts might be monitored and judged by the state, they are
+                    no longer truly free."
                     <div class="quote-author">— American Civil Liberties Union</div>
                 </div>
             </div>
@@ -1183,9 +1335,12 @@
             <div class="analysis-section">
                 <h3>🛡️ Defending Digital Liberty</h3>
                 <p>
-                    Protecting digital privacy requires both individual action and systemic change. Individuals can use privacy tools, support privacy-focused companies, and advocate for stronger legal protections. But ultimately, defending digital liberty requires limiting government surveillance powers and holding both governments and corporations accountable for privacy violations.
+                    Protecting digital privacy requires both individual action and systemic change. Individuals can use
+                    privacy tools, support privacy-focused companies, and advocate for stronger legal protections. But
+                    ultimately, defending digital liberty requires limiting government surveillance powers and holding
+                    both governments and corporations accountable for privacy violations.
                 </p>
-                
+
                 <div class="comparison-grid">
                     <div class="comparison-card privacy-protected">
                         <div class="icon">🔧</div>
@@ -1204,20 +1359,28 @@
                         <p><strong>International cooperation</strong> - Global privacy standards and enforcement</p>
                     </div>
                 </div>
-                
+
                 <p>
-                    The libertarian approach to digital privacy emphasizes both individual responsibility and strict limits on government power. Individuals should take steps to protect their own privacy, but they shouldn't have to become cybersecurity experts just to maintain basic human dignity and autonomy.
+                    The libertarian approach to digital privacy emphasizes both individual responsibility and strict
+                    limits on government power. Individuals should take steps to protect their own privacy, but they
+                    shouldn't have to become cybersecurity experts just to maintain basic human dignity and autonomy.
                 </p>
-                
+
                 <div class="highlight-box">
                     <h4>The Path Forward</h4>
                     <p>
-                        Defending digital liberty requires recognizing that privacy is not about hiding wrongdoing—it's about preserving the space for human flourishing. In a free society, individuals must be able to think, communicate, and associate without fear of government surveillance. This is not a luxury or convenience; it's a fundamental requirement for human dignity and democratic governance.
+                        Defending digital liberty requires recognizing that privacy is not about hiding wrongdoing—it's
+                        about preserving the space for human flourishing. In a free society, individuals must be able to
+                        think, communicate, and associate without fear of government surveillance. This is not a luxury
+                        or convenience; it's a fundamental requirement for human dignity and democratic governance.
                     </p>
                 </div>
-                
+
                 <p>
-                    The simulation above demonstrates how different policy choices and technological implementations affect individual privacy and liberty. By understanding these trade-offs, we can make informed decisions about the kind of digital society we want to live in—one that empowers individuals or one that empowers surveillance states.
+                    The simulation above demonstrates how different policy choices and technological implementations
+                    affect individual privacy and liberty. By understanding these trade-offs, we can make informed
+                    decisions about the kind of digital society we want to live in—one that empowers individuals or one
+                    that empowers surveillance states.
                 </p>
             </div>
         </div>
@@ -1230,14 +1393,14 @@
                 this.baseExposure = 25;
                 this.baseEncryption = 60;
                 this.baseSurveillance = 30;
-                
+
                 this.currentScenario = 'baseline';
                 this.encryptionLevel = 60;
                 this.surveillanceLevel = 30;
                 this.corporateLevel = 50;
                 this.biometricEnabled = false;
                 this.retentionEnabled = false;
-                
+
                 this.init();
             }
 
@@ -1288,7 +1451,7 @@
 
             createNetworkConnections() {
                 const network = document.getElementById('privacyNetwork');
-                
+
                 // Create data connections
                 const connections = [
                     { from: 'user', to: 'device', type: 'data' },
@@ -1309,7 +1472,7 @@
 
             updateNetworkConnections() {
                 const connections = document.querySelectorAll('.data-connection, .surveillance-connection');
-                
+
                 connections.forEach(conn => {
                     conn.classList.remove('connection-active');
                 });
@@ -1401,13 +1564,13 @@
                 document.getElementById('surveillanceValue').textContent = `${metrics.surveillance}%`;
 
                 // Update metric statuses
-                this.updateMetricStatus('privacyMetricStatus', metrics.privacy, 
+                this.updateMetricStatus('privacyMetricStatus', metrics.privacy,
                     [[70, 'Secure'], [40, 'Vulnerable'], [0, 'Compromised']]);
-                this.updateMetricStatus('exposureStatus', metrics.exposure, 
+                this.updateMetricStatus('exposureStatus', metrics.exposure,
                     [[30, 'Limited'], [60, 'Moderate'], [100, 'Extensive']], true);
-                this.updateMetricStatus('encryptionStatus', metrics.encryption, 
+                this.updateMetricStatus('encryptionStatus', metrics.encryption,
                     [[80, 'Strong'], [50, 'Partial'], [0, 'Weak']]);
-                this.updateMetricStatus('surveillanceStatus', metrics.surveillance, 
+                this.updateMetricStatus('surveillanceStatus', metrics.surveillance,
                     [[30, 'Low'], [60, 'Moderate'], [100, 'Extreme']], true);
 
                 // Update visual elements
@@ -1421,7 +1584,7 @@
             updateMetricStatus(elementId, value, thresholds, reverse = false) {
                 const element = document.getElementById(elementId);
                 element.className = 'metric-status';
-                
+
                 for (let [threshold, label] of thresholds) {
                     if (reverse ? value >= threshold : value >= threshold) {
                         element.textContent = label;
@@ -1451,7 +1614,7 @@
             updateThreatLevel(metrics) {
                 const threatElement = document.getElementById('threatLevel');
                 const combinedThreat = (metrics.surveillance + metrics.exposure) / 2;
-                
+
                 threatElement.className = 'threat-level';
                 if (combinedThreat <= 30) {
                     threatElement.textContent = 'Low Risk';
@@ -1470,7 +1633,7 @@
 
             updateNetworkVisualization(metrics) {
                 const surveillanceNode = document.querySelector('[data-type="surveillance"]');
-                
+
                 if (metrics.surveillance > 50) {
                     surveillanceNode.style.display = 'flex';
                 } else {
@@ -1543,7 +1706,7 @@
                 document.getElementById(scenario).classList.add('active');
 
                 // Set scenario-specific parameters
-                switch(scenario) {
+                switch (scenario) {
                     case 'baseline':
                         this.encryptionLevel = 60;
                         this.surveillanceLevel = 30;
@@ -1566,7 +1729,7 @@
                         this.retentionEnabled = true;
                         break;
                     case 'europe':
-                        this.encryptionLevel = 80;
+                        this.encryptionLevel = 90;
                         this.surveillanceLevel = 15;
                         this.corporateLevel = 30;
                         this.biometricEnabled = false;
@@ -1589,10 +1752,10 @@
             updateSliders() {
                 document.getElementById('encryptionSlider').value = this.encryptionLevel;
                 document.getElementById('encryptionLevel').textContent = `${this.encryptionLevel}%`;
-                
+
                 document.getElementById('surveillanceSlider').value = this.surveillanceLevel;
                 document.getElementById('surveillanceLevel').textContent = `${this.surveillanceLevel}%`;
-                
+
                 document.getElementById('corporateSlider').value = this.corporateLevel;
                 document.getElementById('corporateLevel').textContent = `${this.corporateLevel}%`;
             }
@@ -1653,4 +1816,5 @@
         });
     </script>
 </body>
+
 </html>
