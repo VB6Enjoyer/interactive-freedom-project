@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banana Market Simulation</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #8FBC8F; font-family: sans-serif; }
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+        }
+        #market-scene {
+            flex-grow: 1;
+            position: relative;
+            background-color: #A0D468; /* Lighter green for market floor */
+            overflow: hidden;
+        }
+        .market-element {
+            position: absolute;
+            transition: left 0.5s ease-in-out, top 0.5s ease-in-out; /* Smooth movement */
+            box-sizing: border-box;
+        }
+
+        /* Monkey Styles */
+        .monkey {
+            width: 30px;
+            height: 30px;
+            background-color: #CD853F; /* Brown */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px; /* For mood emoji */
+            z-index: 10;
+            border: 2px solid #8B4513;
+            cursor: pointer; /* Indicate they are interactive elements */
+        }
+        .consumer-monkey { background-color: #DAA520; /* Goldenrod */ border-color: #B8860B;}
+        .vendor-monkey { background-color: #BDB76B; /* Dark Khaki */ border-color: #8FBC8F;}
+
+        /* Moods */
+        .happy::after { content: '😊'; }
+        .sad::after { content: '😟'; }
+        .neutral::after { content: '😐'; }
+        .thinking::after { content: '🤔'; } /* For consumers looking for vendors */
+
+        /* Vendor Specifics */
+        .vendor-stall {
+            width: 80px;
+            height: 60px;
+            background-color: #D2B48C; /* Tan */
+            border: 2px solid #A0522D; /* Sienna */
+            position: absolute;
+            bottom: 0; /* Position stalls at the bottom */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 10px;
+            z-index: 5;
+        }
+        .vendor-price {
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+        }
+        .vendor-stock {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 5px;
+            height: 30px; /* Limit height for visual stock */
+            overflow: hidden; /* Hide overflowing bananas */
+        }
+        .banana {
+            width: 15px;
+            height: 15px;
+            background-color: #FFD700; /* Gold */
+            border-radius: 0 50% 50% 0 / 50% 0 0 50%; /* Banana shape approximation */
+            margin: 1px;
+            transform: rotate(45deg);
+        }
+         .coin {
+            width: 10px;
+            height: 10px;
+            background-color: #C0C0C0; /* Silver */
+            border-radius: 50%;
+            border: 1px solid #A9A9A9;
+            margin-right: 2px;
+            display: inline-block;
+        }
+        .vendor-coins {
+            font-size: 10px;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+        }
+         .vendor-coins span { margin-left: 2px; }
+
+
+        /* Control Panel */
+        #controls {
+            height: 100px;
+            background-color: #F0E68C; /* Khaki */
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 20px;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+        }
+        .control-group {
+            margin: 5px 10px;
+            display: flex;
+            align-items: center;
+        }
+        .control-group label { margin-right: 5px; font-weight: bold; }
+        #controlled-price-control {
+            display: flex;
+            align-items: center;
+        }
+        #controlled-price-control label { margin-right: 5px; }
+        #controlled-price-value { margin-left: 5px; font-weight: bold; }
+
+        button {
+            padding: 8px 15px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            margin: 0 5px;
+        }
+        button:hover { opacity: 0.9; }
+        #free-market-btn { background-color: #4CAF50; color: white; }
+        #controlled-market-btn { background-color: #f44336; color: white; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 150px;
+            height: 8px;
+            background: #ddd;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+            border-radius: 4px;
+        }
+        input[type="range"]:hover { opacity: 1; }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #4CAF50;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #4CAF50;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        #market-status {
+            font-size: 14px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            #controls {
+                height: auto;
+                flex-direction: column;
+                padding: 10px;
+            }
+            .control-group {
+                margin: 5px 0;
+                width: 100%;
+                justify-content: center;
+            }
+            #controlled-price-control {
+                 width: 100%;
+                justify-content: center;
+            }
+             input[type="range"] {
+                width: 100px;
+             }
+             button {
+                width: 120px;
+                margin: 5px 0;
+             }
+             .vendor-stall {
+                width: 60px;
+                height: 50px;
+                padding-top: 5px;
+             }
+             .vendor-price { font-size: 10px; }
+             .banana { width: 10px; height: 10px; }
+             .monkey { width: 25px; height: 25px; font-size: 16px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <div id="market-scene">
+            <!-- Market elements will be added here by JavaScript -->
+        </div>
+        <div id="controls">
+            <div class="control-group">
+                <button id="free-market-btn">Free Market</button>
+                <button id="controlled-market-btn">Controlled Market</button>
+            </div>
+             <div class="control-group" id="controlled-price-control">
+                <label for="price-slider">Max Price:</label>
+                <input type="range" id="price-slider" min="1" max="10" value="5" step="1">
+                <span id="controlled-price-value">5</span>
+            </div>
+            <div class="control-group">
+                 <div id="market-status">Mode: <span id="current-mode">Free Market</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const marketScene = document.getElementById('market-scene');
+        const freeMarketBtn = document.getElementById('free-market-btn');
+        const controlledMarketBtn = document.getElementById('controlled-market-btn');
+        const priceSlider = document.getElementById('price-slider');
+        const controlledPriceValueSpan = document.getElementById('controlled-price-value');
+        const currentModeSpan = document.getElementById('current-mode');
+
+        let marketMode = 'free'; // 'free' or 'controlled'
+        let controlledPrice = parseInt(priceSlider.value);
+
+        const NUM_VENDORS = 4;
+        const NUM_CONSUMERS = 8;
+        const SCENE_WIDTH = window.innerWidth;
+        const SCENE_HEIGHT = window.innerHeight - 100; // Subtract controls height
+        const MONKEY_SIZE = 35; // Includes border/padding
+        const STALL_WIDTH = 80;
+        const STALL_HEIGHT = 70;
+        const BANANA_SIZE = 15;
+
+        const initialVendorStock = 10;
+        const initialConsumerCoins = 20;
+        const initialVendorCoins = 10;
+        const vendorProductionRate = 0.02; // Bananas per game loop cycle
+        const vendorProductionCost = 2; // Simulated cost to produce one banana
+        const vendorBasePriceAdjustment = 0.1; // How much price changes per sale/no sale
+
+        const vendors = [];
+        const consumers = [];
+
+        // --- Helper Functions ---
+
+        function createElement(type, className, parent, styles = {}) {
+            const element = document.createElement(type);
+            element.className = className;
+            Object.assign(element.style, styles);
+            parent.appendChild(element);
+            return element;
+        }
+
+        function getRandomPosition(isConsumer = true) {
+            const buffer = 50; // Keep monkeys away from edges/stalls
+            const x = Math.random() * (SCENE_WIDTH - buffer * 2) + buffer;
+            let y;
+            if (isConsumer) {
+                 // Consumers can be anywhere, but higher up than stalls
+                 y = Math.random() * (SCENE_HEIGHT - STALL_HEIGHT - buffer) + buffer;
+            } else {
+                 // Vendors are fixed at the bottom
+                 y = SCENE_HEIGHT - STALL_HEIGHT + (STALL_HEIGHT / 2) - (MONKEY_SIZE / 2); // Center vendor monkey in stall
+            }
+            return { x, y };
+        }
+
+        function getDistance(p1, p2) {
+             const dx = p1.x - p2.x;
+             const dy = p1.y - p2.y;
+             return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        function setElementPosition(element, x, y) {
+             element.style.left = `${x - (element.offsetWidth / 2)}px`;
+             element.style.top = `${y - (element.offsetHeight / 2)}px`;
+        }
+
+        function updateMood(element, mood) {
+            element.classList.remove('happy', 'sad', 'neutral', 'thinking');
+            element.classList.add(mood);
+        }
+
+        function updateVendorDisplay(vendor) {
+            const stallElement = vendor.element.parentElement;
+            const priceElement = stallElement.querySelector('.vendor-price');
+            const stockElement = stallElement.querySelector('.vendor-stock');
+            const coinsElement = stallElement.querySelector('.vendor-coins span');
+
+            priceElement.textContent = `Price: ${vendor.price.toFixed(1)}`;
+
+            // Update stock visualization
+            stockElement.innerHTML = ''; // Clear current bananas
+            const numBananasToShow = Math.min(vendor.stock, 20); // Cap visual bananas
+            for (let i = 0; i < numBananasToShow; i++) {
+                createElement('div', 'banana', stockElement);
+            }
+
+            coinsElement.textContent = vendor.coins;
+        }
+
+         function updateConsumerDisplay(consumer) {
+             // Mood is updated separately
+             // No specific visual display for consumer coins/bananas needed beyond mood
+         }
+
+
+        // --- Simulation Setup ---
+
+        function createVendors() {
+            const vendorSpacing = SCENE_WIDTH / (NUM_VENDORS + 1);
+            for (let i = 0; i < NUM_VENDORS; i++) {
+                const vendorX = vendorSpacing * (i + 1);
+                const vendorY = SCENE_HEIGHT - STALL_HEIGHT / 2; // Stall position
+
+                const stall = createElement('div', 'vendor-stall market-element', marketScene, {
+                    left: `${vendorX - STALL_WIDTH / 2}px`,
+                    top: `${vendorY - STALL_HEIGHT / 2}px`,
+                    width: `${STALL_WIDTH}px`,
+                    height: `${STALL_HEIGHT}px`,
+                });
+
+                const monkeyPos = {x: vendorX, y: SCENE_HEIGHT - STALL_HEIGHT + (STALL_HEIGHT / 2)}; // Monkey position relative to stall
+                const monkey = createElement('div', 'monkey vendor-monkey neutral market-element', stall, {
+                     width: `${MONKEY_SIZE}px`,
+                     height: `${MONKEY_SIZE}px`,
+                     // Position monkey centered within the top part of the stall
+                     left: `${STALL_WIDTH / 2 - MONKEY_SIZE / 2}px`,
+                     top: `-${MONKEY_SIZE / 2}px`,
+                     zIndex: 15, // Monkey sits on top of stall border
+                });
+
+                createElement('div', 'vendor-price', stall, { marginTop: `${MONKEY_SIZE / 2 + 5}px` }); // Price below monkey
+                createElement('div', 'vendor-stock', stall);
+                 const coinsDiv = createElement('div', 'vendor-coins', stall);
+                 createElement('div', 'coin', coinsDiv);
+                 createElement('span', '', coinsDiv);
+
+                const vendor = {
+                    id: `vendor-${i}`,
+                    x: vendorX,
+                    y: vendorY,
+                    element: monkey, // Monkey element
+                    stallElement: stall, // Stall element
+                    price: Math.random() * 5 + 3, // Initial price between 3 and 8
+                    stock: initialVendorStock,
+                    coins: initialVendorCoins,
+                    productionRate: vendorProductionRate,
+                    productionCost: vendorProductionCost + Math.random() * 2, // Slightly different costs
+                    salesCounter: 0, // Track recent sales for price adjustment
+                    noSalesCounter: 0, // Track time without sales
+                    lastProductionTime: Date.now(),
+                    mood: 'neutral'
+                };
+                 vendors.push(vendor);
+                 updateVendorDisplay(vendor);
+                 updateMood(vendor.element, vendor.mood);
+            }
+        }
+
+        function createConsumers() {
+            for (let i = 0; i < NUM_CONSUMERS; i++) {
+                const pos = getRandomPosition();
+                const monkey = createElement('div', 'monkey consumer-monkey neutral market-element', marketScene, {
+                    width: `${MONKEY_SIZE}px`,
+                    height: `${MONKEY_SIZE}px`,
+                });
+                 setElementPosition(monkey, pos.x, pos.y);
+
+                const consumer = {
+                    id: `consumer-${i}`,
+                    x: pos.x,
+                    y: pos.y,
+                    element: monkey,
+                    coins: initialConsumerCoins + Math.floor(Math.random() * 10), // Random initial coins
+                    bananas: 0, // Consumers eat bananas instantly in this model
+                    mood: 'neutral',
+                    targetVendorId: null,
+                    buyingTimer: 0, // Timer to simulate eating/enjoying after buying
+                    frustrationTimer: 0, // Timer for how long they've been looking/sad
+                    moveTargetX: pos.x,
+                    moveTargetY: pos.y,
+                };
+                consumers.push(consumer);
+                updateMood(consumer.element, consumer.mood);
+            }
+        }
+
+        function initializeSimulation() {
+            createVendors();
+            createConsumers();
+            setMode(marketMode);
+        }
+
+        // --- Simulation Logic ---
+
+        function gameLoop() {
+            moveConsumers();
+            handleTransactions();
+            handleProduction();
+            if (marketMode === 'free') {
+                adjustVendorPrices();
+            } else { // Controlled Market
+                 applyControlledPrice();
+            }
+            updateScene();
+        }
+
+        function moveConsumers() {
+            consumers.forEach(consumer => {
+                if (consumer.buyingTimer > 0) {
+                    consumer.buyingTimer--;
+                    // Consumer is happy/eating, don't move
+                    if (consumer.buyingTimer === 0) {
+                         updateMood(consumer.element, 'neutral'); // Back to neutral after eating
+                    }
+                    return;
+                }
+
+                // Determine target
+                let targetVendor = null;
+                if (consumer.targetVendorId) {
+                    targetVendor = vendors.find(v => v.id === consumer.targetVendorId);
+                    // If target vendor is out of stock or price changed too much (in Free Market), clear target
+                     if (targetVendor && targetVendor.stock <= 0) {
+                        consumer.targetVendorId = null;
+                        targetVendor = null;
+                        updateMood(consumer.element, 'thinking'); // Look for new vendor
+                        consumer.frustrationTimer = 0; // Reset frustration
+                    } else if (marketMode === 'free' && targetVendor && consumer.coins < targetVendor.price) {
+                         // Can no longer afford target
+                         consumer.targetVendorId = null;
+                         targetVendor = null;
+                         updateMood(consumer.element, 'thinking');
+                         consumer.frustrationTimer = 0;
+                    } else if (marketMode === 'controlled' && targetVendor && targetVendor.price > controlledPrice) {
+                        // Vendor price exceeds max price (shouldn't happen if vendor follows rules, but safety check)
+                         consumer.targetVendorId = null;
+                         targetVendor = null;
+                         updateMood(consumer.element, 'thinking');
+                         consumer.frustrationTimer = 0;
+                    }
+                }
+
+                if (!targetVendor) {
+                    // Need a banana, find a vendor
+                    let availableVendors = vendors.filter(v => v.stock > 0);
+                    if (marketMode === 'controlled') {
+                         availableVendors = availableVendors.filter(v => v.price <= controlledPrice);
+                    }
+                     // Filter vendors consumer can afford
+                     availableVendors = availableVendors.filter(v => consumer.coins >= v.price);
+
+                    if (availableVendors.length > 0) {
+                        if (marketMode === 'free') {
+                            // Find lowest price among available
+                            availableVendors.sort((a, b) => a.price - b.price);
+                            targetVendor = availableVendors[0];
+                        } else {
+                            // Just pick any available vendor (they all have same max price consideration)
+                            targetVendor = availableVendors[Math.floor(Math.random() * availableVendors.length)];
+                        }
+                        consumer.targetVendorId = targetVendor.id;
+                        consumer.frustrationTimer = 0; // Found a target, reset frustration
+                         updateMood(consumer.element, 'thinking'); // Indicate they are moving towards a goal
+                    } else {
+                        // No vendors available, get sad
+                        consumer.targetVendorId = null;
+                        consumer.frustrationTimer++;
+                        if (consumer.frustrationTimer > 100) { // After ~10 seconds of looking
+                             updateMood(consumer.element, 'sad');
+                        }
+                        // Wander aimlessly
+                        if (getDistance(consumer, {x: consumer.moveTargetX, y: consumer.moveTargetY}) < 5) {
+                             const newPos = getRandomPosition();
+                             consumer.moveTargetX = newPos.x;
+                             consumer.moveTargetY = newPos.y;
+                        }
+                         // Move towards wander target
+                        const angle = Math.atan2(consumer.moveTargetY - consumer.y, consumer.moveTargetX - consumer.x);
+                        consumer.x += Math.cos(angle) * 2; // Move speed
+                        consumer.y += Math.sin(angle) * 2;
+                         setElementPosition(consumer.element, consumer.x, consumer.y);
+                         return; // Skip movement towards vendor
+                    }
+                }
+
+                // Move towards target vendor
+                if (targetVendor) {
+                    const targetPos = { x: targetVendor.x, y: targetVendor.y };
+                    const distance = getDistance(consumer, targetPos);
+                    const moveSpeed = 3;
+
+                    if (distance > MONKEY_SIZE / 2 + STALL_WIDTH / 4) { // Move closer, but not on top of the vendor
+                        const angle = Math.atan2(targetPos.y - consumer.y, targetPos.x - consumer.x);
+                        consumer.x += Math.cos(angle) * moveSpeed;
+                        consumer.y += Math.sin(angle) * moveSpeed;
+                    } else {
+                        // Close enough, ready to buy (handled in handleTransactions)
+                    }
+                     setElementPosition(consumer.element, consumer.x, consumer.y);
+                }
+            });
+        }
+
+        function handleTransactions() {
+            consumers.forEach(consumer => {
+                if (consumer.buyingTimer > 0 || !consumer.targetVendorId) {
+                    return; // Busy or no target
+                }
+
+                const vendor = vendors.find(v => v.id === consumer.targetVendorId);
+                if (!vendor) return; // Target vendor disappeared?
+
+                const distance = getDistance(consumer, { x: vendor.x, y: vendor.y });
+                const proximityThreshold = MONKEY_SIZE / 2 + STALL_WIDTH / 4; // Close enough to interact
+
+                if (distance <= proximityThreshold) {
+                    // Check if conditions are met for buying
+                    let canBuy = vendor.stock > 0 && consumer.coins >= vendor.price;
+
+                    if (marketMode === 'controlled' && vendor.price > controlledPrice) {
+                         // Vendor price exceeds max price, cannot buy in controlled market
+                         canBuy = false;
+                    }
+
+                    if (canBuy) {
+                        // Perform transaction
+                        consumer.coins -= vendor.price;
+                        vendor.coins += vendor.price;
+                        vendor.stock--;
+                        consumer.bananas++; // Get banana
+                        consumer.bananas--; // Eat banana immediately in this model
+                        consumer.targetVendorId = null; // Bought, look for next need later
+
+                        // Update moods
+                        updateMood(consumer.element, 'happy');
+                        consumer.buyingTimer = 50; // Happy for 50 game loop cycles (~5 seconds)
+                        // Vendor mood update based on sales/profit happens in updateScene or separately
+
+                        // Track sales for price adjustment in Free Market
+                        if (marketMode === 'free') {
+                            vendor.salesCounter++;
+                            vendor.noSalesCounter = 0; // Reset no sales counter
+                        }
+
+                         updateVendorDisplay(vendor); // Update vendor visuals immediately on sale
+
+                    } else {
+                        // Cannot buy (out of stock or too expensive)
+                        consumer.frustrationTimer++;
+                        if (consumer.frustrationTimer > 50) { // After ~5 seconds of waiting/trying
+                            updateMood(consumer.element, 'sad');
+                             // If sad for too long, maybe give up on this vendor
+                            if (consumer.frustrationTimer > 150) {
+                                consumer.targetVendorId = null; // Give up on this vendor
+                                consumer.frustrationTimer = 0; // Reset frustration
+                                updateMood(consumer.element, 'thinking'); // Start looking again
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function handleProduction() {
+            const now = Date.now();
+            vendors.forEach(vendor => {
+                // In Controlled Market, production is affected by price control vs. cost
+                let effectiveProductionRate = vendor.productionRate;
+                if (marketMode === 'controlled') {
+                    // If max price is below vendor's cost, production is severely limited or stopped
+                    if (controlledPrice < vendor.productionCost) {
+                        effectiveProductionRate *= 0.1; // Reduce production significantly (e.g., to 10%)
+                    }
+                     // If price is exactly cost, maybe produce at half rate
+                     else if (controlledPrice === vendor.productionCost) {
+                         effectiveProductionRate *= 0.5;
+                     }
+                     // If price is above cost, produce normally
+                }
+
+                // Simulate continuous production based on rate
+                 const elapsed = now - vendor.lastProductionTime;
+                 const bananasToProduce = effectiveProductionRate * (elapsed / 1000); // Rate per second
+
+                 if (bananasToProduce >= 1) {
+                     const numToAdd = Math.floor(bananasToProduce);
+                     vendor.stock += numToAdd;
+                     vendor.lastProductionTime = now; // Reset timer
+
+                     // Update vendor display after production
+                     updateVendorDisplay(vendor);
+                 }
+            });
+        }
+
+        function adjustVendorPrices() {
+            vendors.forEach(vendor => {
+                const salesThisCycle = vendor.salesCounter;
+                vendor.salesCounter = 0; // Reset counter for next cycle analysis
+
+                if (salesThisCycle > 0) {
+                    // Sold some bananas, maybe increase price slightly
+                    vendor.price += vendorBasePriceAdjustment * salesThisCycle;
+                    vendor.noSalesCounter = 0; // Reset no sales counter
+                } else {
+                    // No sales, maybe decrease price if stock is high
+                    if (vendor.stock > initialVendorStock / 2) { // Only decrease if stock is building up
+                        vendor.noSalesCounter++;
+                        if (vendor.noSalesCounter > 50) { // After ~5 seconds with no sales and high stock
+                            vendor.price -= vendorBasePriceAdjustment * (vendor.noSalesCounter / 50); // Decrease more the longer no sales
+                             // Don't let price go below a minimum
+                            vendor.price = Math.max(vendor.price, 2);
+                        }
+                    } else {
+                         vendor.noSalesCounter = 0; // Reset if stock is low even without sales
+                    }
+                }
+
+                // Cap price to prevent it from going too high
+                vendor.price = Math.min(vendor.price, 15);
+
+                // Update vendor display with new price
+                updateVendorDisplay(vendor);
+            });
+        }
+
+         function applyControlledPrice() {
+             vendors.forEach(vendor => {
+                 // Vendors cannot set a price higher than the controlled price
+                 // We don't *force* their price property to be the controlled price,
+                 // but the buying logic prevents sales above it, and their display
+                 // still shows their internal desired price or the max price.
+                 // Let's update the display to show the *effective* price if it hits the cap.
+                 const effectivePrice = Math.min(vendor.price, controlledPrice);
+                  // This is a simplification - a real vendor might just list at the max price.
+                  // For this simulation, we'll let them *display* their price, but sales are capped.
+                  // Let's update the display to show the controlled price if it's lower than their price.
+                  // vendor.stallElement.querySelector('.vendor-price').textContent = `Price: ${vendor.price.toFixed(1)} (Max: ${controlledPrice})`;
+                  // Or, just show the effective price if capped:
+                   vendor.stallElement.querySelector('.vendor-price').textContent = `Price: ${effectivePrice.toFixed(1)}`;
+
+                  // Vendor mood based on profitability/production
+                  if (controlledPrice < vendor.productionCost) {
+                       updateMood(vendor.element, 'sad'); // Cannot sell profitably/produce
+                  } else if (vendor.stock > 0 && vendors.filter(v => v.stock > 0 && v.price <= controlledPrice).length === 0) {
+                       // Has stock but no buyers (because other vendors ran out and price is capped)
+                       // This scenario is less likely with multiple vendors, but possible if all consumers are broke.
+                       // Let's focus mood on production constraints primarily.
+                       updateMood(vendor.element, 'neutral'); // Still trading if possible
+                  } else {
+                       updateMood(vendor.element, 'happy'); // Can produce/sell profitably (or at cost)
+                  }
+             });
+
+              // Consumer mood based on finding bananas at the controlled price
+              consumers.forEach(consumer => {
+                  if (consumer.buyingTimer > 0) return; // Happy after buying
+                  // Mood is already handled in moveConsumers based on finding available vendors
+              });
+         }
+
+
+        function updateScene() {
+            // Vendor updates handled during transactions/production
+            // Consumer position updates handled in moveConsumers
+            // Mood updates handled during state changes (buying, looking, frustrated)
+        }
+
+        // --- UI & Mode Switching ---
+
+        function setMode(mode) {
+            marketMode = mode;
+            if (marketMode === 'free') {
+                freeMarketBtn.disabled = true;
+                controlledMarketBtn.disabled = false;
+                priceSlider.parentElement.style.display = 'none';
+                currentModeSpan.textContent = 'Free Market';
+                 // Reset vendor prices to initial random range when entering free market
+                 vendors.forEach(vendor => {
+                     vendor.price = Math.random() * 5 + 3;
+                     vendor.salesCounter = 0;
+                     vendor.noSalesCounter = 0;
+                     updateVendorDisplay(vendor); // Update display immediately
+                 });
+                 consumers.forEach(consumer => consumer.targetVendorId = null); // Make consumers re-evaluate
+            } else { // controlled
+                freeMarketBtn.disabled = false;
+                controlledMarketBtn.disabled = true;
+                priceSlider.parentElement.style.display = 'flex';
+                currentModeSpan.textContent = 'Controlled Market';
+                // Reset vendor prices to initial random range (they will be capped by logic)
+                 vendors.forEach(vendor => {
+                     vendor.price = Math.random() * 5 + 3; // Vendors still have an internal price they'd prefer
+                     updateVendorDisplay(vendor); // Update display immediately
+                 });
+                 consumers.forEach(consumer => consumer.targetVendorId = null); // Make consumers re-evaluate
+            }
+             // Reset frustration when switching modes
+             consumers.forEach(consumer => {
+                 consumer.frustrationTimer = 0;
+                 updateMood(consumer.element, 'neutral'); // Reset mood too
+             });
+             vendors.forEach(vendor => updateMood(vendor.element, 'neutral')); // Reset vendor mood too
+        }
+
+        priceSlider.addEventListener('input', (event) => {
+            controlledPrice = parseInt(event.target.value);
+            controlledPriceValueSpan.textContent = controlledPrice;
+             // When price changes in controlled mode, consumers might need to re-evaluate
+             consumers.forEach(consumer => consumer.targetVendorId = null);
+        });
+
+        freeMarketBtn.addEventListener('click', () => setMode('free'));
+        controlledMarketBtn.addEventListener('click', () => setMode('controlled'));
+
+        // --- Initialization ---
+        window.onload = () => {
+            initializeSimulation();
+            setInterval(gameLoop, 100); // Run game loop approximately every 100ms
+        };
+
+        // Basic responsiveness - re-initialize on resize (simplistic)
+        window.addEventListener('resize', () => {
+             // Clear existing elements
+             marketScene.innerHTML = '';
+             // Clear arrays
+             vendors.length = 0;
+             consumers.length = 0;
+             // Re-initialize with new dimensions
+             SCENE_WIDTH = window.innerWidth;
+             SCENE_HEIGHT = window.innerHeight - 100;
+             initializeSimulation();
+        });
+
+
+    </script>
+
+</body>
+</html>
